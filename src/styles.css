@@ -3,8 +3,24 @@
 
 @import 'tw-animate-css';
 
+@font-face {
+  font-family: "Hind Siliguri";
+  src: url("/fonts/hind-siliguri-regular.woff2") format("woff2");
+  font-style: normal;
+  font-weight: 400;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: "Hind Siliguri";
+  src: url("/fonts/hind-siliguri-semibold.woff2") format("woff2");
+  font-style: normal;
+  font-weight: 600;
+  font-display: swap;
+}
+
 @theme {
-  --font-sans: "Manrope", "Hind Siliguri", ui-sans-serif, system-ui, sans-serif;
+  --font-sans: "Hind Siliguri", ui-sans-serif, system-ui, sans-serif;
   --color-primary: #f0f9ff;
   --color-secondary: #0f6b4d;
   --color-secondary-dark: #0b4032;
@@ -83,7 +99,7 @@ body {
 body {
   margin: 0;
   color: #173a40;
-  font-family: "Manrope", "Hind Siliguri", ui-sans-serif, system-ui, sans-serif;
+  font-family: "Hind Siliguri", ui-sans-serif, system-ui, sans-serif;
   background-color: #e7f3ec;
   background:
     radial-gradient(1100px 620px at -8% -10%, color-mix(in oklab, var(--color-secondary) 18%, transparent), transparent 58%),
