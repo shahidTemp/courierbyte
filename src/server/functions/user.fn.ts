@@ -1,6 +1,6 @@
-import { createServerFn } from "@tanstack/react-start";
 import { createHash, randomBytes, scrypt } from "node:crypto";
 import { promisify } from "node:util";
+import { createServerFn } from "@tanstack/react-start";
 import { User } from "@/server/models/user.model";
 
 type RegisterInput = {
@@ -41,22 +41,6 @@ function hashApiKey(apiKey: string) {
 	return createHash("sha256").update(apiKey).digest("hex");
 }
 
-export const getUsers = createServerFn({ method: "GET" }).handler(async () => {
-	const users = await User.find()
-		.select("name number isActive role createdAt updatedAt")
-		.lean();
-
-	return users.map((user) => ({
-		id: String(user._id),
-		name: user.name,
-		number: user.number,
-		isActive: user.isActive,
-		role: user.role,
-		createdAt: user.createdAt.toISOString(),
-		updatedAt: user.updatedAt.toISOString(),
-	}));
-});
-
 export const createUser = createServerFn({ method: "POST" })
 	.validator(validateRegisterInput)
 	.handler(async ({ data }) => {
@@ -85,3 +69,19 @@ export const createUser = createServerFn({ method: "POST" })
 			apiKey,
 		};
 	});
+
+export const getUsers = createServerFn({ method: "GET" }).handler(async () => {
+	const users = await User.find()
+		.select("name number isActive role createdAt updatedAt")
+		.lean();
+
+	return users.map((user) => ({
+		id: String(user._id),
+		name: user.name,
+		number: user.number,
+		isActive: user.isActive,
+		role: user.role,
+		createdAt: user.createdAt.toISOString(),
+		updatedAt: user.updatedAt.toISOString(),
+	}));
+});
