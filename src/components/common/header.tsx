@@ -14,7 +14,7 @@ const NAV_ITEMS = [
 type NavItem = (typeof NAV_ITEMS)[number];
 
 const linkClasses =
-	"text-sm font-medium text-secondary transition-colors hover:text-secondary/70";
+	"text-sm font-medium text-primary transition-colors hover:text-primary/70";
 
 function NavItemLink({
 	item,
@@ -100,7 +100,7 @@ const Header = () => {
 	};
 
 	return (
-		<header className="bg-primary text-secondary">
+		<header className="bg-secondary text-primary">
 			<div className="maxw px-4 sm:px-6 lg:px-8 py-4 flex items-center justify-between gap-4">
 				<Link to="/" className="shrink-0">
 					<img
@@ -124,7 +124,7 @@ const Header = () => {
 					type="button"
 					ref={triggerRef}
 					onClick={() => setOpen(true)}
-					className="md:hidden p-2 -mr-2 rounded-md text-secondary hover:bg-secondary/10 transition-colors"
+					className="md:hidden p-2 -mr-2 rounded-md text-primary hover:bg-primary/10 transition-colors"
 					aria-label="Open menu"
 					aria-expanded={open}
 					aria-controls="mobile-nav"
@@ -137,7 +137,7 @@ const Header = () => {
 			<div
 				onClick={close}
 				aria-hidden="true"
-				className={`fixed inset-0 z-40 bg-secondary/50 transition-opacity duration-300 md:hidden ${
+				className={`fixed inset-0 z-40 bg-primary/50 transition-opacity duration-300 md:hidden ${
 					open ? "opacity-100" : "opacity-0 pointer-events-none"
 				}`}
 			/>
@@ -149,11 +149,11 @@ const Header = () => {
 				tabIndex={-1}
 				inert={!open}
 				aria-hidden={!open}
-				className={`fixed inset-y-0 left-0 z-50 w-72 bg-primary text-secondary shadow-2xl transition-transform duration-300 ease-in-out md:hidden ${
+				className={`fixed inset-y-0 left-0 z-50 w-72 bg-secondary text-primary shadow-2xl transition-transform duration-300 ease-in-out md:hidden ${
 					open ? "translate-x-0" : "-translate-x-full"
 				}`}
 			>
-				<div className="flex items-center justify-between px-4 py-4 border-b border-secondary/10">
+				<div className="flex items-center justify-between px-4 py-4 border-b border-primary/10">
 					<Link to="/" onClick={close} className="shrink-0">
 						<img
 							src="https://appbyte.net/images/logo.png"
@@ -164,7 +164,7 @@ const Header = () => {
 					<button
 						type="button"
 						onClick={close}
-						className="p-2 rounded-md hover:bg-secondary/10 transition-colors"
+						className="p-2 rounded-md hover:bg-primary/10 transition-colors"
 						aria-label="Close menu"
 					>
 						<X className="h-6 w-6" />
