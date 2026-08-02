@@ -18,9 +18,9 @@ const courierRows = [
 		delivered: "১২",
 		rate: 86,
 		logo: "/images/pathao.png",
-		accent: "text-orange-300",
-		chipRing: "ring-orange-400/40",
-		bar: "bg-gradient-to-r from-orange-400 to-amber-300",
+		accent: "text-orange-600",
+		chipRing: "ring-orange-300/60",
+		bar: "bg-gradient-to-r from-orange-500 to-amber-400",
 	},
 	{
 		name: "স্টেডফাস্ট",
@@ -28,9 +28,9 @@ const courierRows = [
 		delivered: "৮",
 		rate: 89,
 		logo: "/images/steadfast.png",
-		accent: "text-sky-300",
-		chipRing: "ring-sky-400/40",
-		bar: "bg-gradient-to-r from-sky-400 to-cyan-300",
+		accent: "text-sky-600",
+		chipRing: "ring-sky-300/60",
+		bar: "bg-gradient-to-r from-sky-500 to-cyan-400",
 	},
 	{
 		name: "RedX",
@@ -38,9 +38,9 @@ const courierRows = [
 		delivered: "৪",
 		rate: 57,
 		logo: "/images/redx.png",
-		accent: "text-rose-300",
-		chipRing: "ring-rose-400/40",
-		bar: "bg-gradient-to-r from-rose-400 to-red-300",
+		accent: "text-rose-600",
+		chipRing: "ring-rose-300/60",
+		bar: "bg-gradient-to-r from-rose-500 to-red-400",
 	},
 	{
 		name: "Carrybee",
@@ -48,9 +48,9 @@ const courierRows = [
 		delivered: "৫",
 		rate: 83,
 		logo: "/images/carrybee.png",
-		accent: "text-violet-300",
-		chipRing: "ring-violet-400/40",
-		bar: "bg-gradient-to-r from-violet-400 to-fuchsia-300",
+		accent: "text-violet-600",
+		chipRing: "ring-violet-300/60",
+		bar: "bg-gradient-to-r from-violet-500 to-fuchsia-400",
 	},
 ];
 
@@ -60,88 +60,86 @@ const statCards = [
 		value: "৩৬",
 		sub: "সব কুরিয়ার",
 		icon: Package,
-		card: "border-white/15 bg-gradient-to-br from-white/10 to-white/[0.02]",
-		iconWrap: "bg-white/15 text-white",
-		valueCls: "text-xl text-white",
-		labelCls: "text-slate-400",
-		subCls: "text-slate-500",
+		card: "border-gray-200 bg-white shadow-sm",
+		iconWrap: "bg-violet-100 text-violet-600",
+		valueCls: "text-xl text-gray-900",
+		labelCls: "text-gray-500",
+		subCls: "text-gray-400",
 	},
 	{
 		label: "রিসিভ করেছে",
 		value: "২৯",
 		sub: "সফল ডেলিভারি",
 		icon: CheckCircle2,
-		card: "border-emerald-400/30 bg-gradient-to-br from-emerald-400/20 to-teal-400/[0.07]",
-		iconWrap: "bg-emerald-400/20 text-emerald-300",
-		valueCls: "text-xl text-emerald-300",
-		labelCls: "text-emerald-200/70",
-		subCls: "text-emerald-200/50",
+		card: "border-emerald-200 bg-emerald-50/60",
+		iconWrap: "bg-emerald-100 text-emerald-600",
+		valueCls: "text-xl text-emerald-700",
+		labelCls: "text-emerald-600/70",
+		subCls: "text-emerald-500/70",
 	},
 	{
 		label: "ক্যানসেল",
 		value: "৭",
 		sub: "রিফিউজ / রিটার্ন",
 		icon: XCircle,
-		card: "border-rose-400/30 bg-gradient-to-br from-rose-400/20 to-red-400/[0.07]",
-		iconWrap: "bg-rose-400/20 text-rose-300",
-		valueCls: "text-xl text-rose-300",
-		labelCls: "text-rose-200/70",
-		subCls: "text-rose-200/50",
+		card: "border-rose-200 bg-rose-50/60",
+		iconWrap: "bg-rose-100 text-rose-600",
+		valueCls: "text-xl text-rose-700",
+		labelCls: "text-rose-600/70",
+		subCls: "text-rose-500/70",
 	},
 	{
 		label: "রিস্ক স্কোর",
 		value: "মাঝারি",
 		sub: "সতর্ক থাকুন",
 		icon: ShieldAlert,
-		card: "border-amber-400/30 bg-gradient-to-br from-amber-400/20 to-orange-400/[0.07]",
-		iconWrap: "bg-amber-400/20 text-amber-300",
-		valueCls: "text-lg text-amber-300",
-		labelCls: "text-amber-200/70",
-		subCls: "text-amber-200/50",
+		card: "border-amber-200 bg-amber-50/60",
+		iconWrap: "bg-amber-100 text-amber-600",
+		valueCls: "text-lg text-amber-700",
+		labelCls: "text-amber-600/70",
+		subCls: "text-amber-500/70",
 	},
 ];
 
 export default function MiniDashboard({ large = false }: { large?: boolean }) {
 	return (
 		<div className={`relative ${large ? "w-full" : "w-full max-w-[550px]"}`}>
-			{/* colorful ambient glow */}
-			<div className="absolute -inset-5 rounded-[2rem] bg-gradient-to-br from-violet-500/30 via-cyan-400/15 to-amber-400/25 blur-2xl" />
+			{/* colorful ambient glow — subtle for white bg */}
+			<div className="absolute -inset-5 rounded-[2rem] bg-gradient-to-br from-violet-400/10 via-cyan-400/6 to-amber-400/8" />
 
-			<div className="relative overflow-hidden rounded-[1.35rem] border border-white/15 bg-[#0e1430] shadow-[0_30px_90px_rgba(20,10,70,0.45)]">
-				{/* inner color blobs */}
-				<div aria-hidden className="pointer-events-none absolute inset-0">
-					<div className="absolute -left-14 -top-16 h-48 w-48 rounded-full bg-violet-600/30 blur-3xl" />
-					<div className="absolute -right-12 top-16 h-44 w-44 rounded-full bg-cyan-400/20 blur-3xl" />
-					<div className="absolute bottom-0 left-1/4 h-44 w-44 rounded-full bg-fuchsia-500/15 blur-3xl" />
-					<div className="absolute -bottom-10 right-6 h-40 w-40 rounded-full bg-amber-400/20 blur-3xl" />
+			<div className="relative overflow-hidden rounded-[1.35rem] border border-gray-200 bg-white shadow-[0_4px_30px_rgba(0,0,0,0.08)]">
+				{/* inner color accents — single subtle glow to avoid GPU overload */}
+				<div aria-hidden className="pointer-events-none absolute inset-0 overflow-hidden">
+					<div className="absolute -left-10 -top-12 h-40 w-40 rounded-full bg-violet-400/15 blur-xl" />
+					<div className="absolute -right-8 bottom-8 h-36 w-36 rounded-full bg-cyan-400/10 blur-xl" />
 				</div>
 				{/* glass top highlight */}
-				<div className="absolute inset-x-0 top-0 h-px bg-gradient-to-r from-transparent via-white/50 to-transparent" />
+				<div className="absolute inset-x-0 top-0 h-px bg-gradient-to-r from-transparent via-gray-300 to-transparent" />
 
 				{/* header */}
-				<div className="relative flex items-center justify-between border-b border-white/10 bg-gradient-to-r from-[#1c1145]/90 via-[#101638]/90 to-[#0d2a2c]/90 px-4 py-3 backdrop-blur sm:px-5">
+				<div className="relative flex items-center justify-between border-b border-gray-100 bg-gradient-to-r from-violet-50 via-white to-cyan-50 px-4 py-3 sm:px-5">
 					<div className="flex items-center gap-2.5">
-						<span className="flex h-8 w-8 items-center justify-center rounded-lg bg-gradient-to-br from-violet-500 via-fuchsia-500 to-amber-400 text-white shadow-lg shadow-fuchsia-500/40">
+						<span className="flex h-8 w-8 items-center justify-center rounded-lg bg-gradient-to-br from-violet-500 via-fuchsia-500 to-amber-400 text-white shadow-md shadow-fuchsia-400/30">
 							<PackageSearch className="h-4 w-4" />
 						</span>
 						<div>
-							<p className="text-[9px] font-bold uppercase tracking-[0.16em] text-fuchsia-200/70">
+							<p className="text-[9px] font-bold uppercase tracking-[0.16em] text-violet-500">
 								CourierByte
 							</p>
-							<p className="bg-gradient-to-r from-white via-emerald-100 to-cyan-100 bg-clip-text text-xs font-semibold text-transparent">
+							<p className="text-xs font-semibold text-gray-700">
 								কাস্টমার ইনসাইট
 							</p>
 						</div>
 					</div>
 					<div className="flex items-center gap-2">
-						<span className="hidden items-center gap-1.5 rounded-full border border-emerald-400/30 bg-emerald-400/10 px-2.5 py-1 text-[10px] font-semibold text-emerald-300 sm:flex">
+						<span className="hidden items-center gap-1.5 rounded-full border border-emerald-300 bg-emerald-50 px-2.5 py-1 text-[10px] font-semibold text-emerald-600 sm:flex">
 							<span className="relative flex h-1.5 w-1.5">
-								<span className="absolute inline-flex h-full w-full animate-ping rounded-full bg-emerald-400 opacity-75" />
-								<span className="relative inline-flex h-1.5 w-1.5 rounded-full bg-emerald-400" />
+								<span className="absolute inline-flex h-full w-full animate-ping rounded-full bg-emerald-500 opacity-75" />
+								<span className="relative inline-flex h-1.5 w-1.5 rounded-full bg-emerald-500" />
 							</span>
 							Live data preview
 						</span>
-						<span className="flex h-7 w-7 items-center justify-center rounded-full bg-gradient-to-br from-violet-400/70 to-fuchsia-500/70 text-[10px] font-bold text-white ring-1 ring-white/25">
+						<span className="flex h-7 w-7 items-center justify-center rounded-full bg-gradient-to-br from-violet-400 to-fuchsia-500 text-[10px] font-bold text-white">
 							AR
 						</span>
 					</div>
@@ -156,15 +154,15 @@ export default function MiniDashboard({ large = false }: { large?: boolean }) {
 								<Phone className="h-4 w-4" />
 							</span>
 							<div>
-								<p className="text-[10px] font-medium text-slate-400">
+								<p className="text-[10px] font-medium text-gray-500">
 									সার্চ করা নাম্বার
 								</p>
-								<p className="mt-1 text-sm font-bold tracking-wide text-white">
+								<p className="mt-1 text-sm font-bold tracking-wide text-gray-900">
 									017•••••••21
 								</p>
 							</div>
 						</div>
-						<span className="flex items-center gap-1 rounded-full border border-emerald-400/30 bg-emerald-400/10 px-2.5 py-1 text-[10px] font-bold text-emerald-300">
+						<span className="flex items-center gap-1 rounded-full border border-emerald-300 bg-emerald-50 px-2.5 py-1 text-[10px] font-bold text-emerald-600">
 							<BadgeCheck className="h-3.5 w-3.5" /> যাচাই করা হয়েছে
 						</span>
 					</div>
@@ -176,7 +174,7 @@ export default function MiniDashboard({ large = false }: { large?: boolean }) {
 							return (
 								<div
 									key={card.label}
-									className={`rounded-xl border p-3 backdrop-blur-sm transition-transform duration-200 hover:-translate-y-0.5 ${card.card}`}
+									className={`rounded-xl border p-3 transition-transform duration-200 hover:-translate-y-0.5 ${card.card}`}
 								>
 									<div className="flex items-center justify-between gap-1">
 										<p className={`text-[10px] ${card.labelCls}`}>
@@ -201,13 +199,13 @@ export default function MiniDashboard({ large = false }: { large?: boolean }) {
 
 					{/* courier history + decision */}
 					<div className="grid gap-4 md:grid-cols-[1.1fr_0.9fr]">
-						<div className="rounded-xl border border-white/10 bg-white/[0.035] p-4 backdrop-blur-sm">
+						<div className="rounded-xl border border-gray-100 bg-gray-50 p-4">
 							<div className="mb-4 flex items-center justify-between">
-								<p className="flex items-center gap-2 text-xs font-bold text-white">
-									<span className="h-2 w-2 rounded-full bg-gradient-to-r from-violet-400 to-fuchsia-400 shadow-[0_0_8px_rgba(217,70,239,0.9)]" />
+								<p className="flex items-center gap-2 text-xs font-bold text-gray-800">
+									<span className="h-2 w-2 rounded-full bg-gradient-to-r from-violet-500 to-fuchsia-500" />
 									কুরিয়ারভিত্তিক হিস্ট্রি
 								</p>
-								<span className="rounded-full bg-white/[0.06] px-2 py-0.5 text-[9px] font-semibold text-slate-300 ring-1 ring-white/10">
+								<span className="rounded-full bg-gray-200 px-2 py-0.5 text-[9px] font-semibold text-gray-500">
 									Last 90 days
 								</span>
 							</div>
@@ -215,7 +213,7 @@ export default function MiniDashboard({ large = false }: { large?: boolean }) {
 								{courierRows.map((row) => (
 									<div key={row.name} className="group">
 										<div className="mb-1.5 flex items-center justify-between text-[10px]">
-											<span className="flex items-center gap-2 font-semibold text-slate-200">
+											<span className="flex items-center gap-2 font-semibold text-gray-700">
 												<img
 													src={row.logo}
 													alt={row.name}
@@ -223,7 +221,7 @@ export default function MiniDashboard({ large = false }: { large?: boolean }) {
 													className={`h-6 w-6 rounded-md bg-white object-contain p-0.5 shadow-sm ring-1 transition-transform duration-200 group-hover:scale-110 ${row.chipRing}`}
 												/>
 												{row.name}
-												<span className="font-normal text-slate-400">
+												<span className="font-normal text-gray-400">
 													{row.count}
 												</span>
 											</span>
@@ -232,7 +230,7 @@ export default function MiniDashboard({ large = false }: { large?: boolean }) {
 												{row.rate}%
 											</span>
 										</div>
-										<div className="h-1.5 overflow-hidden rounded-full bg-white/10">
+										<div className="h-1.5 overflow-hidden rounded-full bg-gray-200">
 											<div
 												className={`h-full rounded-full ${row.bar}`}
 												style={{ width: `${row.rate}%` }}
@@ -243,28 +241,28 @@ export default function MiniDashboard({ large = false }: { large?: boolean }) {
 							</div>
 						</div>
 
-						<div className="flex flex-col justify-between rounded-xl border border-amber-400/25 bg-gradient-to-br from-amber-400/[0.18] via-orange-400/[0.1] to-rose-400/[0.08] p-4">
+						<div className="flex flex-col justify-between rounded-xl border border-amber-200 bg-gradient-to-br from-amber-50 via-orange-50 to-rose-50 p-4">
 							<div>
 								<div className="flex items-center justify-between">
-									<p className="text-xs font-bold text-white">সিদ্ধান্তের ইঙ্গিত</p>
-									<span className="flex h-6 w-6 items-center justify-center rounded-md bg-amber-400/20 text-amber-300">
+									<p className="text-xs font-bold text-gray-800">সিদ্ধান্তের ইঙ্গিত</p>
+									<span className="flex h-6 w-6 items-center justify-center rounded-md bg-amber-100 text-amber-600">
 										<ShieldAlert className="h-3.5 w-3.5" />
 									</span>
 								</div>
-								<p className="mt-3 text-xs leading-relaxed text-amber-100/80">
+								<p className="mt-3 text-xs leading-relaxed text-amber-800">
 									এই কাস্টমারের রিস্ক মাঝারি। COD পাঠালে কনফার্মেশন কল করুন।
 								</p>
 							</div>
 							<div className="mt-5 flex items-end justify-between gap-3">
 								<div>
-									<p className="text-[10px] text-amber-200/60">
+									<p className="text-[10px] text-amber-600/70">
 										সম্ভাব্য সাশ্রয় <span className="font-normal">(উদাহরণ)</span>
 									</p>
-									<p className="mt-1 bg-gradient-to-r from-amber-200 via-orange-200 to-rose-200 bg-clip-text text-xl font-extrabold text-transparent">
+									<p className="mt-1 bg-gradient-to-r from-amber-600 via-orange-600 to-rose-600 bg-clip-text text-xl font-extrabold text-transparent">
 										৳ ১,৮০০
 									</p>
 								</div>
-								<span className="flex h-10 w-10 items-center justify-center rounded-full border border-amber-300/30 bg-amber-300/10 text-amber-300 shadow-[0_0_18px_rgba(252,211,77,0.25)]">
+								<span className="flex h-10 w-10 items-center justify-center rounded-full border border-amber-300 bg-amber-100 text-amber-600 shadow-[0_0_18px_rgba(251,191,36,0.25)]">
 									<WalletCards className="h-5 w-5" />
 								</span>
 							</div>
@@ -272,16 +270,16 @@ export default function MiniDashboard({ large = false }: { large?: boolean }) {
 					</div>
 
 					{/* footer strip */}
-					<div className="relative flex items-center justify-between rounded-xl border border-white/10 bg-gradient-to-r from-violet-500/[0.18] via-fuchsia-400/[0.1] to-amber-400/[0.18] px-4 py-3">
+					<div className="relative flex items-center justify-between rounded-xl border border-violet-200 bg-gradient-to-r from-violet-50 via-fuchsia-50 to-amber-50 px-4 py-3">
 						<div className="flex items-center gap-2.5">
-							<span className="flex h-7 w-7 items-center justify-center rounded-lg bg-gradient-to-br from-violet-500 to-fuchsia-500 text-white shadow-md shadow-fuchsia-500/30">
+							<span className="flex h-7 w-7 items-center justify-center rounded-lg bg-gradient-to-br from-violet-500 to-fuchsia-500 text-white shadow-md shadow-fuchsia-400/30">
 								<Zap className="h-3.5 w-3.5" />
 							</span>
-							<p className="text-[10px] font-semibold text-white/80">
+							<p className="text-[10px] font-semibold text-gray-600">
 								রিপোর্ট তৈরি হয়েছে ০.৮ সেকেন্ডে
 							</p>
 						</div>
-						<span className="flex items-center gap-1 text-[10px] font-bold text-emerald-300">
+						<span className="flex items-center gap-1 text-[10px] font-bold text-emerald-600">
 							<Sparkles className="h-3 w-3" /> নিরাপদ ও গোপনীয়
 						</span>
 					</div>
