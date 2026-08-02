@@ -9,60 +9,117 @@
 // Additionally, you should also exclude this file from your linter and/or formatter to prevent it from being checked or modified.
 
 import { Route as rootRouteImport } from './routes/__root'
-import { Route as IndexRouteImport } from './routes/index'
+import { Route as WebsiteRouteRouteImport } from './routes/_website/route'
+import { Route as WebsiteIndexRouteImport } from './routes/_website/index'
+import { Route as WebsiteLoginRouteImport } from './routes/_website/login'
+import { Route as WebsiteRegisterRouteImport } from './routes/_website/register'
 
-const IndexRoute = IndexRouteImport.update({
+const WebsiteRouteRoute = WebsiteRouteRouteImport.update({
+  id: '/_website',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const WebsiteIndexRoute = WebsiteIndexRouteImport.update({
   id: '/',
   path: '/',
-  getParentRoute: () => rootRouteImport,
+  getParentRoute: () => WebsiteRouteRoute,
+} as any)
+const WebsiteLoginRoute = WebsiteLoginRouteImport.update({
+  id: '/login',
+  path: '/login',
+  getParentRoute: () => WebsiteRouteRoute,
+} as any)
+const WebsiteRegisterRoute = WebsiteRegisterRouteImport.update({
+  id: '/register',
+  path: '/register',
+  getParentRoute: () => WebsiteRouteRoute,
 } as any)
 
 export interface FileRoutesByFullPath {
-  '/': typeof IndexRoute
+  '/': typeof WebsiteIndexRoute
+  '/login': typeof WebsiteLoginRoute
+  '/register': typeof WebsiteRegisterRoute
 }
 export interface FileRoutesByTo {
-  '/': typeof IndexRoute
+  '/login': typeof WebsiteLoginRoute
+  '/register': typeof WebsiteRegisterRoute
+  '/': typeof WebsiteIndexRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
-  '/': typeof IndexRoute
+  '/_website': typeof WebsiteRouteRouteWithChildren
+  '/_website/login': typeof WebsiteLoginRoute
+  '/_website/register': typeof WebsiteRegisterRoute
+  '/_website/': typeof WebsiteIndexRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
-  fullPaths: '/'
+  fullPaths: '/' | '/login' | '/register'
   fileRoutesByTo: FileRoutesByTo
-  to: '/'
-  id: '__root__' | '/'
+  to: '/login' | '/register' | '/'
+  id:
+    | '__root__'
+    | '/_website'
+    | '/_website/login'
+    | '/_website/register'
+    | '/_website/'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
-  IndexRoute: typeof IndexRoute
+  WebsiteRouteRoute: typeof WebsiteRouteRouteWithChildren
 }
 
 declare module '@tanstack/react-router' {
   interface FileRoutesByPath {
-    '/': {
-      id: '/'
+    '/_website': {
+      id: '/_website'
+      path: ''
+      fullPath: '/'
+      preLoaderRoute: typeof WebsiteRouteRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/_website/': {
+      id: '/_website/'
       path: '/'
       fullPath: '/'
-      preLoaderRoute: typeof IndexRouteImport
-      parentRoute: typeof rootRouteImport
+      preLoaderRoute: typeof WebsiteIndexRouteImport
+      parentRoute: typeof WebsiteRouteRoute
+    }
+    '/_website/login': {
+      id: '/_website/login'
+      path: '/login'
+      fullPath: '/login'
+      preLoaderRoute: typeof WebsiteLoginRouteImport
+      parentRoute: typeof WebsiteRouteRoute
+    }
+    '/_website/register': {
+      id: '/_website/register'
+      path: '/register'
+      fullPath: '/register'
+      preLoaderRoute: typeof WebsiteRegisterRouteImport
+      parentRoute: typeof WebsiteRouteRoute
     }
   }
 }
 
+interface WebsiteRouteRouteChildren {
+  WebsiteLoginRoute: typeof WebsiteLoginRoute
+  WebsiteRegisterRoute: typeof WebsiteRegisterRoute
+  WebsiteIndexRoute: typeof WebsiteIndexRoute
+}
+
+const WebsiteRouteRouteChildren: WebsiteRouteRouteChildren = {
+  WebsiteLoginRoute: WebsiteLoginRoute,
+  WebsiteRegisterRoute: WebsiteRegisterRoute,
+  WebsiteIndexRoute: WebsiteIndexRoute,
+}
+
+const WebsiteRouteRouteWithChildren = WebsiteRouteRoute._addFileChildren(
+  WebsiteRouteRouteChildren,
+)
+
 const rootRouteChildren: RootRouteChildren = {
-  IndexRoute: IndexRoute,
+  WebsiteRouteRoute: WebsiteRouteRouteWithChildren,
 }
 export const routeTree = rootRouteImport
   ._addFileChildren(rootRouteChildren)
   ._addFileTypes<FileRouteTypes>()
-
-import type { getRouter } from './router.tsx'
-import type { createStart } from '@tanstack/react-start'
-declare module '@tanstack/react-start' {
-  interface Register {
-    ssr: true
-    router: Awaited<ReturnType<typeof getRouter>>
-  }
-}
