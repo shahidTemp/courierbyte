@@ -14,28 +14,23 @@ const NAV_ITEMS = [
 type NavItem = (typeof NAV_ITEMS)[number];
 
 const linkClasses =
-	"text-sm font-medium text-primary transition-colors hover:text-primary/70";
-
-const drawerLinkClasses =
 	"text-sm font-medium text-secondary transition-colors hover:text-secondary/70";
 
 function NavItemLink({
 	item,
 	onNavigate,
 	onSectionClick,
-	className = linkClasses,
 }: {
 	item: NavItem;
 	onNavigate?: () => void;
 	onSectionClick?: (id: string) => void;
-	className?: string;
 }) {
 	if ("to" in item) {
 		return (
 			<Link
 				to={item.to}
 				onClick={onNavigate}
-				className={className}
+				className={linkClasses}
 				activeProps={{
 					className: "font-semibold underline underline-offset-4",
 				}}
@@ -46,7 +41,7 @@ function NavItemLink({
 	}
 	if ("href" in item) {
 		return (
-			<a href={item.href} onClick={onNavigate} className={className}>
+			<a href={item.href} onClick={onNavigate} className={linkClasses}>
 				{item.label}
 			</a>
 		);
@@ -58,7 +53,7 @@ function NavItemLink({
 				e.preventDefault();
 				onSectionClick?.(item.section);
 			}}
-			className={className}
+			className={linkClasses}
 		>
 			{item.label}
 		</a>
@@ -105,7 +100,7 @@ const Header = () => {
 	};
 
 	return (
-		<header className="bg-secondary text-primary">
+		<header className="text-secondary">
 			<div className="maxw px-4 sm:px-6 lg:px-8 py-4 flex items-center justify-between gap-4">
 				<Link to="/" className="shrink-0">
 					<img
@@ -129,7 +124,7 @@ const Header = () => {
 					type="button"
 					ref={triggerRef}
 					onClick={() => setOpen(true)}
-					className="md:hidden p-2 -mr-2 rounded-md text-primary hover:bg-primary/10 transition-colors"
+					className="md:hidden p-2 -mr-2 rounded-md text-secondary hover:bg-secondary/10 transition-colors"
 					aria-label="Open menu"
 					aria-expanded={open}
 					aria-controls="mobile-nav"
@@ -182,7 +177,6 @@ const Header = () => {
 							item={item}
 							onNavigate={close}
 							onSectionClick={scrollToSection}
-							className={drawerLinkClasses}
 						/>
 					))}
 				</nav>
