@@ -48,9 +48,9 @@ const courierRows = [
 		delivered: "৫",
 		rate: 83,
 		logo: "/images/carrybee.png",
-		accent: "text-violet-600",
-		chipRing: "ring-violet-300/60",
-		bar: "bg-gradient-to-r from-violet-500 to-fuchsia-400",
+		accent: "text-indigo-600",
+		chipRing: "ring-indigo-300/60",
+		bar: "bg-gradient-to-r from-indigo-500 to-blue-400",
 	},
 ];
 
@@ -61,7 +61,7 @@ const statCards = [
 		sub: "সব কুরিয়ার",
 		icon: Package,
 		card: "border-gray-200 bg-white shadow-sm",
-		iconWrap: "bg-violet-100 text-violet-600",
+		iconWrap: "bg-blue-100 text-blue-600",
 		valueCls: "text-xl text-gray-900",
 		labelCls: "text-gray-500",
 		subCls: "text-gray-400",
@@ -110,20 +110,20 @@ export default function MiniDashboard({ large = false }: { large?: boolean }) {
 					aria-hidden
 					className="pointer-events-none absolute inset-0 overflow-hidden"
 				>
-					<div className="absolute -left-10 -top-12 h-40 w-40 rounded-full bg-violet-400/15 blur-xl" />
+					<div className="absolute -left-10 -top-12 h-40 w-40 rounded-full bg-blue-400/15 blur-xl" />
 					<div className="absolute -right-8 bottom-8 h-36 w-36 rounded-full bg-cyan-400/10 blur-xl" />
 				</div>
 				{/* glass top highlight */}
 				<div className="absolute inset-x-0 top-0 h-px bg-gradient-to-r from-transparent via-gray-300 to-transparent" />
 
 				{/* header */}
-				<div className="relative flex items-center justify-between border-b border-gray-100 bg-gradient-to-r from-violet-50 via-white to-cyan-50 px-4 py-3 sm:px-5">
+				<div className="relative flex items-center justify-between border-b border-gray-100 bg-gradient-to-r from-blue-50 via-white to-cyan-50 px-4 py-3 sm:px-5">
 					<div className="flex items-center gap-2.5">
-						<span className="flex h-8 w-8 items-center justify-center rounded-lg bg-gradient-to-br from-violet-500 via-fuchsia-500 to-amber-400 text-white shadow-md shadow-fuchsia-400/30">
+						<span className="flex h-8 w-8 items-center justify-center rounded-lg bg-gradient-to-br from-blue-500 via-cyan-500 to-teal-400 text-white shadow-md shadow-cyan-400/30">
 							<PackageSearch className="h-4 w-4" />
 						</span>
 						<div>
-							<p className="text-[9px] font-bold uppercase tracking-[0.16em] text-violet-500">
+							<p className="text-[9px] font-bold uppercase tracking-[0.16em] text-blue-500">
 								CourierByte
 							</p>
 							<p className="text-xs font-semibold text-gray-700">কাস্টমার ইনসাইট</p>
@@ -137,7 +137,7 @@ export default function MiniDashboard({ large = false }: { large?: boolean }) {
 							</span>
 							Live data preview
 						</span>
-						<span className="flex h-7 w-7 items-center justify-center rounded-full bg-gradient-to-br from-violet-400 to-fuchsia-500 text-[10px] font-bold text-white">
+						<span className="flex h-7 w-7 items-center justify-center rounded-full bg-gradient-to-br from-blue-400 to-cyan-500 text-[10px] font-bold text-white">
 							AR
 						</span>
 					</div>
@@ -148,7 +148,7 @@ export default function MiniDashboard({ large = false }: { large?: boolean }) {
 					{/* searched number */}
 					<div className="flex items-center justify-between gap-3">
 						<div className="flex items-center gap-3">
-							<span className="flex h-9 w-9 items-center justify-center rounded-xl bg-gradient-to-br from-violet-500/80 to-fuchsia-500/80 text-white shadow-md shadow-fuchsia-500/30">
+							<span className="flex h-9 w-9 items-center justify-center rounded-xl bg-gradient-to-br from-blue-500/80 to-cyan-500/80 text-white shadow-md shadow-cyan-500/30">
 								<Phone className="h-4 w-4" />
 							</span>
 							<div>
@@ -200,7 +200,7 @@ export default function MiniDashboard({ large = false }: { large?: boolean }) {
 						<div className="rounded-xl border border-gray-100 bg-gray-50 p-4">
 							<div className="mb-4 flex items-center justify-between">
 								<p className="flex items-center gap-2 text-xs font-bold text-gray-800">
-									<span className="h-2 w-2 rounded-full bg-gradient-to-r from-violet-500 to-fuchsia-500" />
+									<span className="h-2 w-2 rounded-full bg-gradient-to-r from-blue-500 to-cyan-500" />
 									কুরিয়ারভিত্তিক হিস্ট্রি
 								</p>
 								<span className="rounded-full bg-gray-200 px-2 py-0.5 text-[9px] font-semibold text-gray-500">
@@ -270,9 +270,9 @@ export default function MiniDashboard({ large = false }: { large?: boolean }) {
 					</div>
 
 					{/* footer strip */}
-					<div className="relative flex items-center justify-between rounded-xl border border-violet-200 bg-gradient-to-r from-violet-50 via-fuchsia-50 to-amber-50 px-4 py-3">
+					<div className="relative flex items-center justify-between rounded-xl border border-blue-200 bg-gradient-to-r from-blue-50 via-cyan-50 to-amber-50 px-4 py-3">
 						<div className="flex items-center gap-2.5">
-							<span className="flex h-7 w-7 items-center justify-center rounded-lg bg-gradient-to-br from-violet-500 to-fuchsia-500 text-white shadow-md shadow-fuchsia-400/30">
+							<span className="flex h-7 w-7 items-center justify-center rounded-lg bg-gradient-to-br from-blue-500 to-cyan-500 text-white shadow-md shadow-cyan-400/30">
 								<Zap className="h-3.5 w-3.5" />
 							</span>
 							<p className="text-[10px] font-semibold text-gray-600">
