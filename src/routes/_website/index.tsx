@@ -237,14 +237,9 @@ function SearchDemo() {
 		<div className="rounded-[1.5rem] border border-slate-200/80 bg-white p-3 shadow-[0_20px_70px_rgba(15,53,42,0.13)] sm:p-4">
 			<div className="rounded-[1.15rem] bg-[#f4faf6] p-4 sm:p-5">
 				<div className="mb-4 flex flex-wrap items-center justify-between gap-3">
-					<div>
-						<p className="text-[11px] font-bold uppercase tracking-[0.18em] text-emerald-700">
-							Try it free
-						</p>
-						<h3 className="mt-1 text-xl font-extrabold text-slate-900">
-							একটি নাম্বার চেক করে দেখুন
-						</h3>
-					</div>
+					<h3 className="mt-1 text-xl font-extrabold text-slate-900">
+						ফ্রিতে চেক করে দেখুন
+					</h3>
 					<div className="flex items-center gap-2 rounded-full bg-white px-3 py-2 shadow-sm ring-1 ring-emerald-100">
 						<div className="flex gap-1">
 							{freeSearchDots.map((dot, index) => (
@@ -318,10 +313,6 @@ function SearchDemo() {
 						)}
 					</div>
 				)}{" "}
-				<p className="mt-3 flex items-center gap-1.5 text-[11px] font-medium text-slate-500">
-					<ShieldCheck className="h-3.5 w-3.5 text-emerald-600" /> কোনো কার্ড লাগবে
-					না · আপনার সার্চ ব্যক্তিগত · UI preview
-				</p>
 			</div>
 		</div>
 	);
@@ -343,30 +334,14 @@ function Hero() {
 			<div className="maxw relative z-10 px-4 pb-20 pt-14 sm:px-6 md:pb-28 md:pt-20 lg:px-8 lg:pt-24">
 				<div className="grid items-center gap-14 lg:grid-cols-[0.92fr_1.08fr] lg:gap-16">
 					<div className="max-w-xl">
-						<div className="mb-6 inline-flex items-center gap-2 rounded-full border border-emerald-200 bg-white/80 px-3.5 py-2 text-xs font-bold text-emerald-800 shadow-sm backdrop-blur">
-							<span className="flex h-5 w-5 items-center justify-center rounded-full bg-emerald-100 text-emerald-700">
-								<Sparkles className="h-3 w-3" />
-							</span>
-							প্রতিদিন ৫টি সার্চ সম্পূর্ণ ফ্রি
-						</div>
 						<h1 className="text-4xl font-extrabold leading-[1.14] tracking-tight text-[#102d27] sm:text-5xl lg:text-[3.65rem]">
-							একটি ভুল COD অর্ডার আপনার{" "}
-							<span className="gradient-text">লাভ খেয়ে ফেলতে পারে</span>
+							পণ্য পাঠানোর আগে কাস্টমার{" "}
+							<span className="gradient-text">বিশ্বস্ত কিনা যাচাই করুন</span>
 						</h1>
 						<p className="mt-6 max-w-lg text-lg leading-relaxed text-slate-600 md:text-xl">
-							পার্সেল পাঠানোর আগে কাস্টমারের কুরিয়ার ইতিহাস দেখে নিন। রিসিভ রেট কম হলে আগে
-							থেকেই সতর্ক হোন, কুরিয়ার খরচ বাঁচান, লাভ ধরে রাখুন।
+							পার্সেল পাঠানোর আগে কাস্টমারের কুরিয়ার হিস্ট্রি দেখে নিন। রিসিভ রেট কম হলে
+							আগে থেকেই সতর্ক হোন, কুরিয়ার খরচ বাঁচান, লাভ ধরে রাখুন।
 						</p>
-						<div className="mt-7 flex flex-wrap items-center gap-4 text-sm font-semibold text-slate-600">
-							<span className="flex items-center gap-2">
-								<CheckCircle2 className="h-4 w-4 text-emerald-600" /> রেজিস্ট্রেশন
-								ছাড়াই শুরু
-							</span>
-							<span className="flex items-center gap-2">
-								<CheckCircle2 className="h-4 w-4 text-emerald-600" /> ১ সেকেন্ডে
-								রিপোর্ট
-							</span>
-						</div>
 						<div className="mt-9">
 							<SearchDemo />
 						</div>
@@ -393,35 +368,7 @@ function Hero() {
 						</div>
 					</div>
 
-					<div className="relative lg:pl-2">
-						<MiniDashboard large />{" "}
-						<div className="absolute -bottom-6 -left-4 hidden items-center gap-3 rounded-2xl border border-white bg-white p-3.5 shadow-xl sm:flex lg:-left-10">
-							<span className="flex h-10 w-10 items-center justify-center rounded-xl bg-emerald-100 text-emerald-700">
-								<TrendingDown className="h-5 w-5" />
-							</span>
-							<div>
-								<p className="text-[10px] font-semibold text-slate-400">
-									সম্ভাব্য সাশ্রয় (উদাহরণ)
-								</p>
-								<p className="text-lg font-extrabold text-slate-900">
-									৳ ৪২,৮০০
-								</p>
-							</div>
-						</div>
-						<div className="absolute -right-3 -top-6 hidden items-center gap-2.5 rounded-2xl border border-white bg-white px-4 py-3 shadow-xl sm:flex lg:-right-8">
-							<span className="flex h-8 w-8 items-center justify-center rounded-lg bg-amber-100 text-amber-700">
-								<ShieldAlert className="h-4 w-4" />
-							</span>
-							<div>
-								<p className="text-[10px] font-semibold text-slate-400">
-									ঝুঁকিপূর্ণ অর্ডার
-								</p>
-								<p className="text-sm font-extrabold text-slate-900">
-									আগেই শনাক্ত
-								</p>
-							</div>
-						</div>
-					</div>
+					<MiniDashboard large />
 				</div>
 
 				<div className="mt-20 grid grid-cols-2 gap-px overflow-hidden rounded-2xl border border-emerald-100 bg-emerald-100 sm:grid-cols-4">
