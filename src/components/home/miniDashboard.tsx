@@ -13,7 +13,7 @@ import {
 
 const courierRows = [
 	{
-		name: "পাথাও",
+		name: "Pathao",
 		count: "১৪টি",
 		delivered: "১২",
 		rate: 86,
@@ -23,7 +23,7 @@ const courierRows = [
 		bar: "bg-gradient-to-r from-orange-500 to-amber-400",
 	},
 	{
-		name: "স্টেডফাস্ট",
+		name: "Steadfast",
 		count: "৯টি",
 		delivered: "৮",
 		rate: 89,
@@ -104,12 +104,12 @@ const statCards = [
 export default function MiniDashboard({ large = false }: { large?: boolean }) {
 	return (
 		<div className={`relative ${large ? "w-full" : "w-full max-w-[550px]"}`}>
-			{/* colorful ambient glow — subtle for white bg */}
-			<div className="absolute -inset-5 rounded-[2rem] bg-gradient-to-br from-violet-400/10 via-cyan-400/6 to-amber-400/8" />
-
 			<div className="relative overflow-hidden rounded-[1.35rem] border border-gray-200 bg-white shadow-[0_4px_30px_rgba(0,0,0,0.08)]">
 				{/* inner color accents — single subtle glow to avoid GPU overload */}
-				<div aria-hidden className="pointer-events-none absolute inset-0 overflow-hidden">
+				<div
+					aria-hidden
+					className="pointer-events-none absolute inset-0 overflow-hidden"
+				>
 					<div className="absolute -left-10 -top-12 h-40 w-40 rounded-full bg-violet-400/15 blur-xl" />
 					<div className="absolute -right-8 bottom-8 h-36 w-36 rounded-full bg-cyan-400/10 blur-xl" />
 				</div>
@@ -126,9 +126,7 @@ export default function MiniDashboard({ large = false }: { large?: boolean }) {
 							<p className="text-[9px] font-bold uppercase tracking-[0.16em] text-violet-500">
 								CourierByte
 							</p>
-							<p className="text-xs font-semibold text-gray-700">
-								কাস্টমার ইনসাইট
-							</p>
+							<p className="text-xs font-semibold text-gray-700">কাস্টমার ইনসাইট</p>
 						</div>
 					</div>
 					<div className="flex items-center gap-2">
@@ -244,7 +242,9 @@ export default function MiniDashboard({ large = false }: { large?: boolean }) {
 						<div className="flex flex-col justify-between rounded-xl border border-amber-200 bg-gradient-to-br from-amber-50 via-orange-50 to-rose-50 p-4">
 							<div>
 								<div className="flex items-center justify-between">
-									<p className="text-xs font-bold text-gray-800">সিদ্ধান্তের ইঙ্গিত</p>
+									<p className="text-xs font-bold text-gray-800">
+										সিদ্ধান্তের ইঙ্গিত
+									</p>
 									<span className="flex h-6 w-6 items-center justify-center rounded-md bg-amber-100 text-amber-600">
 										<ShieldAlert className="h-3.5 w-3.5" />
 									</span>

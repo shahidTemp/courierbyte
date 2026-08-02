@@ -26,7 +26,7 @@ export default function Hero() {
 			</div>
 
 			<div className="maxw relative z-10 px-4 pb-20 pt-14 sm:px-6 md:pb-28 md:pt-20 lg:px-8 lg:pt-2">
-				<div className="grid items-center gap-14 lg:grid-cols-[1.2fr_.8fr] lg:gap-16">
+				<div className="grid items-center gap-8 lg:grid-cols-2 lg:gap-2">
 					<div className="max-w-xl">
 						<h1 className="text-4xl font-extrabold leading-[1.14] tracking-tight text-[#102d27] sm:text-5xl lg:text-[3.65rem]">
 							পণ্য পাঠানোর আগে কাস্টমার{" "}
