@@ -1,5 +1,6 @@
 import { createServerFn } from "@tanstack/react-start";
-import { randomBytes, scrypt } from "node:crypto";
+import { createHash, randomBytes, scrypt } from "node:crypto";
+import { promisify } from "node:util";
 import { User } from "@/server/models/user.model";
 
 type RegisterInput = {
@@ -9,18 +10,15 @@ type RegisterInput = {
 };
 
 const PHONE_NUMBER = /^01[3-9]\d{8}$/;
+const deriveKey = promisify(scrypt);
 
 function validateRegisterInput(input: unknown): RegisterInput {
-	if (!input || typeof input !== "object") {
-		throw new Error("Invalid registration data");
-	}
-
-	const { name, number, password } = input as Record<string, unknown>;
+	const { name, number, password } = (input ?? {}) as Record<string, unknown>;
 	const normalizedName = typeof name === "string" ? name.trim() : "";
 	const normalizedNumber = typeof number === "string" ? number.trim() : "";
 
 	if (
-		normalizedName.length < 1 ||
+		normalizedName.length === 0 ||
 		normalizedName.length > 100 ||
 		!PHONE_NUMBER.test(normalizedNumber) ||
 		typeof password !== "string" ||
@@ -33,27 +31,14 @@ function validateRegisterInput(input: unknown): RegisterInput {
 	return { name: normalizedName, number: normalizedNumber, password };
 }
 
-function hashPassword(password: string): Promise<string> {
+async function hashPassword(password: string) {
 	const salt = randomBytes(16);
-
-	return new Promise((resolve, reject) => {
-		scrypt(password, salt, 64, (error, derivedKey) => {
-			if (error) {
-				reject(error);
-				return;
-			}
-
-			resolve(`${salt.toString("hex")}:${derivedKey.toString("hex")}`);
-		});
-	});
+	const key = await deriveKey(password, salt, 64);
+	return `${salt.toString("hex")}:${key.toString("hex")}`;
 }
 
-function isDuplicateKeyError(error: unknown): boolean {
-	return (
-		error instanceof Error &&
-		"code" in error &&
-		error.code === 11000
-	);
+function hashApiKey(apiKey: string) {
+	return createHash("sha256").update(apiKey).digest("hex");
 }
 
 export const getUsers = createServerFn({ method: "GET" }).handler(async () => {
@@ -75,35 +60,28 @@ export const getUsers = createServerFn({ method: "GET" }).handler(async () => {
 export const createUser = createServerFn({ method: "POST" })
 	.validator(validateRegisterInput)
 	.handler(async ({ data }) => {
-		try {
-			const passwordHash = await hashPassword(data.password);
-			const apiKey = randomBytes(32).toString("hex");
-			const apiKeyHash = await hashPassword(apiKey);
-			const user = await User.create({
-				name: data.name,
-				number: data.number,
-				password: passwordHash,
-				apiKey: apiKeyHash,
-			});
-
+		if (await User.exists({ number: data.number })) {
 			return {
-				success: true as const,
-				user: {
-					id: String(user._id),
-					name: user.name,
-					number: user.number,
-				},
-				apiKey,
+				success: false as const,
+				message: "এই মোবাইল নাম্বারটি ইতিমধ্যে নিবন্ধিত।",
 			};
-		} catch (error) {
-			if (isDuplicateKeyError(error)) {
-				return {
-					success: false as const,
-					message: "এই মোবাইল নাম্বারটি ইতিমধ্যে নিবন্ধিত।",
-				};
-			}
-
-			console.error("User registration failed", error);
-			throw new Error("অ্যাকাউন্ট তৈরি করা যায়নি। পরে আবার চেষ্টা করুন।");
 		}
+
+		const apiKey = randomBytes(32).toString("hex");
+		const user = await User.create({
+			name: data.name,
+			number: data.number,
+			password: await hashPassword(data.password),
+			apiKey: hashApiKey(apiKey),
+		});
+
+		return {
+			success: true as const,
+			user: {
+				id: String(user._id),
+				name: user.name,
+				number: user.number,
+			},
+			apiKey,
+		};
 	});
