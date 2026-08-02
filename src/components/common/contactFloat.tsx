@@ -11,7 +11,7 @@ const ContactFloat = () => {
         href={`https://wa.me/${cleanNumber}`}
         target="_blank"
         rel="noopener noreferrer"
-        className="flex h-14 w-14 items-center justify-center rounded-full bg-[#25D366] text-white shadow-xl transition-all duration-300 hover:-translate-y-1 hover:scale-105 active:scale-95"
+        className="flex h-14 w-14 items-center justify-center rounded-full bg-secondary text-white shadow-xl shadow-secondary/25 transition-all duration-300 hover:-translate-y-1 hover:scale-105 active:scale-95"
         aria-label="Chat on WhatsApp"
       >
         <MessageCircle className="h-7 w-7" />

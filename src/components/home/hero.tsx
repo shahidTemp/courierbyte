@@ -2,10 +2,10 @@ import MiniDashboard from "./miniDashboard";
 import SearchDemo from "./searchDemo";
 
 const avatarColors = [
-	"bg-emerald-600",
-	"bg-teal-600",
-	"bg-amber-500",
-	"bg-slate-700",
+	"bg-secondary",
+	"bg-secondary/80",
+	"bg-secondary/60",
+	"bg-secondary-dark",
 ];
 const avatarInitials = ["RA", "SH", "MK", "+"];
 
@@ -18,17 +18,17 @@ const stats = [
 
 export default function Hero() {
 	return (
-		<section id="hero" className="relative overflow-hidden bg-[#f4faf6]">
+		<section id="hero" className="relative overflow-hidden bg-secondary/5">
 			<div aria-hidden className="pointer-events-none absolute inset-0">
-				<div className="absolute -left-40 -top-52 h-[34rem] w-[34rem] rounded-full bg-emerald-200/40 blur-3xl" />
-				<div className="absolute -right-48 top-20 h-[30rem] w-[30rem] rounded-full bg-teal-100/70 blur-3xl" />
-				<div className="absolute inset-0 opacity-30 [background-image:linear-gradient(rgba(15,107,77,0.06)_1px,transparent_1px),linear-gradient(90deg,rgba(15,107,77,0.06)_1px,transparent_1px)] [background-size:44px_44px] [mask-image:linear-gradient(to_bottom,black,transparent_85%)]" />
+				<div className="absolute -left-40 -top-52 h-[34rem] w-[34rem] rounded-full bg-secondary/15 blur-3xl" />
+				<div className="absolute -right-48 top-20 h-[30rem] w-[30rem] rounded-full bg-secondary/10 blur-3xl" />
+				<div className="absolute inset-0 bg-secondary/5 opacity-30 [background-image:linear-gradient(color-mix(in_srgb,var(--color-secondary)_8%,transparent)_1px,transparent_1px),linear-gradient(90deg,color-mix(in_srgb,var(--color-secondary)_8%,transparent)_1px,transparent_1px)] [background-size:44px_44px] [mask-image:linear-gradient(to_bottom,black,transparent_85%)]" />
 			</div>
 
 			<div className="maxw relative z-10 px-4 pb-20 pt-14 sm:px-6 md:pb-28 md:pt-20 lg:px-8 lg:pt-2">
 				<div className="grid items-center gap-8 lg:grid-cols-2 lg:gap-2">
 					<div className="max-w-xl">
-						<h1 className="text-4xl font-extrabold leading-[1.14] tracking-tight text-[#102d27] sm:text-5xl lg:text-[3.65rem]">
+						<h1 className="text-4xl font-extrabold leading-[1.14] tracking-tight text-secondary-dark sm:text-5xl lg:text-[3.65rem]">
 							পণ্য পাঠানোর আগে কাস্টমার{" "}
 							<span className="gradient-text">বিশ্বস্ত কিনা যাচাই করুন</span>
 						</h1>
@@ -44,7 +44,7 @@ export default function Hero() {
 								{avatarColors.map((color, index) => (
 									<span
 										key={color}
-										className={`flex h-7 w-7 items-center justify-center rounded-full border-2 border-[#f4faf6] ${color} text-[9px] font-bold text-white`}
+										className={`flex h-7 w-7 items-center justify-center rounded-full border-2 border-secondary/5 ${color} text-[9px] font-bold text-white`}
 									>
 										{avatarInitials[index]}
 									</span>
@@ -60,13 +60,13 @@ export default function Hero() {
 					<MiniDashboard large />
 				</div>
 
-				<div className="mt-20 grid grid-cols-2 gap-px overflow-hidden rounded-2xl border border-emerald-100 bg-emerald-100 sm:grid-cols-4">
+				<div className="mt-20 grid grid-cols-2 gap-px overflow-hidden rounded-2xl border border-secondary/10 bg-secondary/10 sm:grid-cols-4">
 					{stats.map((item) => (
 						<div
 							key={item.label}
 							className="bg-white/80 px-4 py-5 text-center backdrop-blur sm:px-6"
 						>
-							<p className="text-2xl font-extrabold text-[#102d27]">
+							<p className="text-2xl font-extrabold text-secondary-dark">
 								{item.value}
 							</p>
 							<p className="mt-1 text-xs font-medium text-slate-500">

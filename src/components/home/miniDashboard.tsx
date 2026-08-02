@@ -18,9 +18,9 @@ const courierRows = [
 		delivered: "১২",
 		rate: 86,
 		logo: "/images/pathao.png",
-		accent: "text-orange-600",
-		chipRing: "ring-orange-300/60",
-		bar: "bg-gradient-to-r from-orange-500 to-amber-400",
+		accent: "text-secondary",
+		chipRing: "ring-secondary/30",
+		bar: "bg-secondary",
 	},
 	{
 		name: "Steadfast",
@@ -28,9 +28,9 @@ const courierRows = [
 		delivered: "৮",
 		rate: 89,
 		logo: "/images/steadfast.png",
-		accent: "text-sky-600",
-		chipRing: "ring-sky-300/60",
-		bar: "bg-gradient-to-r from-sky-500 to-cyan-400",
+		accent: "text-secondary",
+		chipRing: "ring-secondary/30",
+		bar: "bg-secondary/80",
 	},
 	{
 		name: "RedX",
@@ -38,9 +38,9 @@ const courierRows = [
 		delivered: "৪",
 		rate: 57,
 		logo: "/images/redx.png",
-		accent: "text-rose-600",
-		chipRing: "ring-rose-300/60",
-		bar: "bg-gradient-to-r from-rose-500 to-red-400",
+		accent: "text-secondary-dark",
+		chipRing: "ring-secondary/30",
+		bar: "bg-secondary/60",
 	},
 	{
 		name: "Carrybee",
@@ -48,9 +48,9 @@ const courierRows = [
 		delivered: "৫",
 		rate: 83,
 		logo: "/images/carrybee.png",
-		accent: "text-indigo-600",
-		chipRing: "ring-indigo-300/60",
-		bar: "bg-gradient-to-r from-indigo-500 to-blue-400",
+		accent: "text-secondary",
+		chipRing: "ring-secondary/30",
+		bar: "bg-secondary/70",
 	},
 ];
 
@@ -60,22 +60,22 @@ const statCards = [
 		value: "৩৬",
 		sub: "সব কুরিয়ার",
 		icon: Package,
-		card: "border-gray-200 bg-white shadow-sm",
-		iconWrap: "bg-blue-100 text-blue-600",
-		valueCls: "text-xl text-gray-900",
-		labelCls: "text-gray-500",
-		subCls: "text-gray-400",
+		card: "border-secondary/10 bg-white shadow-sm",
+		iconWrap: "bg-secondary/10 text-secondary",
+		valueCls: "text-xl text-secondary-dark",
+		labelCls: "text-slate-500",
+		subCls: "text-slate-400",
 	},
 	{
 		label: "রিসিভ করেছে",
 		value: "২৯",
 		sub: "সফল ডেলিভারি",
 		icon: CheckCircle2,
-		card: "border-emerald-200 bg-emerald-50/60",
-		iconWrap: "bg-emerald-100 text-emerald-600",
-		valueCls: "text-xl text-emerald-700",
-		labelCls: "text-emerald-600/70",
-		subCls: "text-emerald-500/70",
+		card: "border-secondary/20 bg-secondary/5",
+		iconWrap: "bg-secondary/10 text-secondary",
+		valueCls: "text-xl text-secondary",
+		labelCls: "text-secondary/70",
+		subCls: "text-secondary/60",
 	},
 	{
 		label: "ক্যানসেল",
@@ -104,40 +104,40 @@ const statCards = [
 export default function MiniDashboard({ large = false }: { large?: boolean }) {
 	return (
 		<div className={`relative ${large ? "w-full" : "w-full max-w-[550px]"}`}>
-			<div className="relative overflow-hidden rounded-[1.35rem] border border-gray-200 bg-white shadow-[0_4px_30px_rgba(0,0,0,0.08)]">
+			<div className="relative overflow-hidden rounded-[1.35rem] border border-secondary/10 bg-white shadow-2xl shadow-secondary/10">
 				{/* inner color accents — single subtle glow to avoid GPU overload */}
 				<div
 					aria-hidden
 					className="pointer-events-none absolute inset-0 overflow-hidden"
 				>
-					<div className="absolute -left-10 -top-12 h-40 w-40 rounded-full bg-blue-400/15 blur-xl" />
-					<div className="absolute -right-8 bottom-8 h-36 w-36 rounded-full bg-cyan-400/10 blur-xl" />
+					<div className="absolute -left-10 -top-12 h-40 w-40 rounded-full bg-secondary/15 blur-xl" />
+					<div className="absolute -right-8 bottom-8 h-36 w-36 rounded-full bg-secondary/10 blur-xl" />
 				</div>
 				{/* glass top highlight */}
-				<div className="absolute inset-x-0 top-0 h-px bg-gradient-to-r from-transparent via-gray-300 to-transparent" />
+				<div className="absolute inset-x-0 top-0 h-px bg-gradient-to-r from-transparent via-secondary/20 to-transparent" />
 
 				{/* header */}
-				<div className="relative flex items-center justify-between border-b border-gray-100 bg-gradient-to-r from-blue-50 via-white to-cyan-50 px-4 py-3 sm:px-5">
+				<div className="relative flex items-center justify-between border-b border-secondary/10 bg-gradient-to-r from-secondary/10 via-white to-secondary/5 px-4 py-3 sm:px-5">
 					<div className="flex items-center gap-2.5">
-						<span className="flex h-8 w-8 items-center justify-center rounded-lg bg-gradient-to-br from-blue-500 via-cyan-500 to-teal-400 text-white shadow-md shadow-cyan-400/30">
+						<span className="flex h-8 w-8 items-center justify-center rounded-lg bg-gradient-to-br from-secondary to-secondary-dark text-white shadow-md shadow-secondary/20">
 							<PackageSearch className="h-4 w-4" />
 						</span>
 						<div>
-							<p className="text-[9px] font-bold uppercase tracking-[0.16em] text-blue-500">
+							<p className="text-[9px] font-bold uppercase tracking-[0.16em] text-secondary">
 								CourierByte
 							</p>
-							<p className="text-xs font-semibold text-gray-700">কাস্টমার ইনসাইট</p>
+							<p className="text-xs font-semibold text-slate-700">কাস্টমার ইনসাইট</p>
 						</div>
 					</div>
 					<div className="flex items-center gap-2">
-						<span className="hidden items-center gap-1.5 rounded-full border border-emerald-300 bg-emerald-50 px-2.5 py-1 text-[10px] font-semibold text-emerald-600 sm:flex">
+						<span className="hidden items-center gap-1.5 rounded-full border border-secondary/20 bg-secondary/5 px-2.5 py-1 text-[10px] font-semibold text-secondary sm:flex">
 							<span className="relative flex h-1.5 w-1.5">
-								<span className="absolute inline-flex h-full w-full animate-ping rounded-full bg-emerald-500 opacity-75" />
-								<span className="relative inline-flex h-1.5 w-1.5 rounded-full bg-emerald-500" />
+								<span className="absolute inline-flex h-full w-full animate-ping rounded-full bg-secondary opacity-75" />
+								<span className="relative inline-flex h-1.5 w-1.5 rounded-full bg-secondary" />
 							</span>
 							Live data preview
 						</span>
-						<span className="flex h-7 w-7 items-center justify-center rounded-full bg-gradient-to-br from-blue-400 to-cyan-500 text-[10px] font-bold text-white">
+						<span className="flex h-7 w-7 items-center justify-center rounded-full bg-secondary text-[10px] font-bold text-white">
 							AR
 						</span>
 					</div>
@@ -148,19 +148,19 @@ export default function MiniDashboard({ large = false }: { large?: boolean }) {
 					{/* searched number */}
 					<div className="flex items-center justify-between gap-3">
 						<div className="flex items-center gap-3">
-							<span className="flex h-9 w-9 items-center justify-center rounded-xl bg-gradient-to-br from-blue-500/80 to-cyan-500/80 text-white shadow-md shadow-cyan-500/30">
+							<span className="flex h-9 w-9 items-center justify-center rounded-xl bg-gradient-to-br from-secondary/80 to-secondary-dark/80 text-white shadow-md shadow-secondary/20">
 								<Phone className="h-4 w-4" />
 							</span>
 							<div>
-								<p className="text-[10px] font-medium text-gray-500">
+								<p className="text-[10px] font-medium text-slate-500">
 									সার্চ করা নাম্বার
 								</p>
-								<p className="mt-1 text-sm font-bold tracking-wide text-gray-900">
+								<p className="mt-1 text-sm font-bold tracking-wide text-slate-900">
 									017•••••••21
 								</p>
 							</div>
 						</div>
-						<span className="flex items-center gap-1 rounded-full border border-emerald-300 bg-emerald-50 px-2.5 py-1 text-[10px] font-bold text-emerald-600">
+						<span className="flex items-center gap-1 rounded-full border border-secondary/20 bg-secondary/5 px-2.5 py-1 text-[10px] font-bold text-secondary">
 							<BadgeCheck className="h-3.5 w-3.5" /> যাচাই করা হয়েছে
 						</span>
 					</div>
@@ -197,13 +197,13 @@ export default function MiniDashboard({ large = false }: { large?: boolean }) {
 
 					{/* courier history + decision */}
 					<div className="grid gap-4 md:grid-cols-[1.1fr_0.9fr]">
-						<div className="rounded-xl border border-gray-100 bg-gray-50 p-4">
+						<div className="rounded-xl border border-secondary/10 bg-secondary/5 p-4">
 							<div className="mb-4 flex items-center justify-between">
-								<p className="flex items-center gap-2 text-xs font-bold text-gray-800">
-									<span className="h-2 w-2 rounded-full bg-gradient-to-r from-blue-500 to-cyan-500" />
+								<p className="flex items-center gap-2 text-xs font-bold text-slate-800">
+									<span className="h-2 w-2 rounded-full bg-secondary" />
 									কুরিয়ারভিত্তিক হিস্ট্রি
 								</p>
-								<span className="rounded-full bg-gray-200 px-2 py-0.5 text-[9px] font-semibold text-gray-500">
+								<span className="rounded-full bg-secondary/10 px-2 py-0.5 text-[9px] font-semibold text-secondary/70">
 									Last 90 days
 								</span>
 							</div>
@@ -211,7 +211,7 @@ export default function MiniDashboard({ large = false }: { large?: boolean }) {
 								{courierRows.map((row) => (
 									<div key={row.name} className="group">
 										<div className="mb-1.5 flex items-center justify-between text-[10px]">
-											<span className="flex items-center gap-2 font-semibold text-gray-700">
+											<span className="flex items-center gap-2 font-semibold text-slate-700">
 												<img
 													src={row.logo}
 													alt={row.name}
@@ -219,7 +219,7 @@ export default function MiniDashboard({ large = false }: { large?: boolean }) {
 													className={`h-6 w-6 rounded-md bg-white object-contain p-0.5 shadow-sm ring-1 transition-transform duration-200 group-hover:scale-110 ${row.chipRing}`}
 												/>
 												{row.name}
-												<span className="font-normal text-gray-400">
+												<span className="font-normal text-slate-400">
 													{row.count}
 												</span>
 											</span>
@@ -228,7 +228,7 @@ export default function MiniDashboard({ large = false }: { large?: boolean }) {
 												{row.rate}%
 											</span>
 										</div>
-										<div className="h-1.5 overflow-hidden rounded-full bg-gray-200">
+										<div className="h-1.5 overflow-hidden rounded-full bg-secondary/10">
 											<div
 												className={`h-full rounded-full ${row.bar}`}
 												style={{ width: `${row.rate}%` }}
@@ -242,7 +242,7 @@ export default function MiniDashboard({ large = false }: { large?: boolean }) {
 						<div className="flex flex-col justify-between rounded-xl border border-amber-200 bg-gradient-to-br from-amber-50 via-orange-50 to-rose-50 p-4">
 							<div>
 								<div className="flex items-center justify-between">
-									<p className="text-xs font-bold text-gray-800">
+									<p className="text-xs font-bold text-slate-800">
 										সিদ্ধান্তের ইঙ্গিত
 									</p>
 									<span className="flex h-6 w-6 items-center justify-center rounded-md bg-amber-100 text-amber-600">
@@ -262,7 +262,7 @@ export default function MiniDashboard({ large = false }: { large?: boolean }) {
 										৳ ১,৮০০
 									</p>
 								</div>
-								<span className="flex h-10 w-10 items-center justify-center rounded-full border border-amber-300 bg-amber-100 text-amber-600 shadow-[0_0_18px_rgba(251,191,36,0.25)]">
+								<span className="flex h-10 w-10 items-center justify-center rounded-full border border-amber-300 bg-amber-100 text-amber-600 shadow-lg shadow-amber-500/20">
 									<WalletCards className="h-5 w-5" />
 								</span>
 							</div>
@@ -270,16 +270,16 @@ export default function MiniDashboard({ large = false }: { large?: boolean }) {
 					</div>
 
 					{/* footer strip */}
-					<div className="relative flex items-center justify-between rounded-xl border border-blue-200 bg-gradient-to-r from-blue-50 via-cyan-50 to-amber-50 px-4 py-3">
+					<div className="relative flex items-center justify-between rounded-xl border border-secondary/15 bg-secondary/5 px-4 py-3">
 						<div className="flex items-center gap-2.5">
-							<span className="flex h-7 w-7 items-center justify-center rounded-lg bg-gradient-to-br from-blue-500 to-cyan-500 text-white shadow-md shadow-cyan-400/30">
+							<span className="flex h-7 w-7 items-center justify-center rounded-lg bg-secondary text-white shadow-md shadow-secondary/20">
 								<Zap className="h-3.5 w-3.5" />
 							</span>
-							<p className="text-[10px] font-semibold text-gray-600">
+							<p className="text-[10px] font-semibold text-slate-600">
 								রিপোর্ট তৈরি হয়েছে ০.৮ সেকেন্ডে
 							</p>
 						</div>
-						<span className="flex items-center gap-1 text-[10px] font-bold text-emerald-600">
+						<span className="flex items-center gap-1 text-[10px] font-bold text-secondary">
 							<Sparkles className="h-3 w-3" /> নিরাপদ ও গোপনীয়
 						</span>
 					</div>

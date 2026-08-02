@@ -27,7 +27,7 @@ export default function Faq() {
 			<div className="maxw px-4 sm:px-6 lg:px-8">
 				<div className="grid gap-12 lg:grid-cols-[0.8fr_1.2fr]">
 					<div>
-						<p className="text-xs font-bold uppercase tracking-[0.2em] text-emerald-700">
+						<p className="text-xs font-bold uppercase tracking-[0.2em] text-secondary">
 							প্রশ্ন থাকতেই পারে
 						</p>
 						<h2 className="mt-3 text-3xl font-extrabold tracking-tight text-slate-900 sm:text-4xl">
@@ -46,7 +46,7 @@ export default function Faq() {
 							return (
 								<div
 									key={faq.q}
-									className={`overflow-hidden rounded-2xl border bg-white transition-all ${isOpen ? "border-emerald-200 shadow-md" : "border-slate-200/80 shadow-sm"}`}
+									className={`overflow-hidden rounded-2xl border bg-white transition-all ${isOpen ? "border-secondary/20 shadow-md" : "border-slate-200/80 shadow-sm"}`}
 								>
 									{" "}
 									<button
@@ -60,7 +60,7 @@ export default function Faq() {
 											{faq.q}
 										</span>
 										<span
-											className={`flex h-8 w-8 shrink-0 items-center justify-center rounded-full transition-all ${isOpen ? "bg-emerald-600 text-white" : "bg-emerald-50 text-emerald-700"}`}
+											className={`flex h-8 w-8 shrink-0 items-center justify-center rounded-full transition-all ${isOpen ? "bg-secondary text-white" : "bg-secondary/10 text-secondary"}`}
 										>
 											<ChevronDown
 												className={`h-4 w-4 transition-transform ${isOpen ? "rotate-180" : ""}`}

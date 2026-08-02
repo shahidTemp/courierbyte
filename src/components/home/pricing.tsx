@@ -53,10 +53,10 @@ const plans = [
 
 export default function Pricing() {
 	return (
-		<section id="pricing" className="section-pad bg-[#f4faf6]">
+		<section id="pricing" className="section-pad bg-secondary/5">
 			<div className="maxw px-4 sm:px-6 lg:px-8">
 				<div className="mx-auto max-w-2xl text-center">
-					<p className="text-xs font-bold uppercase tracking-[0.2em] text-emerald-700">
+					<p className="text-xs font-bold uppercase tracking-[0.2em] text-secondary">
 						আপনার গতির সাথে বাড়ুন
 					</p>
 					<h2 className="mt-3 text-3xl font-extrabold tracking-tight text-slate-900 sm:text-4xl">
@@ -76,14 +76,14 @@ export default function Pricing() {
 					{plans.map((plan) => (
 						<div
 							key={plan.name}
-							className={`relative flex flex-col rounded-2xl border bg-white p-7 transition-all hover:-translate-y-1 hover:shadow-2xl ${plan.popular ? "border-emerald-500 shadow-xl shadow-emerald-900/10 ring-2 ring-emerald-500/20 lg:-translate-y-3" : "border-slate-200/80 shadow-sm"}`}
+							className={`relative flex flex-col rounded-2xl border bg-white p-7 transition-all hover:-translate-y-1 hover:shadow-2xl ${plan.popular ? "border-secondary shadow-xl shadow-secondary/10 ring-2 ring-secondary/20 lg:-translate-y-3" : "border-slate-200/80 shadow-sm"}`}
 						>
 							{plan.popular && (
-								<span className="absolute -top-3.5 left-1/2 -translate-x-1/2 whitespace-nowrap rounded-full bg-emerald-600 px-4 py-1.5 text-[11px] font-extrabold text-white shadow-lg shadow-emerald-600/25">
+								<span className="absolute -top-3.5 left-1/2 -translate-x-1/2 whitespace-nowrap rounded-full bg-secondary px-4 py-1.5 text-[11px] font-extrabold text-white shadow-lg shadow-secondary/25">
 									<Crown className="mr-1 inline h-3.5 w-3.5" /> সবচেয়ে জনপ্রিয়
 								</span>
 							)}
-							<p className="text-xs font-bold uppercase tracking-[0.15em] text-emerald-700">
+							<p className="text-xs font-bold uppercase tracking-[0.15em] text-secondary">
 								{plan.kicker}
 							</p>
 							<h3 className="mt-3 text-xl font-extrabold text-slate-900">
@@ -105,14 +105,14 @@ export default function Pricing() {
 										key={feature}
 										className="flex items-start gap-2.5 text-sm font-medium text-slate-600"
 									>
-										<Check className="mt-0.5 h-4 w-4 shrink-0 text-emerald-600" />{" "}
+										<Check className="mt-0.5 h-4 w-4 shrink-0 text-secondary" />{" "}
 										{feature}
 									</li>
 								))}
 							</ul>
 							<Link
 								to="/login"
-								className={`mt-8 flex items-center justify-center gap-2 rounded-xl px-5 py-3.5 text-sm font-bold transition-all ${plan.popular ? "bg-emerald-600 text-white shadow-lg shadow-emerald-600/25 hover:bg-emerald-700" : "border-2 border-emerald-600 text-emerald-700 hover:bg-emerald-50"}`}
+								className={`mt-8 flex items-center justify-center gap-2 rounded-xl px-5 py-3.5 text-sm font-bold transition-all ${plan.popular ? "bg-secondary text-white shadow-lg shadow-secondary/25 hover:bg-secondary-dark" : "border-2 border-secondary text-secondary hover:bg-secondary/10"}`}
 							>
 								{plan.cta} <ArrowRight className="h-4 w-4" />
 							</Link>

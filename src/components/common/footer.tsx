@@ -54,27 +54,27 @@ const Footer = () => {
 	const { general, contact, socials } = dummyData;
 
 	const socialLinks = [
-		{ key: "fb", url: socials.fb, Icon: Facebook, bg: "bg-[#1877F2]" },
+		{ key: "fb", url: socials.fb, Icon: Facebook, bg: "bg-secondary" },
 		{
 			key: "insta",
 			url: socials.insta,
 			Icon: Instagram,
-			bg: "bg-gradient-to-tr from-yellow-500 via-red-500 to-purple-600",
+			bg: "bg-gradient-to-tr from-secondary/70 via-secondary to-secondary-dark",
 		},
-		{ key: "youtube", url: socials.youtube, Icon: Youtube, bg: "bg-[#FF0000]" },
+		{ key: "youtube", url: socials.youtube, Icon: Youtube, bg: "bg-secondary-dark" },
 		{
 			key: "tiktok",
 			url: socials.tiktok,
 			Icon: Video,
-			bg: "bg-black border border-gray-800",
+			bg: "bg-secondary-dark border border-secondary/30",
 		},
 	];
 
 	return (
-		<footer className="bg-[#151414] text-gray-400 font-sans">
+		<footer className="bg-secondary-dark text-white/60 font-sans">
 			<div className="maxw px-4 sm:px-6 lg:px-8">
 				{/* Contact Section */}
-				<div className="border-b border-gray-800 py-12">
+				<div className="border-b border-white/10 py-12">
 					<div className="grid grid-cols-1 md:grid-cols-3 gap-8">
 						{/* Address */}
 						<div className="flex items-start gap-4">
@@ -100,7 +100,7 @@ const Footer = () => {
 									{contact.phone1 ? (
 										<a
 											href={`tel:${contact.phone1}`}
-											className="hover:text-[#ff5e14] transition-colors"
+											className="hover:text-white transition-colors"
 										>
 											{contact.phone1}
 										</a>
@@ -111,7 +111,7 @@ const Footer = () => {
 									{contact.phone2 && (
 										<a
 											href={`tel:${contact.phone2}`}
-											className="hover:text-[#ff5e14] transition-colors"
+											className="hover:text-white transition-colors"
 										>
 											{contact.phone2}
 										</a>
@@ -131,7 +131,7 @@ const Footer = () => {
 									{contact.email ? (
 										<a
 											href={`mailto:${contact.email}`}
-											className="hover:text-[#ff5e14] transition-colors"
+											className="hover:text-white transition-colors"
 										>
 											{contact.email}
 										</a>
@@ -189,7 +189,7 @@ const Footer = () => {
 											href={`https://wa.me/${formatWhatsAppNumber(contact.whatsapp1)}`}
 											target="_blank"
 											rel="noopener noreferrer"
-											className="w-10 h-10 rounded-full bg-[#25D366] text-white flex items-center justify-center hover:opacity-90 transition-opacity"
+											className="w-10 h-10 rounded-full bg-secondary text-white flex items-center justify-center hover:opacity-90 transition-opacity"
 										>
 											<MessageCircle size={20} />
 										</a>
@@ -199,7 +199,7 @@ const Footer = () => {
 											href={`https://wa.me/${formatWhatsAppNumber(contact.whatsapp2)}`}
 											target="_blank"
 											rel="noopener noreferrer"
-											className="w-10 h-10 rounded-full bg-[#25D366] text-white flex items-center justify-center hover:opacity-90 transition-opacity"
+											className="w-10 h-10 rounded-full bg-secondary text-white flex items-center justify-center hover:opacity-90 transition-opacity"
 										>
 											<MessageCircle size={20} />
 										</a>
@@ -210,7 +210,7 @@ const Footer = () => {
 
 						{/* Useful Links Widget */}
 						<div>
-							<h3 className="text-white text-lg font-semibold border-b border-[#ff5e14] pb-2 inline-block mb-6">
+							<h3 className="text-white text-lg font-semibold border-b border-secondary/70 pb-2 inline-block mb-6">
 								দরকারী লিঙ্কসমূহ
 							</h3>
 							<ul className="grid grid-cols-2 gap-y-3 gap-x-4 text-sm">
@@ -218,7 +218,7 @@ const Footer = () => {
 									<li key={link.url}>
 										<Link
 											to={link.url}
-											className="hover:text-[#ff5e14] transition-colors"
+											className="hover:text-white transition-colors"
 										>
 											{link.name}
 										</Link>
@@ -231,7 +231,7 @@ const Footer = () => {
 			</div>
 
 			{/* Copyright Area */}
-			<div className="bg-[#201f1f] py-4 text-center">
+			<div className="bg-secondary-dark/90 py-4 text-center">
 				<div className="max-w-7xl mx-auto px-4 flex flex-col sm:flex-row items-center justify-center gap-2 text-xs sm:text-sm">
 					<span>
 						&copy; {new Date().getFullYear()} কুরিয়ারবাইট (CourierByte). All rights
@@ -245,7 +245,7 @@ const Footer = () => {
 								href="https://appbyte.net"
 								target="_blank"
 								rel="noopener noreferrer"
-								className="text-[#ff5e14] hover:underline"
+								className="text-white/80 hover:underline"
 							>
 								AppByte
 							</a>

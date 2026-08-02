@@ -32,14 +32,14 @@ export default function SearchDemo() {
 
 	return (
 		<div className="rounded-[1.5rem] border border-slate-200/80 bg-white p-3 shadow-[0_20px_70px_rgba(15,53,42,0.13)] sm:p-4">
-			<div className="rounded-[1.15rem] bg-[#f4faf6] p-4 sm:p-5">
+			<div className="rounded-[1.15rem] bg-secondary/5 p-4 sm:p-5">
 				<form
 					onSubmit={handleSubmit}
 					className="flex flex-col gap-2.5 sm:flex-row"
 				>
 					<label className="relative flex-1">
 						<span className="sr-only">কাস্টমারের মোবাইল নাম্বার</span>
-						<span className="pointer-events-none absolute left-4 top-1/2 -translate-y-1/2 text-sm font-bold text-emerald-700">
+						<span className="pointer-events-none absolute left-4 top-1/2 -translate-y-1/2 text-sm font-bold text-secondary">
 							+880
 						</span>
 						<input
@@ -48,12 +48,12 @@ export default function SearchDemo() {
 							value={phone}
 							onChange={handleChange}
 							placeholder="01XXXXXXXXX"
-							className="w-full rounded-xl border border-slate-200 bg-white py-4 pl-16 pr-4 text-base font-bold tracking-wider text-slate-800 outline-none transition-all placeholder:font-normal placeholder:tracking-normal placeholder:text-slate-400 focus:border-emerald-500 focus:ring-4 focus:ring-emerald-100"
+							className="w-full rounded-xl border border-slate-200 bg-white py-4 pl-16 pr-4 text-base font-bold tracking-wider text-slate-800 outline-none transition-all placeholder:font-normal placeholder:tracking-normal placeholder:text-slate-400 focus:border-secondary focus:ring-4 focus:ring-secondary/10"
 						/>
 					</label>
 					<button
 						type="submit"
-						className="flex items-center justify-center gap-2 rounded-xl bg-[#0f6b4d] px-6 py-4 text-sm font-bold text-white shadow-lg shadow-emerald-900/15 transition-all hover:-translate-y-0.5 hover:bg-[#0b583f] active:translate-y-0"
+						className="flex items-center justify-center gap-2 rounded-xl bg-secondary px-6 py-4 text-sm font-bold text-white shadow-lg shadow-secondary/15 transition-all hover:-translate-y-0.5 hover:bg-secondary-dark active:translate-y-0"
 					>
 						<Search className="h-4 w-4" /> রিপোর্ট দেখুন
 					</button>
@@ -69,22 +69,22 @@ export default function SearchDemo() {
 				{message && (
 					<div
 						aria-live="polite"
-						className="mt-3 rounded-xl bg-white px-3.5 py-3 ring-1 ring-emerald-100"
+						className="mt-3 rounded-xl bg-white px-3.5 py-3 ring-1 ring-secondary/10"
 					>
-						<p className="flex items-start gap-1.5 text-xs font-semibold leading-relaxed text-emerald-800">
+						<p className="flex items-start gap-1.5 text-xs font-semibold leading-relaxed text-secondary-dark">
 							<Sparkles className="mt-0.5 h-4 w-4 shrink-0" /> {message}
 						</p>
 						{used >= 5 && (
 							<div className="mt-3 flex flex-wrap gap-2">
 								<Link
 									to="/login"
-									className="inline-flex items-center gap-1.5 rounded-lg bg-emerald-600 px-3 py-2 text-[11px] font-extrabold text-white transition hover:bg-emerald-700"
+									className="inline-flex items-center gap-1.5 rounded-lg bg-secondary px-3 py-2 text-[11px] font-extrabold text-white transition hover:bg-secondary-dark"
 								>
 									লগইন করে চালিয়ে যান <ArrowRight className="h-3.5 w-3.5" />
 								</Link>
 								<a
 									href="#pricing"
-									className="inline-flex items-center gap-1.5 rounded-lg border border-emerald-200 px-3 py-2 text-[11px] font-bold text-emerald-700 transition hover:bg-emerald-50"
+									className="inline-flex items-center gap-1.5 rounded-lg border border-secondary/20 px-3 py-2 text-[11px] font-bold text-secondary transition hover:bg-secondary/10"
 								>
 									প্যাকেজ দেখুন
 								</a>

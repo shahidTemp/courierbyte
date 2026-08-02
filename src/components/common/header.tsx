@@ -16,7 +16,7 @@ const linkClasses =
 	"text-sm font-medium text-secondary transition-colors hover:text-secondary/70";
 
 const loginBtnClasses =
-	"inline-flex items-center gap-2 rounded-full bg-gradient-to-r from-emerald-600 to-teal-600 px-5 py-2.5 text-sm font-bold text-white shadow-md shadow-emerald-600/25 transition-all duration-300 hover:-translate-y-0.5 hover:shadow-lg hover:shadow-emerald-600/35 hover:from-emerald-500 hover:to-teal-500";
+	"inline-flex items-center gap-2 rounded-full bg-gradient-to-r from-secondary to-secondary-dark px-5 py-2.5 text-sm font-bold text-white shadow-md shadow-secondary/25 transition-all duration-300 hover:-translate-y-0.5 hover:shadow-lg hover:shadow-secondary/35 hover:from-secondary/90 hover:to-secondary-dark/90";
 
 function NavItemLink({
 	item,
@@ -82,7 +82,7 @@ const Header = () => {
 		<header className="text-secondary">
 			<div className="maxw px-4 sm:px-6 lg:px-8 py-4 flex items-center justify-between gap-4">
 				<Link to="/" className="flex shrink-0 items-center gap-2.5">
-					<span className="flex h-10 w-10 items-center justify-center rounded-xl bg-gradient-to-br from-emerald-600 to-teal-600 text-white shadow-lg shadow-emerald-600/25">
+					<span className="flex h-10 w-10 items-center justify-center rounded-xl bg-gradient-to-br from-secondary to-secondary-dark text-white shadow-lg shadow-secondary/25">
 						<PackageSearch className="h-5 w-5" />
 					</span>
 					<span className="text-xl font-extrabold tracking-tight">
@@ -143,7 +143,7 @@ const Header = () => {
 						onClick={close}
 						className="flex shrink-0 items-center gap-2.5"
 					>
-						<span className="flex h-9 w-9 items-center justify-center rounded-lg bg-gradient-to-br from-emerald-600 to-teal-600 text-white">
+						<span className="flex h-9 w-9 items-center justify-center rounded-lg bg-gradient-to-br from-secondary to-secondary-dark text-white">
 							<PackageSearch className="h-5 w-5" />
 						</span>
 						<span className="text-lg font-extrabold tracking-tight">

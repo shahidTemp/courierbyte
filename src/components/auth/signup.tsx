@@ -61,7 +61,7 @@ export default function SignUp({ onLogin }: { onLogin?: () => void }) {
 
 	return (
 		<section className="flex min-h-[38rem] items-center justify-center px-4 py-12 sm:px-6">
-			<div className="w-full max-w-md rounded-3xl border border-slate-200/80 bg-white p-6 shadow-[0_20px_60px_rgba(15,53,42,0.1)] sm:p-9">
+			<div className="w-full max-w-md rounded-3xl border border-slate-200/80 bg-white p-6 shadow-2xl shadow-secondary/10 sm:p-9">
 				<div className="mb-8">
 					<h1 className="text-3xl font-extrabold tracking-tight text-slate-900">
 						আপনার অ্যাকাউন্ট তৈরি করুন
@@ -100,7 +100,7 @@ export default function SignUp({ onLogin }: { onLogin?: () => void }) {
 								}}
 								placeholder="আপনার পুরো নাম লিখুন"
 								required
-								className="h-14 w-full rounded-2xl border border-slate-200 bg-slate-50 pl-12 pr-4 text-base text-slate-900 outline-none transition focus:border-emerald-500 focus:bg-white focus:ring-4 focus:ring-emerald-500/10"
+								className="h-14 w-full rounded-2xl border border-slate-200 bg-slate-50 pl-12 pr-4 text-base text-slate-900 outline-none transition focus:border-secondary focus:bg-white focus:ring-4 focus:ring-secondary/10"
 							/>
 						</div>
 					</div>
@@ -117,9 +117,6 @@ export default function SignUp({ onLogin }: { onLogin?: () => void }) {
 								className="pointer-events-none absolute left-4 top-1/2 h-[18px] w-[18px] -translate-y-1/2 text-slate-400"
 								aria-hidden="true"
 							/>
-							<span className="pointer-events-none absolute left-11 top-1/2 -translate-y-1/2 border-r border-slate-200 pr-3 text-sm font-bold text-slate-500">
-								+880
-							</span>
 							<input
 								id="number"
 								name="number"
@@ -140,7 +137,7 @@ export default function SignUp({ onLogin }: { onLogin?: () => void }) {
 								placeholder="01XXXXXXXXX"
 								pattern="01[3-9][0-9]{8}"
 								required
-								className="h-14 w-full rounded-2xl border border-slate-200 bg-slate-50 pl-[6.25rem] pr-4 text-base font-semibold tracking-wide text-slate-900 outline-none transition focus:border-emerald-500 focus:bg-white focus:ring-4 focus:ring-emerald-500/10"
+								className="h-14 w-full rounded-2xl border border-slate-200 bg-slate-50 pl-12 pr-4 text-base font-semibold tracking-wide text-slate-900 outline-none transition focus:border-secondary focus:bg-white focus:ring-4 focus:ring-secondary/10"
 							/>
 						</div>
 					</div>
@@ -174,12 +171,12 @@ export default function SignUp({ onLogin }: { onLogin?: () => void }) {
 								placeholder="একটি পাসওয়ার্ড তৈরি করুন"
 								minLength={8}
 								required
-								className="h-14 w-full rounded-2xl border border-slate-200 bg-slate-50 pl-12 pr-12 text-base text-slate-900 outline-none transition focus:border-emerald-500 focus:bg-white focus:ring-4 focus:ring-emerald-500/10"
+								className="h-14 w-full rounded-2xl border border-slate-200 bg-slate-50 pl-12 pr-12 text-base text-slate-900 outline-none transition focus:border-secondary focus:bg-white focus:ring-4 focus:ring-secondary/10"
 							/>
 							<button
 								type="button"
 								onClick={() => setShowPassword((visible) => !visible)}
-								className="absolute right-3 top-1/2 -translate-y-1/2 rounded-lg p-2 text-slate-400 transition hover:bg-slate-200/70 hover:text-slate-600 focus:outline-none focus:ring-2 focus:ring-emerald-500/30"
+								className="absolute right-3 top-1/2 -translate-y-1/2 rounded-lg p-2 text-slate-400 transition hover:bg-secondary/10 hover:text-secondary focus:outline-none focus:ring-2 focus:ring-secondary/30"
 								aria-label={showPassword ? "পাসওয়ার্ড লুকান" : "পাসওয়ার্ড দেখুন"}
 							>
 								{showPassword ? (
@@ -219,12 +216,12 @@ export default function SignUp({ onLogin }: { onLogin?: () => void }) {
 								}}
 								placeholder="পাসওয়ার্ডটি আবার লিখুন"
 								required
-								className="h-14 w-full rounded-2xl border border-slate-200 bg-slate-50 pl-12 pr-12 text-base text-slate-900 outline-none transition focus:border-emerald-500 focus:bg-white focus:ring-4 focus:ring-emerald-500/10"
+								className="h-14 w-full rounded-2xl border border-slate-200 bg-slate-50 pl-12 pr-12 text-base text-slate-900 outline-none transition focus:border-secondary focus:bg-white focus:ring-4 focus:ring-secondary/10"
 							/>
 							<button
 								type="button"
 								onClick={() => setShowConfirmPassword((visible) => !visible)}
-								className="absolute right-3 top-1/2 -translate-y-1/2 rounded-lg p-2 text-slate-400 transition hover:bg-slate-200/70 hover:text-slate-600 focus:outline-none focus:ring-2 focus:ring-emerald-500/30"
+								className="absolute right-3 top-1/2 -translate-y-1/2 rounded-lg p-2 text-slate-400 transition hover:bg-secondary/10 hover:text-secondary focus:outline-none focus:ring-2 focus:ring-secondary/30"
 								aria-label={showConfirmPassword ? "পাসওয়ার্ড লুকান" : "পাসওয়ার্ড দেখুন"}
 							>
 								{showConfirmPassword ? (
@@ -248,7 +245,7 @@ export default function SignUp({ onLogin }: { onLogin?: () => void }) {
 
 					{submitted && (
 						<p
-							className="rounded-xl bg-emerald-50 px-4 py-3 text-sm font-semibold text-emerald-700"
+							className="rounded-xl bg-secondary/10 px-4 py-3 text-sm font-semibold text-secondary"
 							role="status"
 						>
 							তথ্যগুলো ঠিক আছে। এখন আপনার অ্যাকাউন্ট তৈরি করা যাবে।
@@ -257,7 +254,7 @@ export default function SignUp({ onLogin }: { onLogin?: () => void }) {
 
 					<button
 						type="submit"
-						className="h-14 w-full rounded-2xl bg-emerald-700 text-sm font-extrabold text-white shadow-lg shadow-emerald-700/20 transition hover:bg-emerald-800 focus:outline-none focus:ring-4 focus:ring-emerald-500/25"
+						className="h-14 w-full rounded-2xl bg-secondary text-sm font-extrabold text-white shadow-lg shadow-secondary/20 transition hover:bg-secondary-dark focus:outline-none focus:ring-4 focus:ring-secondary/25"
 					>
 						অ্যাকাউন্ট তৈরি করুন
 					</button>
@@ -269,7 +266,7 @@ export default function SignUp({ onLogin }: { onLogin?: () => void }) {
 						<button
 							type="button"
 							onClick={onLogin}
-							className="bg-gradient-to-r from-emerald-600 via-teal-500 to-cyan-500 bg-clip-text font-extrabold text-transparent transition hover:from-emerald-500 hover:via-teal-400 hover:to-cyan-400 focus:outline-none focus:ring-2 focus:ring-emerald-500/30 focus:ring-offset-2"
+							className="bg-gradient-to-r from-secondary to-secondary-dark bg-clip-text font-extrabold text-transparent transition hover:from-secondary/80 hover:to-secondary-dark/80 focus:outline-none focus:ring-2 focus:ring-secondary/30 focus:ring-offset-2"
 						>
 							লগইন করুন
 						</button>

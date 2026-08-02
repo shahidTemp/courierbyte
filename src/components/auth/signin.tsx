@@ -27,7 +27,7 @@ export default function SignIn({ onSignUp }: { onSignUp?: () => void }) {
 
 	return (
 		<section className="flex min-h-[32rem] items-center justify-center px-4 py-12 sm:px-6">
-			<div className="w-full max-w-md rounded-3xl border border-slate-200/80 bg-white p-6 shadow-[0_20px_60px_rgba(15,53,42,0.1)] sm:p-9">
+			<div className="w-full max-w-md rounded-3xl border border-slate-200/80 bg-white p-6 shadow-2xl shadow-secondary/10 sm:p-9">
 				<div className="mb-8">
 					<h1 className="text-3xl font-extrabold tracking-tight text-slate-900">
 						লগইন করুন
@@ -50,9 +50,6 @@ export default function SignIn({ onSignUp }: { onSignUp?: () => void }) {
 								className="pointer-events-none absolute left-4 top-1/2 h-[18px] w-[18px] -translate-y-1/2 text-slate-400"
 								aria-hidden="true"
 							/>
-							<span className="pointer-events-none absolute left-11 top-1/2 -translate-y-1/2 border-r border-slate-200 pr-3 text-sm font-bold text-slate-500">
-								+880
-							</span>
 							<input
 								id="phone"
 								name="phone"
@@ -68,7 +65,7 @@ export default function SignIn({ onSignUp }: { onSignUp?: () => void }) {
 								pattern="01[3-9][0-9]{8}"
 								required
 								aria-describedby="phone-hint"
-								className="h-14 w-full rounded-2xl border border-slate-200 bg-slate-50 pl-[6.25rem] pr-4 text-base font-semibold tracking-wide text-slate-900 outline-none transition focus:border-emerald-500 focus:bg-white focus:ring-4 focus:ring-emerald-500/10"
+								className="h-14 w-full rounded-2xl border border-slate-200 bg-slate-50 pl-12 pr-4 text-base font-semibold tracking-wide text-slate-900 outline-none transition focus:border-secondary focus:bg-white focus:ring-4 focus:ring-secondary/10"
 							/>
 						</div>
 					</div>
@@ -98,12 +95,12 @@ export default function SignIn({ onSignUp }: { onSignUp?: () => void }) {
 								placeholder="পাসওয়ার্ড লিখুন"
 								minLength={8}
 								required
-								className="h-14 w-full rounded-2xl border border-slate-200 bg-slate-50 pl-12 pr-12 text-base text-slate-900 outline-none transition focus:border-emerald-500 focus:bg-white focus:ring-4 focus:ring-emerald-500/10"
+								className="h-14 w-full rounded-2xl border border-slate-200 bg-slate-50 pl-12 pr-12 text-base text-slate-900 outline-none transition focus:border-secondary focus:bg-white focus:ring-4 focus:ring-secondary/10"
 							/>
 							<button
 								type="button"
 								onClick={() => setShowPassword((visible) => !visible)}
-								className="absolute right-3 top-1/2 -translate-y-1/2 rounded-lg p-2 text-slate-400 transition hover:bg-slate-200/70 hover:text-slate-600 focus:outline-none focus:ring-2 focus:ring-emerald-500/30"
+								className="absolute right-3 top-1/2 -translate-y-1/2 rounded-lg p-2 text-slate-400 transition hover:bg-secondary/10 hover:text-secondary focus:outline-none focus:ring-2 focus:ring-secondary/30"
 								aria-label={showPassword ? "পাসওয়ার্ড লুকান" : "পাসওয়ার্ড দেখুন"}
 							>
 								{showPassword ? (
@@ -126,7 +123,7 @@ export default function SignIn({ onSignUp }: { onSignUp?: () => void }) {
 
 					<button
 						type="submit"
-						className="h-14 w-full rounded-2xl bg-secondary cursor-pointer text-sm font-extrabold text-white shadow-lg shadow-emerald-700/20 transition  focus:outline-none focus:ring-4 focus:ring-emerald-500/25"
+						className="h-14 w-full rounded-2xl bg-secondary cursor-pointer text-sm font-extrabold text-white shadow-lg shadow-secondary/20 transition focus:outline-none focus:ring-4 focus:ring-secondary/25"
 					>
 						লগইন করুন
 					</button>

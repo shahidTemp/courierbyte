@@ -26,7 +26,7 @@ export default function HowItWorks() {
 		<section id="how" className="section-pad">
 			<div className="maxw px-4 sm:px-6 lg:px-8">
 				<div className="max-w-2xl">
-					<p className="text-xs font-bold uppercase tracking-[0.2em] text-emerald-700">
+					<p className="text-xs font-bold uppercase tracking-[0.2em] text-secondary">
 						সহজ workflow
 					</p>
 					<h2 className="mt-3 text-3xl font-extrabold tracking-tight text-slate-900 sm:text-4xl">
@@ -39,7 +39,7 @@ export default function HowItWorks() {
 				<div className="relative mt-12 grid gap-5 md:grid-cols-3">
 					<div
 						aria-hidden
-						className="absolute left-[16%] right-[16%] top-9 hidden border-t border-dashed border-emerald-200 md:block"
+						className="absolute left-[16%] right-[16%] top-9 hidden border-t border-dashed border-secondary/20 md:block"
 					/>
 					{steps.map((step) => {
 						const Icon = step.icon;
@@ -48,9 +48,9 @@ export default function HowItWorks() {
 								key={step.number}
 								className="relative rounded-2xl border border-slate-200/80 bg-white p-7 shadow-sm transition-all hover:-translate-y-1 hover:shadow-xl"
 							>
-								<div className="relative flex h-16 w-16 items-center justify-center rounded-2xl bg-emerald-50 text-emerald-700">
+								<div className="relative flex h-16 w-16 items-center justify-center rounded-2xl bg-secondary/10 text-secondary">
 									<Icon className="h-7 w-7" />
-									<span className="absolute -right-2 -top-2 flex h-6 w-6 items-center justify-center rounded-full bg-[#0f6b4d] text-[10px] font-extrabold text-white ring-4 ring-white">
+									<span className="absolute -right-2 -top-2 flex h-6 w-6 items-center justify-center rounded-full bg-secondary text-[10px] font-extrabold text-white ring-4 ring-white">
 										{step.number}
 									</span>
 								</div>

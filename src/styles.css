@@ -69,8 +69,8 @@
   background: linear-gradient(
     100deg,
     var(--color-secondary-dark),
-    #2ea37c 60%,
-    #3fc18f
+    color-mix(in oklab, var(--color-secondary) 80%, white) 60%,
+    color-mix(in oklab, var(--color-secondary) 60%, white)
   );
   -webkit-background-clip: text;
   background-clip: text;
@@ -98,14 +98,14 @@ body {
 
 body {
   margin: 0;
-  color: #173a40;
+  color: var(--color-secondary-dark);
   font-family: "Hind Siliguri", ui-sans-serif, system-ui, sans-serif;
-  background-color: #e7f3ec;
+  background-color: color-mix(in oklab, var(--color-secondary) 10%, white);
   background:
     radial-gradient(1100px 620px at -8% -10%, color-mix(in oklab, var(--color-secondary) 18%, transparent), transparent 58%),
-    radial-gradient(1050px 620px at 112% -12%, color-mix(in oklab, #14b87a 12%, transparent), transparent 62%),
+    radial-gradient(1050px 620px at 112% -12%, color-mix(in oklab, var(--color-secondary) 12%, transparent), transparent 62%),
     radial-gradient(720px 380px at 50% 115%, color-mix(in oklab, var(--color-secondary) 8%, transparent), transparent 68%),
-    linear-gradient(180deg, #f4faf6 0%, #fbfefc 48%, #f0f8f3 100%);
+    linear-gradient(180deg, color-mix(in oklab, var(--color-secondary) 5%, white) 0%, white 48%, color-mix(in oklab, var(--color-secondary) 7%, white) 100%);
   overflow-x: hidden;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
