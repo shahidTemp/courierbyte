@@ -16,21 +16,26 @@ type NavItem = (typeof NAV_ITEMS)[number];
 const linkClasses =
 	"text-sm font-medium text-primary transition-colors hover:text-primary/70";
 
+const drawerLinkClasses =
+	"text-sm font-medium text-secondary transition-colors hover:text-secondary/70";
+
 function NavItemLink({
 	item,
 	onNavigate,
 	onSectionClick,
+	className = linkClasses,
 }: {
 	item: NavItem;
 	onNavigate?: () => void;
 	onSectionClick?: (id: string) => void;
+	className?: string;
 }) {
 	if ("to" in item) {
 		return (
 			<Link
 				to={item.to}
 				onClick={onNavigate}
-				className={linkClasses}
+				className={className}
 				activeProps={{
 					className: "font-semibold underline underline-offset-4",
 				}}
@@ -41,7 +46,7 @@ function NavItemLink({
 	}
 	if ("href" in item) {
 		return (
-			<a href={item.href} onClick={onNavigate} className={linkClasses}>
+			<a href={item.href} onClick={onNavigate} className={className}>
 				{item.label}
 			</a>
 		);
@@ -53,7 +58,7 @@ function NavItemLink({
 				e.preventDefault();
 				onSectionClick?.(item.section);
 			}}
-			className={linkClasses}
+			className={className}
 		>
 			{item.label}
 		</a>
@@ -149,11 +154,11 @@ const Header = () => {
 				tabIndex={-1}
 				inert={!open}
 				aria-hidden={!open}
-				className={`fixed inset-y-0 left-0 z-50 w-72 bg-secondary text-primary shadow-2xl transition-transform duration-300 ease-in-out md:hidden ${
+				className={`fixed inset-y-0 left-0 z-50 w-72 bg-white text-secondary shadow-2xl transition-transform duration-300 ease-in-out md:hidden ${
 					open ? "translate-x-0" : "-translate-x-full"
 				}`}
 			>
-				<div className="flex items-center justify-between px-4 py-4 border-b border-primary/10">
+				<div className="flex items-center justify-between px-4 py-4 border-b border-secondary/10">
 					<Link to="/" onClick={close} className="shrink-0">
 						<img
 							src="https://appbyte.net/images/logo.png"
@@ -164,7 +169,7 @@ const Header = () => {
 					<button
 						type="button"
 						onClick={close}
-						className="p-2 rounded-md hover:bg-primary/10 transition-colors"
+						className="p-2 rounded-md hover:bg-secondary/10 transition-colors"
 						aria-label="Close menu"
 					>
 						<X className="h-6 w-6" />
@@ -177,6 +182,7 @@ const Header = () => {
 							item={item}
 							onNavigate={close}
 							onSectionClick={scrollToSection}
+							className={drawerLinkClasses}
 						/>
 					))}
 				</nav>
