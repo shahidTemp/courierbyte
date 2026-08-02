@@ -3,7 +3,7 @@ import { type FormEvent, useState } from "react";
 
 const BANGLADESHI_MOBILE = /^01[3-9]\d{8}$/;
 
-export default function SignIn() {
+export default function SignIn({ onSignUp }: { onSignUp?: () => void }) {
 	const [phone, setPhone] = useState("");
 	const [password, setPassword] = useState("");
 	const [showPassword, setShowPassword] = useState(false);
@@ -13,12 +13,12 @@ export default function SignIn() {
 		event.preventDefault();
 
 		if (!BANGLADESHI_MOBILE.test(phone)) {
-			setError("Enter a valid 11-digit Bangladeshi mobile number.");
+			setError("সঠিক ১১ সংখ্যার মোবাইল নাম্বার দিন।");
 			return;
 		}
 
 		if (password.length < 8) {
-			setError("Your password must be at least 8 characters.");
+			setError("পাসওয়ার্ডে কমপক্ষে ৮টি অক্ষর থাকতে হবে।");
 			return;
 		}
 
@@ -30,20 +30,20 @@ export default function SignIn() {
 			<div className="w-full max-w-md rounded-3xl border border-slate-200/80 bg-white p-6 shadow-[0_20px_60px_rgba(15,53,42,0.1)] sm:p-9">
 				<div className="mb-8">
 					<p className="mb-2 text-sm font-bold uppercase tracking-[0.16em] text-emerald-700">
-						Welcome back
+						আবারও স্বাগতম
 					</p>
 					<h1 className="text-3xl font-extrabold tracking-tight text-slate-900">
-						Sign in
+						লগইন করুন
 					</h1>
 					<p className="mt-2 text-sm text-slate-500">
-						Enter your mobile number and password to continue.
+						আপনার মোবাইল নাম্বার ও পাসওয়ার্ড দিয়ে অ্যাকাউন্টে প্রবেশ করুন।
 					</p>
 				</div>
 
 				<form className="space-y-5" onSubmit={handleSubmit} noValidate>
 					<div>
 						<label htmlFor="phone" className="mb-2 block text-sm font-bold text-slate-700">
-							Mobile number
+							মোবাইল নাম্বার
 						</label>
 						<div className="relative">
 							<Phone
@@ -72,13 +72,13 @@ export default function SignIn() {
 							/>
 						</div>
 						<p id="phone-hint" className="mt-2 text-xs text-slate-400">
-							Example: 01712345678
+							উদাহরণ: 01712345678
 						</p>
 					</div>
 
 					<div>
 						<label htmlFor="password" className="mb-2 block text-sm font-bold text-slate-700">
-							Password
+							পাসওয়ার্ড
 						</label>
 						<div className="relative">
 							<LockKeyhole
@@ -95,7 +95,7 @@ export default function SignIn() {
 									setPassword(event.target.value);
 									setError("");
 								}}
-								placeholder="Enter your password"
+								placeholder="পাসওয়ার্ড লিখুন"
 								minLength={8}
 								required
 								className="h-14 w-full rounded-2xl border border-slate-200 bg-slate-50 pl-12 pr-12 text-base text-slate-900 outline-none transition focus:border-emerald-500 focus:bg-white focus:ring-4 focus:ring-emerald-500/10"
@@ -104,7 +104,7 @@ export default function SignIn() {
 								type="button"
 								onClick={() => setShowPassword((visible) => !visible)}
 								className="absolute right-3 top-1/2 -translate-y-1/2 rounded-lg p-2 text-slate-400 transition hover:bg-slate-200/70 hover:text-slate-600 focus:outline-none focus:ring-2 focus:ring-emerald-500/30"
-								aria-label={showPassword ? "Hide password" : "Show password"}
+								aria-label={showPassword ? "পাসওয়ার্ড লুকান" : "পাসওয়ার্ড দেখুন"}
 							>
 								{showPassword ? <EyeOff className="h-5 w-5" /> : <Eye className="h-5 w-5" />}
 							</button>
@@ -121,9 +121,22 @@ export default function SignIn() {
 						type="submit"
 						className="h-14 w-full rounded-2xl bg-emerald-700 text-sm font-extrabold text-white shadow-lg shadow-emerald-700/20 transition hover:bg-emerald-800 focus:outline-none focus:ring-4 focus:ring-emerald-500/25"
 					>
-						Sign in
+						লগইন করুন
 					</button>
 				</form>
+
+				{onSignUp && (
+					<p className="mt-6 text-center text-sm text-slate-500">
+						অ্যাকাউন্ট নেই?{" "}
+						<button
+							type="button"
+							onClick={onSignUp}
+							className="bg-gradient-to-r from-emerald-600 via-teal-500 to-cyan-500 bg-clip-text font-extrabold text-transparent transition hover:from-emerald-500 hover:via-teal-400 hover:to-cyan-400 focus:outline-none focus:ring-2 focus:ring-emerald-500/30 focus:ring-offset-2"
+						>
+							সাইন আপ করুন
+						</button>
+					</p>
+				)}
 			</div>
 		</section>
 	);
