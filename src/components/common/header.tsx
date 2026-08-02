@@ -1,5 +1,5 @@
 import { Link, useNavigate } from "@tanstack/react-router";
-import { Menu, PackageSearch, X } from "lucide-react";
+import { LogIn, Menu, PackageSearch, X } from "lucide-react";
 import { useEffect, useRef, useState } from "react";
 
 const NAV_ITEMS = [
@@ -8,7 +8,6 @@ const NAV_ITEMS = [
 	{ label: "ফ্রি কীভাবে কাজ করে", section: "free" },
 	{ label: "প্রাইসিং", section: "pricing" },
 	{ label: "FAQ", section: "faq" },
-	{ label: "Login", to: "/login" },
 ] as const;
 
 type NavItem = (typeof NAV_ITEMS)[number];
@@ -16,29 +15,16 @@ type NavItem = (typeof NAV_ITEMS)[number];
 const linkClasses =
 	"text-sm font-medium text-secondary transition-colors hover:text-secondary/70";
 
+const loginBtnClasses =
+	"inline-flex items-center gap-2 rounded-full bg-gradient-to-r from-emerald-600 to-teal-600 px-5 py-2.5 text-sm font-bold text-white shadow-md shadow-emerald-600/25 transition-all duration-300 hover:-translate-y-0.5 hover:shadow-lg hover:shadow-emerald-600/35 hover:from-emerald-500 hover:to-teal-500";
+
 function NavItemLink({
 	item,
-	onNavigate,
 	onSectionClick,
 }: {
 	item: NavItem;
-	onNavigate?: () => void;
 	onSectionClick?: (id: string) => void;
 }) {
-	if ("to" in item) {
-		return (
-			<Link
-				to={item.to}
-				onClick={onNavigate}
-				className={linkClasses}
-				activeProps={{
-					className: "font-semibold underline underline-offset-4",
-				}}
-			>
-				{item.label}
-			</Link>
-		);
-	}
 	return (
 		<a
 			href={`/#${item.section}`}
@@ -112,6 +98,10 @@ const Header = () => {
 							onSectionClick={scrollToSection}
 						/>
 					))}
+					<Link to="/login" className={loginBtnClasses}>
+						<LogIn className="h-3.5 w-3.5" />
+						Login
+					</Link>
 				</nav>
 
 				<button
@@ -174,10 +164,14 @@ const Header = () => {
 						<NavItemLink
 							key={item.label}
 							item={item}
-							onNavigate={close}
 							onSectionClick={scrollToSection}
 						/>
 					))}
+					<hr className="border-secondary/10" />
+					<Link to="/login" onClick={close} className={loginBtnClasses}>
+						<LogIn className="h-3.5 w-3.5" />
+						Login
+					</Link>
 				</nav>
 			</aside>
 		</header>
