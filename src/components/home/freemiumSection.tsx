@@ -1,5 +1,4 @@
 import { ArrowRight, Gauge, Lock, Sparkles } from "lucide-react";
-import { freeSearchDots } from "./constants";
 
 export default function FreemiumSection() {
 	return (
@@ -59,14 +58,6 @@ export default function FreemiumSection() {
 								<span className="rounded-full bg-emerald-400/10 px-3 py-1.5 text-xs font-bold text-emerald-300">
 									আজ ফ্রি
 								</span>
-							</div>
-							<div className="mt-5 flex gap-2">
-								{freeSearchDots.map((dot) => (
-									<div
-										key={dot}
-										className="h-2 flex-1 rounded-full bg-emerald-400"
-									/>
-								))}
 							</div>
 							<div className="mt-8 rounded-2xl border border-white/10 bg-white/[0.05] p-4">
 								<div className="flex items-start gap-3">

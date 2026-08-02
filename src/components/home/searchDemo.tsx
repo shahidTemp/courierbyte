@@ -1,7 +1,6 @@
 import { Link } from "@tanstack/react-router";
 import { ArrowRight, Search, Sparkles, XCircle } from "lucide-react";
 import { type ChangeEvent, type FormEvent, useState } from "react";
-import { bn, freeSearchDots } from "./constants";
 
 export default function SearchDemo() {
 	const [phone, setPhone] = useState("");
@@ -34,24 +33,6 @@ export default function SearchDemo() {
 	return (
 		<div className="rounded-[1.5rem] border border-slate-200/80 bg-white p-3 shadow-[0_20px_70px_rgba(15,53,42,0.13)] sm:p-4">
 			<div className="rounded-[1.15rem] bg-[#f4faf6] p-4 sm:p-5">
-				<div className="mb-4 flex flex-wrap items-center justify-between gap-3">
-					<h3 className="mt-1 text-xl font-extrabold text-slate-900">
-						ফ্রিতে চেক করে দেখুন
-					</h3>
-					<div className="flex items-center gap-2 rounded-full bg-white px-3 py-2 shadow-sm ring-1 ring-emerald-100">
-						<div className="flex gap-1">
-							{freeSearchDots.map((dot, index) => (
-								<span
-									key={dot}
-									className={`h-2 w-2 rounded-full ${index < used ? "bg-emerald-500" : "bg-emerald-100"}`}
-								/>
-							))}
-						</div>
-						<span className="text-[11px] font-bold text-slate-600">
-							আজ {bn(used)}/৫টি ফ্রি
-						</span>
-					</div>
-				</div>
 				<form
 					onSubmit={handleSubmit}
 					className="flex flex-col gap-2.5 sm:flex-row"
