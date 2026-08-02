@@ -6,8 +6,8 @@
 @theme {
   --font-sans: "Manrope", "Hind Siliguri", ui-sans-serif, system-ui, sans-serif;
   --color-primary: #f0f9ff;
-  --color-secondary: #237A57;
-  --color-secondary-dark: #1c5c40;
+  --color-secondary: #0f6b4d;
+  --color-secondary-dark: #0b4032;
   --animate-marquee: marquee 32s linear infinite;
   --animate-blob: blob 9s ease-in-out infinite;
   --animate-fade-in-up: fade-in-up 0.7s ease-out both;
@@ -86,10 +86,10 @@ body {
   font-family: "Manrope", "Hind Siliguri", ui-sans-serif, system-ui, sans-serif;
   background-color: #e7f3ec;
   background:
-    radial-gradient(1100px 620px at -8% -10%, color-mix(in oklab, var(--color-secondary) 36%, transparent), transparent 58%),
-    radial-gradient(1050px 620px at 112% -12%, color-mix(in oklab, var(--color-secondary) 20%, transparent), transparent 62%),
-    radial-gradient(720px 380px at 50% 115%, color-mix(in oklab, var(--color-secondary) 10%, transparent), transparent 68%),
-    linear-gradient(180deg, color-mix(in oklab, #e7f0e8 68%, white) 0%, #f3faf5 44%, #e7f3ec 100%);
+    radial-gradient(1100px 620px at -8% -10%, color-mix(in oklab, var(--color-secondary) 18%, transparent), transparent 58%),
+    radial-gradient(1050px 620px at 112% -12%, color-mix(in oklab, #14b87a 12%, transparent), transparent 62%),
+    radial-gradient(720px 380px at 50% 115%, color-mix(in oklab, var(--color-secondary) 8%, transparent), transparent 68%),
+    linear-gradient(180deg, #f4faf6 0%, #fbfefc 48%, #f0f8f3 100%);
   overflow-x: hidden;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
@@ -101,7 +101,7 @@ body::before {
   inset: 0;
   pointer-events: none;
   z-index: -1;
-  opacity: 0.28;
+  opacity: 0.18;
   background:
     radial-gradient(circle at 20% 15%, rgba(255, 255, 255, 0.8), transparent 34%),
     radial-gradient(circle at 78% 26%, color-mix(in oklab, var(--color-secondary) 20%, transparent), transparent 42%),
@@ -114,7 +114,7 @@ body::after {
   inset: 0;
   pointer-events: none;
   z-index: -1;
-  opacity: 0.14;
+  opacity: 0.08;
   background-image:
     linear-gradient(rgba(255, 255, 255, 0.07) 1px, transparent 1px),
     linear-gradient(90deg, rgba(255, 255, 255, 0.06) 1px, transparent 1px);

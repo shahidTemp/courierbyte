@@ -1,86 +1,268 @@
-import { createFileRoute } from "@tanstack/react-router";
+import { createFileRoute, Link } from "@tanstack/react-router";
 import {
+	ArrowDownRight,
 	ArrowRight,
 	BadgeCheck,
 	BarChart3,
+	Check,
 	CheckCircle2,
 	ChevronDown,
-	Clock,
-	Database,
+	CircleDollarSign,
+	Crown,
 	Gauge,
-	Headphones,
 	Lock,
-	Mail,
-	MapPin,
-	MessageCircle,
-	Network,
 	PackageSearch,
-	Phone,
+	RefreshCw,
 	Search,
 	ShieldAlert,
 	ShieldCheck,
 	Sparkles,
+	Target,
+	TrendingDown,
 	TrendingUp,
 	Truck,
-	Users,
+	WalletCards,
 	XCircle,
 	Zap,
 } from "lucide-react";
-import { useState } from "react";
+import { type ChangeEvent, type FormEvent, useState } from "react";
 
 export const Route = createFileRoute("/_website/")({ component: Home });
 
+const bn = (value: number) => value.toLocaleString("bn-BD");
+const freeSearchDots = ["১", "২", "৩", "৪", "৫"];
+
 /* ------------------------------------------------------------------ */
-/* Hero                                                                */
+/* Product dashboard mockup                                            */
 /* ------------------------------------------------------------------ */
 
-const heroChips = [
-	{
-		icon: PackageSearch,
-		label: "কুরিয়ার হিস্ট্রি",
-		accent: "bg-emerald-100 text-emerald-700",
-	},
-	{
-		icon: TrendingUp,
-		label: "সাকসেস রেশিও",
-		accent: "bg-teal-100 text-teal-700",
-	},
-	{ icon: Gauge, label: "রিস্ক স্কোর", accent: "bg-amber-100 text-amber-700" },
+const courierRows = [
+	{ name: "পাথাও", count: "১৪টি", delivered: "১২", rate: 86, tone: "emerald" },
+	{ name: "স্টেডফাস্ট", count: "৯টি", delivered: "৮", rate: 89, tone: "teal" },
+	{ name: "RedX", count: "৭টি", delivered: "৪", rate: 57, tone: "amber" },
 ];
 
-const heroStats = [
-	{ value: "১,২০,০০০+", label: "পার্সেল হিস্ট্রি চেক" },
-	{ value: "৫০+", label: "কুরিয়ার পার্টনার" },
-	{ value: "৯৮.৫%", label: "গড় সাকসেস রেশিও" },
-];
+function MiniDashboard({ large = false }: { large?: boolean }) {
+	return (
+		<div className={`relative ${large ? "w-full" : "w-full max-w-[550px]"}`}>
+			<div className="absolute -inset-5 rounded-[2rem] bg-emerald-400/10 blur-2xl" />
+			<div className="relative overflow-hidden rounded-[1.35rem] border border-white/10 bg-[#102a25] shadow-[0_30px_80px_rgba(6,48,37,0.28)]">
+				<div className="flex items-center justify-between border-b border-white/10 bg-[#0c211d] px-4 py-3 sm:px-5">
+					<div className="flex items-center gap-2.5">
+						<span className="flex h-8 w-8 items-center justify-center rounded-lg bg-emerald-500 text-white">
+							<PackageSearch className="h-4 w-4" />
+						</span>
+						<div>
+							<p className="text-[9px] font-bold uppercase tracking-[0.16em] text-emerald-300/60">
+								CourierByte
+							</p>
+							<p className="text-xs font-semibold text-white">কাস্টমার ইনসাইট</p>
+						</div>
+					</div>
+					<div className="flex items-center gap-2">
+						<span className="hidden items-center gap-1.5 rounded-full bg-emerald-400/10 px-2.5 py-1 text-[10px] font-semibold text-emerald-300 sm:flex">
+							<span className="h-1.5 w-1.5 rounded-full bg-emerald-400" /> Live
+							data preview
+						</span>
+						<span className="flex h-7 w-7 items-center justify-center rounded-full bg-white/10 text-[10px] font-bold text-white">
+							AR
+						</span>
+					</div>
+				</div>
 
-function PhoneSearch() {
+				<div className="space-y-4 p-4 sm:p-5">
+					<div className="flex items-center justify-between gap-3">
+						<div>
+							<p className="text-[10px] font-medium text-slate-400">
+								সার্চ করা নাম্বার
+							</p>
+							<p className="mt-1 text-sm font-bold tracking-wide text-white">
+								017•••••••21
+							</p>
+						</div>
+						<span className="flex items-center gap-1 rounded-full bg-emerald-400/10 px-2.5 py-1 text-[10px] font-bold text-emerald-300">
+							<BadgeCheck className="h-3.5 w-3.5" /> যাচাই করা হয়েছে
+						</span>
+					</div>
+
+					<div className="grid grid-cols-2 gap-2.5 sm:grid-cols-4">
+						<div className="rounded-xl border border-white/10 bg-white/[0.045] p-3">
+							<p className="text-[10px] text-slate-400">মোট পার্সেল</p>
+							<p className="mt-1 text-xl font-extrabold text-white">৩০</p>
+							<p className="mt-1 text-[9px] font-medium text-slate-500">
+								সব কুরিয়ার
+							</p>
+						</div>
+						<div className="rounded-xl border border-emerald-400/20 bg-emerald-400/[0.08] p-3">
+							<p className="text-[10px] text-emerald-200/70">রিসিভ করেছে</p>
+							<p className="mt-1 text-xl font-extrabold text-emerald-300">২৪</p>
+							<p className="mt-1 text-[9px] font-medium text-emerald-200/50">
+								সফল ডেলিভারি
+							</p>
+						</div>
+						<div className="rounded-xl border border-rose-400/20 bg-rose-400/[0.07] p-3">
+							<p className="text-[10px] text-rose-200/70">ক্যানসেল</p>
+							<p className="mt-1 text-xl font-extrabold text-rose-300">৬</p>
+							<p className="mt-1 text-[9px] font-medium text-rose-200/50">
+								রিফিউজ / রিটার্ন
+							</p>
+						</div>
+						<div className="rounded-xl border border-amber-400/20 bg-amber-400/[0.08] p-3">
+							<p className="text-[10px] text-amber-200/70">রিস্ক স্কোর</p>
+							<p className="mt-1 text-xl font-extrabold text-amber-300">মাঝারি</p>
+							<p className="mt-1 text-[9px] font-medium text-amber-200/50">
+								সতর্ক থাকুন
+							</p>
+						</div>
+					</div>
+
+					<div className="grid gap-4 md:grid-cols-[1.1fr_0.9fr]">
+						<div className="rounded-xl border border-white/10 bg-white/[0.035] p-4">
+							<div className="mb-4 flex items-center justify-between">
+								<p className="text-xs font-bold text-white">
+									কুরিয়ারভিত্তিক হিস্ট্রি
+								</p>
+								<span className="text-[10px] text-slate-500">Last 90 days</span>
+							</div>
+							<div className="space-y-3.5">
+								{courierRows.map((row) => (
+									<div key={row.name}>
+										<div className="mb-1.5 flex items-center justify-between text-[10px]">
+											<span className="flex items-center gap-1.5 font-semibold text-slate-300">
+												<Truck className="h-3.5 w-3.5 text-emerald-400" />{" "}
+												{row.name}
+												<span className="font-normal text-slate-500">
+													{row.count}
+												</span>
+											</span>
+											<span className="font-bold text-slate-300">
+												{row.delivered}/{row.count.replace("টি", "")} —{" "}
+												{row.rate}%
+											</span>
+										</div>
+										<div className="h-1.5 overflow-hidden rounded-full bg-white/10">
+											<div
+												className={`h-full rounded-full ${
+													row.tone === "amber"
+														? "bg-amber-400"
+														: "bg-emerald-400"
+												}`}
+												style={{ width: `${row.rate}%` }}
+											/>
+										</div>
+									</div>
+								))}
+							</div>
+						</div>
+
+						<div className="flex flex-col justify-between rounded-xl border border-amber-400/20 bg-gradient-to-br from-amber-400/[0.12] to-orange-400/[0.06] p-4">
+							<div>
+								<div className="flex items-center justify-between">
+									<p className="text-xs font-bold text-white">সিদ্ধান্তের ইঙ্গিত</p>
+									<ShieldAlert className="h-4 w-4 text-amber-300" />
+								</div>
+								<p className="mt-3 text-xs leading-relaxed text-amber-100/80">
+									এই কাস্টমারের রিস্ক মাঝারি। COD পাঠালে কনফার্মেশন কল করুন।
+								</p>
+							</div>
+							<div className="mt-5 flex items-end justify-between gap-3">
+								<div>
+									{" "}
+									<p className="text-[10px] text-amber-200/60">
+										সম্ভাব্য সাশ্রয় <span className="font-normal">(উদাহরণ)</span>
+									</p>
+									<p className="mt-1 text-xl font-extrabold text-white">
+										৳ ১,৮০০
+									</p>
+								</div>
+								<span className="flex h-10 w-10 items-center justify-center rounded-full border border-amber-300/30 bg-amber-300/10 text-amber-300">
+									<WalletCards className="h-5 w-5" />
+								</span>
+							</div>
+						</div>
+					</div>
+
+					<div className="flex items-center justify-between rounded-xl border border-emerald-400/20 bg-emerald-400/[0.08] px-4 py-3">
+						<div className="flex items-center gap-2.5">
+							<span className="flex h-7 w-7 items-center justify-center rounded-lg bg-emerald-400/20 text-emerald-300">
+								<Zap className="h-3.5 w-3.5" />
+							</span>
+							<p className="text-[10px] font-semibold text-emerald-100/80">
+								রিপোর্ট তৈরি হয়েছে ০.৮ সেকেন্ডে
+							</p>
+						</div>
+						<span className="text-[10px] font-bold text-emerald-300">
+							নিরাপদ ও গোপনীয়
+						</span>
+					</div>
+				</div>
+			</div>
+		</div>
+	);
+}
+
+/* ------------------------------------------------------------------ */
+/* Freemium search                                                     */
+/* ------------------------------------------------------------------ */
+
+function SearchDemo() {
 	const [phone, setPhone] = useState("");
+	const [used, setUsed] = useState(0);
+	const [message, setMessage] = useState("");
 	const [error, setError] = useState("");
-	const [submitted, setSubmitted] = useState(false);
 
-	const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-		const digits = e.target.value.replace(/\D/g, "");
-		setPhone(digits.slice(0, 11));
+	const handleChange = (event: ChangeEvent<HTMLInputElement>) => {
+		setPhone(event.target.value.replace(/\D/g, "").slice(0, 11));
+		setMessage("");
 		setError("");
-		setSubmitted(false);
 	};
 
-	const handleSubmit = (e: React.FormEvent) => {
-		e.preventDefault();
+	const handleSubmit = (event: FormEvent<HTMLFormElement>) => {
+		event.preventDefault();
 		if (!/^01[3-9]\d{8}$/.test(phone)) {
-			setError("সঠিক ১১ সংখ্যার মোবাইল নাম্বার দিন (যেমন: 01XXXXXXXXX)");
-			setSubmitted(false);
+			setError("সঠিক ১১ সংখ্যার মোবাইল নাম্বার দিন");
 			return;
 		}
-		setError("");
-		setSubmitted(true);
+		if (used >= 5) {
+			setMessage(
+				"আপনার আজকের ৫টি ফ্রি সার্চ শেষ। চালিয়ে যেতে লগইন করে একটি প্যাকেজ নিন।",
+			);
+			return;
+		}
+		setUsed((current) => current + 1);
+		setMessage("ডেমো রিপোর্ট প্রস্তুত — আসল ডেটা কানেক্ট হলে এখানেই ফলাফল দেখাবে।");
 	};
 
 	return (
-		<div className="mx-auto w-full max-w-2xl">
-			<form onSubmit={handleSubmit} className="relative">
-				<div className="flex flex-col gap-3 rounded-2xl bg-white/95 p-2 shadow-2xl shadow-emerald-900/10 ring-1 ring-emerald-900/5 backdrop-blur sm:flex-row sm:items-center">
+		<div className="rounded-[1.5rem] border border-slate-200/80 bg-white p-3 shadow-[0_20px_70px_rgba(15,53,42,0.13)] sm:p-4">
+			<div className="rounded-[1.15rem] bg-[#f4faf6] p-4 sm:p-5">
+				<div className="mb-4 flex flex-wrap items-center justify-between gap-3">
+					<div>
+						<p className="text-[11px] font-bold uppercase tracking-[0.18em] text-emerald-700">
+							Try it free
+						</p>
+						<h3 className="mt-1 text-xl font-extrabold text-slate-900">
+							একটি নাম্বার চেক করে দেখুন
+						</h3>
+					</div>
+					<div className="flex items-center gap-2 rounded-full bg-white px-3 py-2 shadow-sm ring-1 ring-emerald-100">
+						<div className="flex gap-1">
+							{freeSearchDots.map((dot, index) => (
+								<span
+									key={dot}
+									className={`h-2 w-2 rounded-full ${index < used ? "bg-emerald-500" : "bg-emerald-100"}`}
+								/>
+							))}
+						</div>
+						<span className="text-[11px] font-bold text-slate-600">
+							আজ {bn(used)}/৫টি ফ্রি
+						</span>
+					</div>
+				</div>
+				<form
+					onSubmit={handleSubmit}
+					className="flex flex-col gap-2.5 sm:flex-row"
+				>
 					<label className="relative flex-1">
 						<span className="sr-only">কাস্টমারের মোবাইল নাম্বার</span>
 						<span className="pointer-events-none absolute left-4 top-1/2 -translate-y-1/2 text-sm font-bold text-emerald-700">
@@ -92,258 +274,175 @@ function PhoneSearch() {
 							value={phone}
 							onChange={handleChange}
 							placeholder="01XXXXXXXXX"
-							className="w-full rounded-xl bg-slate-50 py-4 pl-[4.5rem] pr-4 text-lg font-semibold tracking-wider text-slate-800 outline-none transition-all placeholder:font-normal placeholder:tracking-normal placeholder:text-slate-400 focus:bg-white focus:ring-2 focus:ring-emerald-500"
+							className="w-full rounded-xl border border-slate-200 bg-white py-4 pl-16 pr-4 text-base font-bold tracking-wider text-slate-800 outline-none transition-all placeholder:font-normal placeholder:tracking-normal placeholder:text-slate-400 focus:border-emerald-500 focus:ring-4 focus:ring-emerald-100"
 						/>
 					</label>
 					<button
 						type="submit"
-						className="group flex items-center justify-center gap-2 rounded-xl bg-gradient-to-r from-emerald-600 to-teal-600 px-7 py-4 text-base font-bold text-white shadow-lg shadow-emerald-600/30 transition-all hover:-translate-y-0.5 hover:shadow-xl hover:shadow-emerald-600/40 active:translate-y-0 active:scale-[0.98]"
+						className="flex items-center justify-center gap-2 rounded-xl bg-[#0f6b4d] px-6 py-4 text-sm font-bold text-white shadow-lg shadow-emerald-900/15 transition-all hover:-translate-y-0.5 hover:bg-[#0b583f] active:translate-y-0"
 					>
-						<Search className="h-5 w-5 transition-transform group-hover:scale-110" />
-						চেক করুন
+						<Search className="h-4 w-4" /> রিপোর্ট দেখুন
 					</button>
-				</div>
-
+				</form>
 				{error && (
-					<p className="mt-3 flex items-center justify-center gap-1.5 text-sm font-medium text-rose-600">
-						<XCircle className="h-4 w-4" />
-						{error}
+					<p
+						aria-live="polite"
+						className="mt-3 flex items-center gap-1.5 text-xs font-semibold text-rose-600"
+					>
+						<XCircle className="h-4 w-4" /> {error}
 					</p>
 				)}
-
-				{submitted && (
-					<p className="mt-3 flex items-center justify-center gap-1.5 rounded-xl bg-emerald-50 px-4 py-2.5 text-sm font-semibold text-emerald-800 ring-1 ring-emerald-200">
-						<Sparkles className="h-4 w-4" />
-						রিপোর্ট দেখার ফিচারটি শীঘ্রই চালু হচ্ছে — সাথে থাকুন!
-					</p>
-				)}
-			</form>
-
-			<div className="mt-5 flex flex-wrap items-center justify-center gap-x-6 gap-y-2 text-sm font-medium text-slate-500">
-				<span className="flex items-center gap-1.5">
-					<ShieldCheck className="h-4 w-4 text-emerald-600" /> ১০০% কনফিডেনশিয়াল
-				</span>
-				<span className="flex items-center gap-1.5">
-					<Zap className="h-4 w-4 text-emerald-600" /> ইনস্ট্যান্ট রেজাল্ট
-				</span>
-				<span className="flex items-center gap-1.5">
-					<Lock className="h-4 w-4 text-emerald-600" /> ডেটা সম্পূর্ণ নিরাপদ
-				</span>
-			</div>
-		</div>
-	);
-}
-
-function ReportCardMock({ compact = false }: { compact?: boolean }) {
-	const couriers = [
-		{ name: "পাথাও", delivered: 12, cancelled: 2, total: 14, pct: 86 },
-		{ name: "স্টেডফাস্ট", delivered: 8, cancelled: 1, total: 9, pct: 89 },
-		{ name: "RedX", delivered: 4, cancelled: 3, total: 7, pct: 57 },
-	];
-	return (
-		<div className="text-left">
-			{/* Card header */}
-			<div className="flex items-center justify-between gap-3 border-b border-slate-100 px-5 py-4">
-				<div className="flex items-center gap-3">
-					<span className="flex h-10 w-10 items-center justify-center rounded-xl bg-emerald-100 text-emerald-700">
-						<Phone className="h-5 w-5" />
-					</span>
-					<div>
-						<p className="text-[11px] font-bold uppercase tracking-wider text-slate-400">
-							কাস্টমার নাম্বার
+				{message && (
+					<div
+						aria-live="polite"
+						className="mt-3 rounded-xl bg-white px-3.5 py-3 ring-1 ring-emerald-100"
+					>
+						<p className="flex items-start gap-1.5 text-xs font-semibold leading-relaxed text-emerald-800">
+							<Sparkles className="mt-0.5 h-4 w-4 shrink-0" /> {message}
 						</p>
-						<p className="text-sm font-bold text-slate-800">017XXXXXXX1</p>
+						{used >= 5 && (
+							<div className="mt-3 flex flex-wrap gap-2">
+								<Link
+									to="/login"
+									className="inline-flex items-center gap-1.5 rounded-lg bg-emerald-600 px-3 py-2 text-[11px] font-extrabold text-white transition hover:bg-emerald-700"
+								>
+									লগইন করে চালিয়ে যান <ArrowRight className="h-3.5 w-3.5" />
+								</Link>
+								<a
+									href="#pricing"
+									className="inline-flex items-center gap-1.5 rounded-lg border border-emerald-200 px-3 py-2 text-[11px] font-bold text-emerald-700 transition hover:bg-emerald-50"
+								>
+									প্যাকেজ দেখুন
+								</a>
+							</div>
+						)}
 					</div>
-				</div>
-				<span className="flex items-center gap-1 rounded-full bg-emerald-50 px-2.5 py-1 text-[11px] font-bold text-emerald-700 ring-1 ring-emerald-200">
-					<BadgeCheck className="h-3.5 w-3.5" /> ভেরিফায়েড
-				</span>
-			</div>
-
-			{/* Stat grid */}
-			<div className="grid grid-cols-4 divide-x divide-slate-100 border-b border-slate-100">
-				<div className="px-3 py-3 text-center">
-					<p className="text-lg font-extrabold text-slate-800">৩০</p>
-					<p className="text-[10px] font-semibold text-slate-400">মোট পার্সেল</p>
-				</div>
-				<div className="px-3 py-3 text-center">
-					<p className="text-lg font-extrabold text-emerald-600">২৪</p>
-					<p className="text-[10px] font-semibold text-slate-400">ডেলিভারি</p>
-				</div>
-				<div className="px-3 py-3 text-center">
-					<p className="text-lg font-extrabold text-rose-500">৬</p>
-					<p className="text-[10px] font-semibold text-slate-400">ক্যানসেল</p>
-				</div>
-				<div className="px-3 py-3 text-center">
-					<p className="text-lg font-extrabold text-teal-600">৮০%</p>
-					<p className="text-[10px] font-semibold text-slate-400">সাকসেস</p>
-				</div>
-			</div>
-
-			{/* Couriers breakdown */}
-			<div className="space-y-3 px-5 py-4">
-				<p className="text-[11px] font-bold uppercase tracking-wider text-slate-400">
-					কুরিয়ারভিত্তিক হিস্ট্রি
+				)}{" "}
+				<p className="mt-3 flex items-center gap-1.5 text-[11px] font-medium text-slate-500">
+					<ShieldCheck className="h-3.5 w-3.5 text-emerald-600" /> কোনো কার্ড লাগবে
+					না · আপনার সার্চ ব্যক্তিগত · UI preview
 				</p>
-				{couriers.map((c) => (
-					<div key={c.name}>
-						<div className="mb-1 flex items-center justify-between text-xs">
-							<span className="font-semibold text-slate-600">
-								<Truck className="mr-1 inline h-3.5 w-3.5 text-emerald-600" />
-								{c.name}
-							</span>
-							<span className="font-bold text-slate-700">
-								{c.delivered}/{c.total} — {c.pct}%
-							</span>
-						</div>
-						<div className="h-1.5 overflow-hidden rounded-full bg-slate-100">
-							<div
-								className={`h-full rounded-full ${
-									c.pct >= 80
-										? "bg-emerald-500"
-										: c.pct >= 65
-											? "bg-amber-500"
-											: "bg-rose-500"
-								}`}
-								style={{ width: `${c.pct}%` }}
-							/>
-						</div>
-					</div>
-				))}
 			</div>
-
-			{/* Risk footer */}
-			<div className="flex items-center justify-between rounded-b-2xl bg-gradient-to-r from-amber-50 to-orange-50 px-5 py-3.5 ring-1 ring-amber-100">
-				<span className="flex items-center gap-2 text-xs font-bold text-amber-700">
-					<ShieldAlert className="h-4 w-4" /> রিস্ক লেভেল
-				</span>
-				<span className="rounded-full bg-amber-500 px-3 py-1 text-[11px] font-bold text-white shadow-sm">
-					মাঝারি ঝুঁকি
-				</span>
-			</div>
-
-			{compact && (
-				<div className="mt-4 rounded-xl bg-emerald-50 p-4 ring-1 ring-emerald-100">
-					<p className="text-xs font-semibold text-emerald-800">
-						💡 ৮০%-এর কম সাকসেস রেশিওর কাস্টমারকে COD পাঠানোর আগে সতর্ক হোন — কুরিয়ার ফি
-						আপনাকেই বহন করতে হতে পারে।
-					</p>
-				</div>
-			)}
 		</div>
 	);
 }
+
+/* ------------------------------------------------------------------ */
+/* Hero                                                                */
+/* ------------------------------------------------------------------ */
 
 function Hero() {
 	return (
-		<section id="hero" className="relative overflow-hidden">
-			{/* Animated blobs */}
+		<section id="hero" className="relative overflow-hidden bg-[#f4faf6]">
 			<div aria-hidden className="pointer-events-none absolute inset-0">
-				<div className="absolute -left-24 -top-24 h-96 w-96 rounded-full bg-emerald-300/40 blur-3xl animate-blob" />
-				<div className="absolute -right-24 top-10 h-96 w-96 rounded-full bg-teal-300/40 blur-3xl animate-blob [animation-delay:2s]" />
-				<div className="absolute bottom-0 left-1/3 h-80 w-80 rounded-full bg-emerald-200/50 blur-3xl animate-blob [animation-delay:4s]" />
+				<div className="absolute -left-40 -top-52 h-[34rem] w-[34rem] rounded-full bg-emerald-200/40 blur-3xl" />
+				<div className="absolute -right-48 top-20 h-[30rem] w-[30rem] rounded-full bg-teal-100/70 blur-3xl" />
+				<div className="absolute inset-0 opacity-30 [background-image:linear-gradient(rgba(15,107,77,0.06)_1px,transparent_1px),linear-gradient(90deg,rgba(15,107,77,0.06)_1px,transparent_1px)] [background-size:44px_44px] [mask-image:linear-gradient(to_bottom,black,transparent_85%)]" />
 			</div>
 
-			<div className="maxw relative z-10 px-4 pt-16 pb-24 sm:px-6 lg:px-8">
-				<div className="text-center">
-					{/* Trust badge */}
-					<div className="mb-8 inline-flex items-center gap-2 rounded-full border border-emerald-100 bg-white/70 px-4 py-2 shadow-sm backdrop-blur">
-						<span className="relative flex h-2.5 w-2.5">
-							<span className="absolute inline-flex h-full w-full animate-ping rounded-full bg-emerald-400 opacity-75" />
-							<span className="relative inline-flex h-2.5 w-2.5 rounded-full bg-emerald-500" />
-						</span>
-						<span className="text-sm font-semibold text-slate-600">
-							🔥 ৫,০০০+ ই-কমার্স ব্যবসা আমাদের ব্যবহার করছে
-						</span>
-					</div>
-
-					<h1 className="mx-auto max-w-4xl text-4xl font-extrabold leading-tight tracking-tight text-slate-900 sm:text-5xl md:text-6xl">
-						পার্সেল পাঠানোর আগে{" "}
-						<span className="gradient-text pb-1">কাস্টমারকে চিনে নিন</span>
-					</h1>
-
-					<p className="mx-auto mt-6 max-w-2xl text-lg leading-relaxed text-slate-600 md:text-xl">
-						ক্যাশ অন ডেলিভারি পাঠানোর আগে মোবাইল নাম্বার দিয়ে চেক করুন — কাস্টমারের কুরিয়ার
-						হিস্ট্রি, ডেলিভারি রেট আর সাকসেস রেশিও। এড়িয়ে যান অপ্রয়োজনীয় কুরিয়ার খরচ।
-					</p>
-
-					{/* Feature chips */}
-					<div className="mt-8 flex flex-wrap items-center justify-center gap-3">
-						{heroChips.map((chip) => (
-							<div
-								key={chip.label}
-								className={`flex cursor-default items-center gap-2 rounded-2xl px-4 py-2.5 text-sm font-bold shadow-sm transition-all hover:-translate-y-0.5 hover:shadow-md ${chip.accent}`}
-							>
-								<chip.icon className="h-4 w-4" />
-								{chip.label}
-							</div>
-						))}
-					</div>
-
-					{/* Search */}
-					<div className="mt-10 animate-fade-in-up">
-						<PhoneSearch />
-					</div>
-
-					{/* Report mockup with floating cards */}
-					<div className="relative mx-auto mt-20 max-w-xl">
-						<div className="overflow-hidden rounded-2xl bg-white shadow-2xl shadow-emerald-900/15 ring-1 ring-slate-100">
-							<ReportCardMock />
+			<div className="maxw relative z-10 px-4 pb-20 pt-14 sm:px-6 md:pb-28 md:pt-20 lg:px-8 lg:pt-24">
+				<div className="grid items-center gap-14 lg:grid-cols-[0.92fr_1.08fr] lg:gap-16">
+					<div className="max-w-xl">
+						<div className="mb-6 inline-flex items-center gap-2 rounded-full border border-emerald-200 bg-white/80 px-3.5 py-2 text-xs font-bold text-emerald-800 shadow-sm backdrop-blur">
+							<span className="flex h-5 w-5 items-center justify-center rounded-full bg-emerald-100 text-emerald-700">
+								<Sparkles className="h-3 w-3" />
+							</span>
+							প্রতিদিন ৫টি সার্চ সম্পূর্ণ ফ্রি
 						</div>
-
-						{/* Floating stat cards */}
-						<div
-							className="absolute -right-3 -top-8 hidden animate-bounce rounded-xl bg-white p-3 shadow-xl ring-1 ring-slate-100 sm:block md:-right-10"
-							style={{ animationDuration: "3s" }}
-						>
-							<div className="flex items-center gap-2.5">
-								<span className="flex h-9 w-9 items-center justify-center rounded-lg bg-emerald-100 text-emerald-700">
-									<TrendingUp className="h-5 w-5" />
-								</span>
-								<div>
-									<p className="text-[10px] font-bold uppercase tracking-wider text-slate-400">
-										সাকসেস রেশিও
-									</p>
-									<p className="text-sm font-extrabold text-slate-800">৮০%</p>
-								</div>
-							</div>
+						<h1 className="text-4xl font-extrabold leading-[1.14] tracking-tight text-[#102d27] sm:text-5xl lg:text-[3.65rem]">
+							একটি ভুল COD অর্ডার আপনার{" "}
+							<span className="gradient-text">লাভ খেয়ে ফেলতে পারে</span>
+						</h1>
+						<p className="mt-6 max-w-lg text-lg leading-relaxed text-slate-600 md:text-xl">
+							পার্সেল পাঠানোর আগে কাস্টমারের কুরিয়ার ইতিহাস দেখে নিন। রিসিভ রেট কম হলে আগে
+							থেকেই সতর্ক হোন, কুরিয়ার খরচ বাঁচান, লাভ ধরে রাখুন।
+						</p>
+						<div className="mt-7 flex flex-wrap items-center gap-4 text-sm font-semibold text-slate-600">
+							<span className="flex items-center gap-2">
+								<CheckCircle2 className="h-4 w-4 text-emerald-600" /> রেজিস্ট্রেশন
+								ছাড়াই শুরু
+							</span>
+							<span className="flex items-center gap-2">
+								<CheckCircle2 className="h-4 w-4 text-emerald-600" /> ১ সেকেন্ডে
+								রিপোর্ট
+							</span>
 						</div>
-						<div
-							className="absolute -bottom-8 -left-3 hidden animate-bounce rounded-xl bg-white p-3 shadow-xl ring-1 ring-slate-100 sm:block md:-left-10"
-							style={{ animationDuration: "4s" }}
-						>
-							<div className="flex items-center gap-2.5">
-								<span className="flex h-9 w-9 items-center justify-center rounded-lg bg-teal-100 text-teal-700">
-									<Zap className="h-5 w-5" />
-								</span>
-								<div>
-									<p className="text-[10px] font-bold uppercase tracking-wider text-slate-400">
-										রেজাল্ট টাইম
-									</p>
-									<p className="text-sm font-extrabold text-slate-800">
-										&lt; ১ সেকেন্ড
-									</p>
-								</div>
-							</div>
+						<div className="mt-9">
+							<SearchDemo />
+						</div>
+						<div className="mt-5 flex items-center gap-3 text-xs font-medium text-slate-500">
+							<div className="flex -space-x-2">
+								{[
+									"bg-emerald-600",
+									"bg-teal-600",
+									"bg-amber-500",
+									"bg-slate-700",
+								].map((color, index) => (
+									<span
+										key={color}
+										className={`flex h-7 w-7 items-center justify-center rounded-full border-2 border-[#f4faf6] ${color} text-[9px] font-bold text-white`}
+									>
+										{["RA", "SH", "MK", "+"][index]}
+									</span>
+								))}
+							</div>{" "}
+							<span>
+								<strong className="text-slate-700">UI preview</strong> ·
+								verified users-এর সংখ্যা launch-এর পরে আপডেট হবে
+							</span>
 						</div>
 					</div>
 
-					{/* Stats */}
-					<div className="mx-auto mt-24 grid max-w-3xl grid-cols-1 gap-4 sm:grid-cols-3">
-						{heroStats.map((stat) => (
-							<div
-								key={stat.label}
-								className="rounded-2xl border border-white/60 bg-white/60 px-6 py-5 backdrop-blur transition-all hover:-translate-y-0.5 hover:bg-white/80"
-							>
-								<p className="text-2xl font-extrabold text-slate-900 md:text-3xl">
-									{stat.value}
+					<div className="relative lg:pl-2">
+						<MiniDashboard large />{" "}
+						<div className="absolute -bottom-6 -left-4 hidden items-center gap-3 rounded-2xl border border-white bg-white p-3.5 shadow-xl sm:flex lg:-left-10">
+							<span className="flex h-10 w-10 items-center justify-center rounded-xl bg-emerald-100 text-emerald-700">
+								<TrendingDown className="h-5 w-5" />
+							</span>
+							<div>
+								<p className="text-[10px] font-semibold text-slate-400">
+									সম্ভাব্য সাশ্রয় (উদাহরণ)
 								</p>
-								<p className="mt-1 text-sm font-medium text-slate-500">
-									{stat.label}
+								<p className="text-lg font-extrabold text-slate-900">
+									৳ ৪২,৮০০
 								</p>
 							</div>
-						))}
+						</div>
+						<div className="absolute -right-3 -top-6 hidden items-center gap-2.5 rounded-2xl border border-white bg-white px-4 py-3 shadow-xl sm:flex lg:-right-8">
+							<span className="flex h-8 w-8 items-center justify-center rounded-lg bg-amber-100 text-amber-700">
+								<ShieldAlert className="h-4 w-4" />
+							</span>
+							<div>
+								<p className="text-[10px] font-semibold text-slate-400">
+									ঝুঁকিপূর্ণ অর্ডার
+								</p>
+								<p className="text-sm font-extrabold text-slate-900">
+									আগেই শনাক্ত
+								</p>
+							</div>
+						</div>
 					</div>
+				</div>
+
+				<div className="mt-20 grid grid-cols-2 gap-px overflow-hidden rounded-2xl border border-emerald-100 bg-emerald-100 sm:grid-cols-4">
+					{[
+						{ value: "৫টি", label: "প্রতিদিন ফ্রি সার্চ" },
+						{ value: "৫০+", label: "কুরিয়ার ডেটা" },
+						{ value: "১ সেকেন্ড", label: "রিপোর্ট টাইম" },
+						{ value: "৳১,৮০০+", label: "সম্ভাব্য সাশ্রয় (উদাহরণ)" },
+					].map((item) => (
+						<div
+							key={item.label}
+							className="bg-white/80 px-4 py-5 text-center backdrop-blur sm:px-6"
+						>
+							<p className="text-2xl font-extrabold text-[#102d27]">
+								{item.value}
+							</p>
+							<p className="mt-1 text-xs font-medium text-slate-500">
+								{item.label}
+							</p>
+						</div>
+					))}
 				</div>
 			</div>
 		</section>
@@ -351,49 +450,99 @@ function Hero() {
 }
 
 /* ------------------------------------------------------------------ */
-/* Courier marquee                                                     */
+/* Business outcome                                                    */
 /* ------------------------------------------------------------------ */
 
-const couriers = [
-	"পাথাও",
-	"স্টেডফাস্ট",
-	"RedX",
-	"সান্দারবান কুরিয়ার",
-	"eCourier",
-	"পেপারফ্লাই",
-	"করতোয়া",
-	"SA Paribahan",
-	"এক্সপ্রেস",
-	"আলফা",
-];
-
-function CourierMarquee() {
-	const items = [0, 1].flatMap((dup) =>
-		couriers.map((c) => ({ id: `${dup}-${c}`, name: c })),
-	);
+function BusinessOutcome() {
 	return (
-		<section className="border-y border-slate-100 bg-white/60 py-10 backdrop-blur">
-			<div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
-				<p className="mb-6 text-center text-xs font-bold uppercase tracking-[0.2em] text-slate-400">
-					বিশ্বস্ত কুরিয়ার পার্টনারদের হিস্ট্রি এক জায়গায়
-				</p>
-			</div>
-			<div className="relative overflow-hidden">
-				<div className="flex w-max animate-marquee items-center">
-					{items.map((c) => (
-						<div
-							key={c.id}
-							className="flex shrink-0 items-center gap-2 pr-10 text-slate-400 transition-colors hover:text-emerald-600"
+		<section className="section-pad bg-[#102d27] text-white">
+			<div className="maxw px-4 sm:px-6 lg:px-8">
+				<div className="grid items-end gap-10 lg:grid-cols-[0.9fr_1.1fr]">
+					<div>
+						<p className="text-xs font-bold uppercase tracking-[0.2em] text-emerald-300">
+							আপনার লাভের হিসাব
+						</p>
+						<h2 className="mt-4 max-w-xl text-3xl font-extrabold leading-tight sm:text-4xl">
+							কুরিয়ার ফি কমলেই লাভ বাড়ে — হিসাবটা এতই সহজ
+						</h2>
+						<p className="mt-5 max-w-lg text-base leading-relaxed text-emerald-50/65">
+							একজন কাস্টমার পার্সেল না নিলে পণ্যের লাভ তো যায়ই, সঙ্গে যোগ হয় ডেলিভারি ও
+							রিটার্ন চার্জ। কুরিয়ারবাইট সেই সিদ্ধান্তটা অর্ডার পাঠানোর আগেই সহজ করে।
+						</p>
+						<a
+							href="#pricing"
+							className="mt-8 inline-flex items-center gap-2 rounded-xl bg-white px-5 py-3.5 text-sm font-bold text-[#0f6b4d] transition hover:-translate-y-0.5 hover:bg-emerald-50"
 						>
-							<Truck className="h-5 w-5" />
-							<span className="whitespace-nowrap text-lg font-bold">
-								{c.name}
-							</span>
+							কোন প্যাকেজ আমার জন্য? <ArrowRight className="h-4 w-4" />
+						</a>
+					</div>
+					<div className="grid gap-3 sm:grid-cols-3">
+						<div className="rounded-2xl border border-rose-300/15 bg-rose-300/[0.07] p-5">
+							<div className="flex items-center justify-between">
+								<span className="text-xs font-bold text-rose-200/70">
+									চেক না করলে (উদাহরণ)
+								</span>
+								<TrendingDown className="h-4 w-4 text-rose-300" />
+							</div>
+							<p className="mt-4 text-3xl font-extrabold text-white">-৳ ৩৫০</p>
+							<p className="mt-2 text-xs leading-relaxed text-rose-100/55">
+								প্রতি রিটার্নে পণ্য পাঠানো, ডেলিভারি ও রিটার্ন খরচ
+							</p>
 						</div>
-					))}
+						<div className="flex items-center justify-center sm:-mx-1">
+							<ArrowRight className="hidden h-5 w-5 text-emerald-300 sm:block" />
+							<ArrowDownRight className="h-5 w-5 text-emerald-300 sm:hidden" />
+						</div>
+						<div className="rounded-2xl border border-emerald-300/20 bg-emerald-300/[0.09] p-5">
+							<div className="flex items-center justify-between">
+								<span className="text-xs font-bold text-emerald-200/80">
+									চেক করলে (উদাহরণ)
+								</span>
+								<TrendingUp className="h-4 w-4 text-emerald-300" />
+							</div>
+							<p className="mt-4 text-3xl font-extrabold text-emerald-300">
+								+৳ ৩৫০
+							</p>
+							<p className="mt-2 text-xs leading-relaxed text-emerald-100/60">
+								ঝুঁকিপূর্ণ অর্ডার আগে বুঝে, সঠিক কাস্টমারে ফোকাস
+							</p>
+						</div>
+					</div>
 				</div>
-				<div className="pointer-events-none absolute inset-y-0 left-0 w-24 bg-gradient-to-r from-white to-transparent" />
-				<div className="pointer-events-none absolute inset-y-0 right-0 w-24 bg-gradient-to-l from-white to-transparent" />
+				<div className="mt-12 grid gap-4 border-t border-white/10 pt-8 sm:grid-cols-3">
+					{[
+						{
+							icon: CircleDollarSign,
+							title: "রিটার্ন খরচ কমে",
+							desc: "প্রতিটি এড়ানো রিটার্ন সরাসরি আপনার লাভে যোগ হয়",
+						},
+						{
+							icon: Target,
+							title: "সঠিক কাস্টমারে ফোকাস",
+							desc: "ডেটা দেখে অর্ডার কনফার্মেশন ও COD সিদ্ধান্ত নিন",
+						},
+						{
+							icon: RefreshCw,
+							title: "বিক্রির গতি বাড়ে",
+							desc: "কম রিটার্ন, কম সময় নষ্ট — বেশি অর্ডার সামলান",
+						},
+					].map((item) => {
+						const Icon = item.icon;
+						return (
+							<div key={item.title} className="flex gap-3">
+								<span className="flex h-9 w-9 shrink-0 items-center justify-center rounded-lg bg-white/10 text-emerald-300">
+									<Icon className="h-4 w-4" />
+								</span>
+								<div>
+									<p className="text-sm font-bold text-white">{item.title}</p>
+									<p className="mt-1 text-xs leading-relaxed text-emerald-50/55">
+										{item.desc}
+									</p>
+								</div>
+							</div>
+						);
+					})}
+				</div>
 			</div>
 		</section>
 	);
@@ -405,22 +554,22 @@ function CourierMarquee() {
 
 const steps = [
 	{
+		number: "০১",
 		icon: Search,
-		step: "০১",
-		title: "মোবাইল নাম্বার দিন",
-		desc: "কাস্টমারের ১১ সংখ্যার মোবাইল নাম্বারটি সার্চ বক্সে বসান। কোনো রেজিস্ট্রেশন লাগবে না।",
+		title: "অর্ডার আসলেই নাম্বার দিন",
+		desc: "কাস্টমারের মোবাইল নাম্বারটি লিখুন। কোনো রেজিস্ট্রেশন ছাড়াই প্রথম ৫টি সার্চ ফ্রি।",
 	},
 	{
+		number: "০২",
 		icon: BarChart3,
-		step: "০২",
-		title: "কুরিয়ার হিস্ট্রি দেখুন",
-		desc: "বিভিন্ন কুরিয়ার থেকে নেওয়া মোট পার্সেল, ডেলিভারি ও ক্যানসেল কাউন্ট এক নজরে পান।",
+		title: "রিপোর্টে ঝুঁকি বুঝুন",
+		desc: "ডেলিভারি, ক্যানসেল, কুরিয়ারভিত্তিক ইতিহাস ও সাকসেস রেশিও এক স্ক্রিনে দেখুন।",
 	},
 	{
+		number: "০৩",
 		icon: ShieldCheck,
-		step: "০৩",
-		title: "স্মার্ট সিদ্ধান্ত নিন",
-		desc: "সাকসেস রেশিও দেখে নিশ্চিত হয়ে দিন — COD পাঠাবেন নাকি এড়িয়ে যাবেন, নিজেই ঠিক করুন।",
+		title: "লাভের সিদ্ধান্ত নিন",
+		desc: "COD পাঠাবেন, কনফার্মেশন কল করবেন নাকি অগ্রিম নেবেন — ডেটা দেখে ঠিক করুন।",
 	},
 ];
 
@@ -428,126 +577,214 @@ function HowItWorks() {
 	return (
 		<section id="how" className="section-pad">
 			<div className="maxw px-4 sm:px-6 lg:px-8">
-				<div className="text-center">
-					<span className="inline-flex items-center gap-1.5 rounded-full bg-emerald-100 px-4 py-1.5 text-sm font-bold text-emerald-700">
-						<Sparkles className="h-4 w-4" /> কিভাবে কাজ করে
-					</span>
-					<h2 className="mt-4 text-3xl font-extrabold tracking-tight text-slate-900 md:text-4xl">
-						মাত্র ৩টি ধাপে নিশ্চিন্ত ব্যবসা
+				<div className="max-w-2xl">
+					<p className="text-xs font-bold uppercase tracking-[0.2em] text-emerald-700">
+						সহজ workflow
+					</p>
+					<h2 className="mt-3 text-3xl font-extrabold tracking-tight text-slate-900 sm:text-4xl">
+						অর্ডার থেকে সিদ্ধান্ত — এক মিনিটেরও কম সময়ে
 					</h2>
-					<p className="mx-auto mt-4 max-w-2xl text-lg text-slate-600">
-						অগ্রিম টাকা ছাড়া পার্সেল পাঠানোর ঝুঁকি বুঝতে যা লাগে, সবই পাবেন কয়েক সেকেন্ডে।
+					<p className="mt-4 text-lg leading-relaxed text-slate-600">
+						আপনার টিমকে অনুমান করে নয়, তথ্য দেখে সিদ্ধান্ত নেওয়ার অভ্যাস দিন।
 					</p>
 				</div>
-
-				<div className="relative mt-14 grid gap-8 md:grid-cols-3">
+				<div className="relative mt-12 grid gap-5 md:grid-cols-3">
 					<div
 						aria-hidden
-						className="absolute left-[16%] right-[16%] top-10 hidden border-t-2 border-dashed border-emerald-200 md:block"
+						className="absolute left-[16%] right-[16%] top-9 hidden border-t border-dashed border-emerald-200 md:block"
 					/>
-					{steps.map((s) => (
-						<div
-							key={s.step}
-							className="group relative rounded-2xl border border-slate-100 bg-white p-8 text-center shadow-sm transition-all hover:-translate-y-1.5 hover:shadow-xl"
-						>
-							<div className="relative mx-auto flex h-20 w-20 items-center justify-center rounded-2xl bg-gradient-to-br from-emerald-600 to-teal-600 text-white shadow-lg shadow-emerald-600/30 transition-transform group-hover:scale-110">
-								<s.icon className="h-9 w-9" />
-								<span className="absolute -right-2 -top-2 flex h-7 w-7 items-center justify-center rounded-full bg-white text-xs font-extrabold text-emerald-700 shadow ring-1 ring-emerald-200">
-									{s.step}
+					{steps.map((step) => {
+						const Icon = step.icon;
+						return (
+							<div
+								key={step.number}
+								className="relative rounded-2xl border border-slate-200/80 bg-white p-7 shadow-sm transition-all hover:-translate-y-1 hover:shadow-xl"
+							>
+								<div className="relative flex h-16 w-16 items-center justify-center rounded-2xl bg-emerald-50 text-emerald-700">
+									<Icon className="h-7 w-7" />
+									<span className="absolute -right-2 -top-2 flex h-6 w-6 items-center justify-center rounded-full bg-[#0f6b4d] text-[10px] font-extrabold text-white ring-4 ring-white">
+										{step.number}
+									</span>
+								</div>
+								<h3 className="mt-6 text-lg font-extrabold text-slate-900">
+									{step.title}
+								</h3>
+								<p className="mt-2 text-sm leading-relaxed text-slate-500">
+									{step.desc}
+								</p>
+							</div>
+						);
+					})}
+				</div>
+			</div>
+		</section>
+	);
+}
+
+/* ------------------------------------------------------------------ */
+/* Feature showcase                                                    */
+/* ------------------------------------------------------------------ */
+
+const valueFeatures = [
+	{
+		icon: PackageSearch,
+		tag: "01 · ঝুঁকি বোঝা",
+		title: "প্রতিটি কাস্টমারের জন্য একটি পরিষ্কার উত্তর",
+		desc: "শুধু ‘ভালো’ বা ‘খারাপ’ নয় — কোন কুরিয়ারে কতবার নিয়েছে, কতবার রিসিভ করেছে, কোথায় সমস্যা হয়েছে সব দেখুন।",
+		points: [
+			"মোট অর্ডার বনাম সফল ডেলিভারি",
+			"ক্যানসেল ও রিটার্নের ইতিহাস",
+			"সহজ Risk level ও action hint",
+		],
+	},
+	{
+		icon: WalletCards,
+		tag: "02 · লাভ রক্ষা",
+		title: "রিপোর্ট শুধু তথ্য নয় — টাকার সিদ্ধান্ত",
+		desc: "একটি রিটার্নে কত খরচ হতে পারে, সেই হিসাব মাথায় রেখেই আপনার টিমকে পরবর্তী পদক্ষেপ বুঝিয়ে দিন।",
+		points: [
+			"সম্ভাব্য লোকসানের ইঙ্গিত",
+			"সাকসেস রেশিও দেখে COD সিদ্ধান্ত",
+			"অর্ডার কনফার্মেশন workflow",
+		],
+	},
+];
+
+function SavingsBoard() {
+	return (
+		<div className="relative w-full max-w-[550px]">
+			<div className="absolute -inset-5 rounded-[2rem] bg-amber-200/50 blur-2xl" />
+			<div className="relative overflow-hidden rounded-[1.35rem] border border-slate-200 bg-white p-5 shadow-[0_24px_70px_rgba(15,53,42,0.14)] sm:p-6">
+				<div className="flex items-center justify-between border-b border-slate-100 pb-4">
+					<div className="flex items-center gap-3">
+						<span className="flex h-10 w-10 items-center justify-center rounded-xl bg-amber-100 text-amber-700">
+							<WalletCards className="h-5 w-5" />
+						</span>
+						<div>
+							<p className="text-[10px] font-bold uppercase tracking-[0.16em] text-slate-400">
+								Business impact
+							</p>
+							<p className="mt-1 text-sm font-extrabold text-slate-900">
+								লাভের হিসাব
+							</p>
+						</div>
+					</div>
+					<span className="rounded-full bg-emerald-50 px-2.5 py-1 text-[10px] font-bold text-emerald-700">
+						UI preview
+					</span>
+				</div>
+				<div className="mt-5 grid grid-cols-2 gap-3">
+					<div className="rounded-xl bg-slate-50 p-4">
+						<p className="text-[10px] font-semibold text-slate-400">
+							চেক না করলে
+						</p>
+						<p className="mt-2 text-2xl font-extrabold text-rose-500">-৳ ৩৫০</p>
+						<p className="mt-1 text-[10px] text-slate-500">সম্ভাব্য রিটার্ন খরচ</p>
+					</div>
+					<div className="rounded-xl bg-emerald-50 p-4">
+						<p className="text-[10px] font-semibold text-emerald-700/60">
+							চেক করলে
+						</p>
+						<p className="mt-2 text-2xl font-extrabold text-emerald-700">
+							+৳ ৩৫০
+						</p>
+						<p className="mt-1 text-[10px] text-emerald-700/60">লাভ রক্ষার সুযোগ</p>
+					</div>
+				</div>
+				<div className="mt-5 rounded-xl border border-slate-100 p-4">
+					<div className="flex items-center justify-between">
+						<p className="text-xs font-extrabold text-slate-800">
+							মাসিক রিটার্ন কমানোর সম্ভাবনা
+						</p>
+						<TrendingDown className="h-4 w-4 text-emerald-600" />
+					</div>
+					<div className="mt-5 flex h-28 items-end gap-2 sm:gap-3">
+						{[
+							{ day: "শনি", height: 42 },
+							{ day: "রবি", height: 58 },
+							{ day: "সোম", height: 47 },
+							{ day: "মঙ্গল", height: 72 },
+							{ day: "বুধ", height: 66 },
+							{ day: "বৃহঃ", height: 88 },
+							{ day: "শুক্র", height: 79 },
+						].map((bar) => (
+							<div
+								key={bar.day}
+								className="flex flex-1 flex-col items-center gap-2"
+							>
+								<div
+									className={`w-full rounded-t-md ${bar.day === "শুক্র" ? "bg-emerald-500" : "bg-emerald-100"}`}
+									style={{ height: `${bar.height}%` }}
+								/>
+								<span className="text-[9px] font-medium text-slate-400">
+									{bar.day}
 								</span>
 							</div>
-							<h3 className="mt-6 text-xl font-bold text-slate-900">
-								{s.title}
-							</h3>
-							<p className="mt-3 text-sm leading-relaxed text-slate-500">
-								{s.desc}
-							</p>
-						</div>
-					))}
+						))}
+					</div>
+				</div>
+				<div className="mt-4 flex items-center gap-2 rounded-xl bg-emerald-50 px-3 py-3 text-[11px] font-bold text-emerald-800">
+					<Target className="h-4 w-4 shrink-0 text-emerald-600" /> প্রতিটি সঠিক
+					সিদ্ধান্ত আপনার margin রক্ষা করে
 				</div>
 			</div>
-		</section>
+		</div>
 	);
 }
 
-/* ------------------------------------------------------------------ */
-/* Features                                                            */
-/* ------------------------------------------------------------------ */
-
-const features = [
-	{
-		icon: PackageSearch,
-		title: "মোবাইল নাম্বার সার্চ",
-		desc: "শুধু একটি মোবাইল নাম্বার দিয়েই কাস্টমারের সম্পূর্ণ পার্সেল হিস্ট্রি বের করে আনুন।",
-		accent: "bg-emerald-100 text-emerald-700",
-	},
-	{
-		icon: BarChart3,
-		title: "কুরিয়ার হিস্ট্রি",
-		desc: "পাথাও, স্টেডফাস্ট, RedX — সব কুরিয়ারে নেওয়া পার্সেলের পূর্ণাঙ্গ হিস্ট্রি এক জায়গায়।",
-		accent: "bg-teal-100 text-teal-700",
-	},
-	{
-		icon: TrendingUp,
-		title: "সাকসেস রেশিও",
-		desc: "কতটি পার্সেল কাস্টমার রিসিভ করেছে, কতটি ক্যানসেল করেছে — শতকরা হারে দেখুন।",
-		accent: "bg-emerald-100 text-emerald-700",
-	},
-	{
-		icon: Gauge,
-		title: "রিস্ক স্কোর",
-		desc: "কাস্টমারের নির্ভরযোগ্যতা একটি সহজ স্কোরে — বোঝা সহজ, সিদ্ধান্ত নেওয়া দ্রুত।",
-		accent: "bg-amber-100 text-amber-700",
-	},
-	{
-		icon: Network,
-		title: "মাল্টি-কুরিয়ার সাপোর্ট",
-		desc: "৫০+ কুরিয়ার পার্টনারের ডেটা এক প্ল্যাটফর্মে — এক চেকেই সব জানুন।",
-		accent: "bg-teal-100 text-teal-700",
-	},
-	{
-		icon: Zap,
-		title: "ইনস্ট্যান্ট রেজাল্ট",
-		desc: "১ সেকেন্ডেরও কম সময়ে রেজাল্ট — অর্ডার আসার সাথে সাথে চেক করুন।",
-		accent: "bg-emerald-100 text-emerald-700",
-	},
-];
-
-function Features() {
+function FeatureShowcase() {
 	return (
-		<section id="features" className="section-pad bg-white/60">
+		<section id="features" className="section-pad bg-[#f4faf6]">
 			<div className="maxw px-4 sm:px-6 lg:px-8">
 				<div className="text-center">
-					<span className="inline-flex items-center gap-1.5 rounded-full bg-emerald-100 px-4 py-1.5 text-sm font-bold text-emerald-700">
-						<Sparkles className="h-4 w-4" /> ফিচারসমূহ
-					</span>
-					<h2 className="mt-4 text-3xl font-extrabold tracking-tight text-slate-900 md:text-4xl">
-						COD লোকসান কমানোর পূর্ণাঙ্গ সমাধান
+					<p className="text-xs font-bold uppercase tracking-[0.2em] text-emerald-700">
+						আপনার ব্যবসায় বাস্তব প্রভাব
+					</p>
+					<h2 className="mt-3 text-3xl font-extrabold tracking-tight text-slate-900 sm:text-4xl">
+						ফিচার দেখানোর জন্য নয়,
+						<br className="hidden sm:block" /> সিদ্ধান্ত বদলানোর জন্য তৈরি
 					</h2>
 					<p className="mx-auto mt-4 max-w-2xl text-lg text-slate-600">
-						যে তথ্যগুলো আগে জানতে চাইতেন, এখন সেগুলো পাবেন এক ক্লিকে।
+						একটি সুন্দর ড্যাশবোর্ডের পেছনে আছে আপনার সময়, পণ্য ও লাভ রক্ষার একটি নির্দিষ্ট
+						workflow।
 					</p>
 				</div>
-
-				<div className="mt-14 grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
-					{features.map((f) => (
-						<div
-							key={f.title}
-							className="group rounded-2xl border border-slate-100 bg-white p-7 shadow-sm transition-all hover:-translate-y-1.5 hover:shadow-xl"
-						>
+				<div className="mt-16 space-y-20">
+					{valueFeatures.map((feature, index) => {
+						const Icon = feature.icon;
+						return (
 							<div
-								className={`flex h-12 w-12 items-center justify-center rounded-xl ${f.accent} transition-transform group-hover:scale-110`}
+								key={feature.tag}
+								className={`grid items-center gap-12 lg:grid-cols-2 ${index % 2 === 1 ? "lg:[&>div:first-child]:order-2" : ""}`}
 							>
-								<f.icon className="h-6 w-6" />
+								<div>
+									<span className="inline-flex items-center gap-2 rounded-full bg-white px-3.5 py-2 text-xs font-bold text-emerald-700 shadow-sm ring-1 ring-emerald-100">
+										<Icon className="h-3.5 w-3.5" /> {feature.tag}
+									</span>
+									<h3 className="mt-5 text-3xl font-extrabold leading-tight text-slate-900">
+										{feature.title}
+									</h3>
+									<p className="mt-4 max-w-lg text-base leading-relaxed text-slate-600">
+										{feature.desc}
+									</p>
+									<ul className="mt-7 space-y-3">
+										{feature.points.map((point) => (
+											<li
+												key={point}
+												className="flex items-center gap-2.5 text-sm font-semibold text-slate-700"
+											>
+												<CheckCircle2 className="h-5 w-5 text-emerald-600" />{" "}
+												{point}
+											</li>
+										))}
+									</ul>
+								</div>
+								<div className="relative">
+									{index === 0 ? <MiniDashboard /> : <SavingsBoard />}
+								</div>
 							</div>
-							<h3 className="mt-5 text-lg font-bold text-slate-900">
-								{f.title}
-							</h3>
-							<p className="mt-2 text-sm leading-relaxed text-slate-500">
-								{f.desc}
-							</p>
-						</div>
-					))}
+						);
+					})}
 				</div>
 			</div>
 		</section>
@@ -555,148 +792,100 @@ function Features() {
 }
 
 /* ------------------------------------------------------------------ */
-/* Report preview                                                      */
+/* Freemium model                                                      */
 /* ------------------------------------------------------------------ */
 
-const reportBullets = [
-	{
-		icon: PackageSearch,
-		title: "মোট পার্সেল সংখ্যা",
-		desc: "এই নাম্বারে সব কুরিয়ারে মোট কতটি পার্সেল নেওয়া হয়েছে।",
-	},
-	{
-		icon: CheckCircle2,
-		title: "সফল ডেলিভারি",
-		desc: "কাস্টমার কতটি পার্সেল হাতে পেয়ে পেমেন্ট করেছেন।",
-	},
-	{
-		icon: XCircle,
-		title: "ক্যানসেল ও রিফিউজ",
-		desc: "কতটি পার্সেল নেননি বা ক্যানসেল করেছেন — সবচেয়ে বড় সতর্কতা।",
-	},
-	{
-		icon: TrendingUp,
-		title: "সাকসেস রেশিও",
-		desc: "ডেলিভারি বনাম ক্যানসেলের শতকরা হার — সিদ্ধান্তের মূল চাবিকাঠি।",
-	},
-];
-
-function ReportPreview() {
+function FreemiumSection() {
 	return (
-		<section id="report" className="section-pad">
+		<section id="free" className="section-pad">
 			<div className="maxw px-4 sm:px-6 lg:px-8">
-				<div className="grid items-center gap-14 lg:grid-cols-2">
-					<div>
-						<span className="inline-flex items-center gap-1.5 rounded-full bg-emerald-100 px-4 py-1.5 text-sm font-bold text-emerald-700">
-							<BarChart3 className="h-4 w-4" /> রিপোর্ট প্রিভিউ
-						</span>
-						<h2 className="mt-4 text-3xl font-extrabold tracking-tight text-slate-900 md:text-4xl">
-							এক নাম্বারেই <span className="gradient-text">সম্পূর্ণ ছবি</span>
-						</h2>
-						<p className="mt-4 text-lg leading-relaxed text-slate-600">
-							কুরিয়ারবাইট রিপোর্টে কাস্টমারের পার্সেল গ্রহণের পুরো ইতিহাস সাজানো থাকে — যা দেখে
-							আপনি নিশ্চিন্তে সিদ্ধান্ত নিতে পারবেন।
-						</p>
-
-						<ul className="mt-8 space-y-5">
-							{reportBullets.map((b) => (
-								<li key={b.title} className="flex items-start gap-4">
-									<span className="flex h-10 w-10 shrink-0 items-center justify-center rounded-xl bg-emerald-100 text-emerald-700">
-										<b.icon className="h-5 w-5" />
+				<div className="overflow-hidden rounded-[2rem] border border-emerald-200 bg-white shadow-[0_24px_80px_rgba(15,107,77,0.12)]">
+					<div className="grid lg:grid-cols-[1fr_0.9fr]">
+						<div className="bg-gradient-to-br from-[#e7f7ee] to-white p-7 sm:p-10 lg:p-14">
+							<span className="inline-flex items-center gap-2 rounded-full bg-emerald-600 px-3.5 py-2 text-xs font-bold text-white shadow-lg shadow-emerald-600/20">
+								<Sparkles className="h-3.5 w-3.5" /> Free forever শুরু করুন
+							</span>
+							<h2 className="mt-5 text-3xl font-extrabold leading-tight text-slate-900 sm:text-4xl">
+								আগে ব্যবহার করে দেখুন।
+								<br />
+								<span className="gradient-text">ভালো লাগলে তবেই আপগ্রেড করুন।</span>
+							</h2>
+							<p className="mt-5 max-w-lg text-base leading-relaxed text-slate-600">
+								প্রতিদিন ৫টি কাস্টমার চেক সম্পূর্ণ ফ্রি। কোনো কার্ড, কোনো commitment নেই।
+								আপনার ব্যবসায় এটি কতটা কাজে লাগে, নিজেই বুঝে নিন।
+							</p>
+							<div className="mt-8 grid gap-3 sm:grid-cols-2">
+								<div className="rounded-xl border border-emerald-100 bg-white p-4">
+									<p className="text-2xl font-extrabold text-emerald-700">
+										৫টি
+									</p>
+									<p className="mt-1 text-xs font-semibold text-slate-500">
+										প্রতিদিন ফ্রি সার্চ
+									</p>
+								</div>
+								<div className="rounded-xl border border-emerald-100 bg-white p-4">
+									<p className="text-2xl font-extrabold text-emerald-700">৳০</p>
+									<p className="mt-1 text-xs font-semibold text-slate-500">
+										শুরু করতে খরচ
+									</p>
+								</div>
+							</div>
+						</div>
+						<div className="bg-[#102d27] p-7 text-white sm:p-10 lg:p-14">
+							<div className="flex items-center justify-between">
+								<div>
+									<p className="text-xs font-bold uppercase tracking-[0.18em] text-emerald-300">
+										Free usage pass
+									</p>
+									<h3 className="mt-2 text-xl font-extrabold">আজকের ব্যবহার</h3>
+								</div>
+								<span className="flex h-11 w-11 items-center justify-center rounded-xl bg-emerald-400/15 text-emerald-300">
+									<Gauge className="h-5 w-5" />
+								</span>
+							</div>
+							<div className="mt-8 flex items-end justify-between">
+								<div>
+									<span className="text-5xl font-extrabold text-white">০</span>
+									<span className="ml-2 text-sm font-medium text-emerald-100/50">
+										/ ৫ সার্চ
+									</span>
+								</div>
+								<span className="rounded-full bg-emerald-400/10 px-3 py-1.5 text-xs font-bold text-emerald-300">
+									আজ ফ্রি
+								</span>
+							</div>
+							<div className="mt-5 flex gap-2">
+								{freeSearchDots.map((dot) => (
+									<div
+										key={dot}
+										className="h-2 flex-1 rounded-full bg-emerald-400"
+									/>
+								))}
+							</div>
+							<div className="mt-8 rounded-2xl border border-white/10 bg-white/[0.05] p-4">
+								<div className="flex items-start gap-3">
+									<span className="mt-0.5 flex h-8 w-8 shrink-0 items-center justify-center rounded-lg bg-amber-400/15 text-amber-300">
+										<Lock className="h-4 w-4" />
 									</span>
 									<div>
-										<h3 className="font-bold text-slate-900">{b.title}</h3>
-										<p className="mt-0.5 text-sm text-slate-500">{b.desc}</p>
+										<p className="text-sm font-bold text-white">
+											৫টির বেশি সার্চ দরকার?
+										</p>
+										<p className="mt-1 text-xs leading-relaxed text-emerald-50/60">
+											লগইন করে একটি প্যাকেজ নিলে আপনার পুরো টিম আরও বেশি কাস্টমার চেক
+											করতে পারবে।
+										</p>
 									</div>
-								</li>
-							))}
-						</ul>
-
-						<a
-							href="#hero"
-							className="group mt-9 inline-flex items-center gap-2 rounded-xl bg-gradient-to-r from-emerald-600 to-teal-600 px-7 py-3.5 font-bold text-white shadow-lg shadow-emerald-600/30 transition-all hover:-translate-y-0.5 hover:shadow-xl"
-						>
-							নিজেই চেক করে দেখুন
-							<ArrowRight className="h-5 w-5 transition-transform group-hover:translate-x-1" />
-						</a>
-					</div>
-
-					<div className="relative">
-						<div
-							aria-hidden
-							className="absolute -inset-4 rounded-3xl bg-gradient-to-br from-emerald-200/60 via-teal-100/60 to-transparent blur-xl"
-						/>
-						<div className="relative overflow-hidden rounded-2xl bg-white shadow-2xl shadow-emerald-900/15 ring-1 ring-slate-100">
-							<ReportCardMock compact />
-						</div>
-					</div>
-				</div>
-			</div>
-		</section>
-	);
-}
-
-/* ------------------------------------------------------------------ */
-/* Why choose us                                                       */
-/* ------------------------------------------------------------------ */
-
-const reasons = [
-	{
-		icon: Database,
-		value: "৯৯.৯%",
-		title: "আপটাইম গ্যারান্টি",
-		desc: "ক্লাউড বেসড নিরাপদ আর্কিটেকচার — ব্যবসার সময় সার্ভার ডাউন নিয়ে চিন্তা নেই।",
-	},
-	{
-		icon: Zap,
-		value: "< ১ সেকেন্ড",
-		title: "সুপার ফাস্ট রেজাল্ট",
-		desc: "লাইটওয়েট সিস্টেম — যে ইন্টারনেট স্পিডেই হোক, রেজাল্ট পাবেন তাৎক্ষণিক।",
-	},
-	{
-		icon: Headphones,
-		value: "২৪/৭",
-		title: "ডেডিকেটেড সাপোর্ট",
-		desc: "ফোন, ইমেইল বা লাইভ চ্যাট — যেকোনো সমস্যায় আমাদের টিম সবসময় পাশে।",
-	},
-];
-
-function WhyChooseUs() {
-	return (
-		<section id="why" className="section-pad bg-white/60">
-			<div className="maxw px-4 sm:px-6 lg:px-8">
-				<div className="text-center">
-					<span className="inline-flex items-center gap-1.5 rounded-full bg-emerald-100 px-4 py-1.5 text-sm font-bold text-emerald-700">
-						<ShieldCheck className="h-4 w-4" /> কেন কুরিয়ারবাইট
-					</span>
-					<h2 className="mt-4 text-3xl font-extrabold tracking-tight text-slate-900 md:text-4xl">
-						বিশ্বস্ততা ও গতি — দুটোই আমাদের স্ট্যান্ডার্ড
-					</h2>
-					<p className="mx-auto mt-4 max-w-2xl text-lg text-slate-600">
-						প্রযুক্তির সর্বোচ্চ ব্যবহার নিশ্চিত করে বানানো হয়েছে আপনার ব্যবসার জন্য।
-					</p>
-				</div>
-
-				<div className="mt-14 grid gap-6 md:grid-cols-3">
-					{reasons.map((r) => (
-						<div
-							key={r.title}
-							className="group relative overflow-hidden rounded-2xl border border-slate-100 bg-white p-8 text-center shadow-sm transition-all hover:-translate-y-1.5 hover:shadow-xl"
-						>
-							<div className="mx-auto flex h-14 w-14 items-center justify-center rounded-2xl bg-gradient-to-br from-emerald-600 to-teal-600 text-white shadow-lg shadow-emerald-600/25 transition-transform group-hover:scale-110">
-								<r.icon className="h-7 w-7" />
+								</div>
 							</div>
-							<p className="mt-5 text-3xl font-extrabold text-slate-900">
-								{r.value}
-							</p>
-							<h3 className="mt-1 text-lg font-bold text-emerald-700">
-								{r.title}
-							</h3>
-							<p className="mt-2 text-sm leading-relaxed text-slate-500">
-								{r.desc}
-							</p>
+							<a
+								href="#pricing"
+								className="mt-6 flex items-center justify-center gap-2 rounded-xl bg-emerald-400 px-5 py-3.5 text-sm font-extrabold text-[#102d27] transition hover:bg-emerald-300"
+							>
+								প্যাকেজগুলো দেখুন <ArrowRight className="h-4 w-4" />
+							</a>
 						</div>
-					))}
+					</div>
 				</div>
 			</div>
 		</section>
@@ -710,320 +899,281 @@ function WhyChooseUs() {
 const plans = [
 	{
 		name: "ফ্রি",
+		kicker: "শুরু করে দেখুন",
 		price: "৳০",
 		period: "চিরতরে",
-		desc: "নতুন ব্যবসার জন্য পারফেক্ট",
-		features: ["মাসে ১০টি চেক", "বেসিক রিপোর্ট", "সাকসেস রেশিও", "ইমেইল সাপোর্ট"],
+		description: "ব্যক্তিগতভাবে যাচাই করার জন্য",
+		features: [
+			"প্রতিদিন ৫টি সার্চ",
+			"বেসিক কাস্টমার রিপোর্ট",
+			"সাকসেস রেশিও",
+			"ডেটা প্রাইভেসি",
+		],
 		cta: "ফ্রিতে শুরু করুন",
 		popular: false,
 	},
 	{
-		name: "প্রো",
+		name: "গ্রো",
+		kicker: "বেশি অর্ডার, বেশি নিয়ন্ত্রণ",
 		price: "৳২৯৯",
 		period: "/মাস",
-		desc: "ব্যস্ত ই-কমার্সের জন্য সেরা",
+		description: "নিয়মিত অর্ডার নেওয়া ব্যবসার জন্য",
 		features: [
-			"মাসে ৫০০টি চেক",
-			"সম্পূর্ণ রিপোর্ট ও রিস্ক স্কোর",
+			"মাসে ৫০০টি সার্চ",
+			"সম্পূর্ণ রিস্ক স্কোর",
 			"কুরিয়ারভিত্তিক ব্রেকডাউন",
-			"এক্সপোর্ট সুবিধা",
+			"টিমের জন্য শেয়ারড অ্যাক্সেস",
 			"প্রায়োরিটি সাপোর্ট",
 		],
-		cta: "প্রো শুরু করুন",
+		cta: "গ্রো দিয়ে শুরু করুন",
 		popular: true,
 	},
 	{
 		name: "বিজনেস",
+		kicker: "পুরো টিমের জন্য",
 		price: "৳৯৯৯",
 		period: "/মাস",
-		desc: "বড় প্রতিষ্ঠানের জন্য কাস্টম",
+		description: "স্কেল করা ই-কমার্স অপারেশনের জন্য",
 		features: [
-			"আনলিমিটেড চেক",
+			"আনলিমিটেড সার্চ",
 			"API অ্যাক্সেস",
 			"মাল্টি-ইউজার অ্যাকাউন্ট",
-			"কাস্টম রিপোর্ট",
-			"ডেডিকেটেড সাপোর্ট ম্যানেজার",
+			"কাস্টম রিপোর্ট ও এক্সপোর্ট",
+			"ডেডিকেটেড সাপোর্ট",
 		],
-		cta: "বিজনেস শুরু করুন",
+		cta: "বিজনেস নিয়ে কথা বলুন",
 		popular: false,
 	},
 ];
 
 function Pricing() {
 	return (
-		<section id="pricing" className="section-pad">
+		<section id="pricing" className="section-pad bg-[#f4faf6]">
 			<div className="maxw px-4 sm:px-6 lg:px-8">
-				<div className="text-center">
-					<span className="inline-flex items-center gap-1.5 rounded-full bg-emerald-100 px-4 py-1.5 text-sm font-bold text-emerald-700">
-						<Users className="h-4 w-4" /> প্রাইসিং
-					</span>
-					<h2 className="mt-4 text-3xl font-extrabold tracking-tight text-slate-900 md:text-4xl">
-						আপনার ব্যবসার জন্য সঠিক প্ল্যান
-					</h2>
-					<p className="mx-auto mt-4 max-w-2xl text-lg text-slate-600">
-						যেকোনো প্ল্যানে বিনামূল্যে সেটআপ — কোনো হিডেন চার্জ নেই।
+				<div className="mx-auto max-w-2xl text-center">
+					<p className="text-xs font-bold uppercase tracking-[0.2em] text-emerald-700">
+						আপনার গতির সাথে বাড়ুন
+					</p>
+					<h2 className="mt-3 text-3xl font-extrabold tracking-tight text-slate-900 sm:text-4xl">
+						একটি ভুল অর্ডারের চেয়ে
+						<br />
+						একটি প্যাকেজের দাম কম
+					</h2>{" "}
+					<p className="mt-4 text-lg text-slate-600">
+						আগে ৫টি সার্চ ফ্রি। যখন ব্যবসা বাড়বে, তখন আপনার প্রয়োজনের প্ল্যানে যান।
+					</p>
+					<p className="mt-3 text-xs font-semibold text-slate-500">
+						নিচের মূল্য ও limitগুলো launch-এর আগের UI preview — আপনার final business
+						pricing অনুযায়ী আপডেটযোগ্য।
 					</p>
 				</div>
-
-				<div className="mx-auto mt-14 grid max-w-5xl gap-6 md:grid-cols-3">
+				<div className="mx-auto mt-12 grid max-w-6xl gap-5 lg:grid-cols-3">
 					{plans.map((plan) => (
 						<div
 							key={plan.name}
-							className={`relative flex flex-col rounded-2xl border bg-white p-8 shadow-sm transition-all hover:-translate-y-1.5 hover:shadow-xl ${
-								plan.popular
-									? "border-emerald-500 shadow-xl shadow-emerald-600/10 ring-2 ring-emerald-500/60 md:-translate-y-3 md:hover:-translate-y-4"
-									: "border-slate-100"
-							}`}
+							className={`relative flex flex-col rounded-2xl border bg-white p-7 transition-all hover:-translate-y-1 hover:shadow-2xl ${plan.popular ? "border-emerald-500 shadow-xl shadow-emerald-900/10 ring-2 ring-emerald-500/20 lg:-translate-y-3" : "border-slate-200/80 shadow-sm"}`}
 						>
 							{plan.popular && (
-								<span className="absolute -top-3.5 left-1/2 -translate-x-1/2 whitespace-nowrap rounded-full bg-gradient-to-r from-emerald-600 to-teal-600 px-4 py-1.5 text-xs font-bold text-white shadow-lg">
-									🔥 সবচেয়ে জনপ্রিয়
+								<span className="absolute -top-3.5 left-1/2 -translate-x-1/2 whitespace-nowrap rounded-full bg-emerald-600 px-4 py-1.5 text-[11px] font-extrabold text-white shadow-lg shadow-emerald-600/25">
+									<Crown className="mr-1 inline h-3.5 w-3.5" /> সবচেয়ে জনপ্রিয়
 								</span>
 							)}
-							<h3 className="text-lg font-bold text-slate-400">{plan.name}</h3>
-							<div className="mt-3 flex items-baseline gap-1">
-								<span className="text-4xl font-extrabold text-slate-900">
+							<p className="text-xs font-bold uppercase tracking-[0.15em] text-emerald-700">
+								{plan.kicker}
+							</p>
+							<h3 className="mt-3 text-xl font-extrabold text-slate-900">
+								{plan.name}
+							</h3>
+							<div className="mt-4 flex items-baseline gap-1">
+								<span className="text-4xl font-extrabold tracking-tight text-slate-900">
 									{plan.price}
 								</span>
 								<span className="text-sm font-semibold text-slate-400">
 									{plan.period}
 								</span>
 							</div>
-							<p className="mt-2 text-sm font-medium text-slate-500">
-								{plan.desc}
-							</p>
-
-							<ul className="mt-6 flex-1 space-y-3">
-								{plan.features.map((f) => (
+							<p className="mt-2 text-sm text-slate-500">{plan.description}</p>
+							<div className="my-6 h-px bg-slate-100" />
+							<ul className="flex-1 space-y-3.5">
+								{plan.features.map((feature) => (
 									<li
-										key={f}
-										className="flex items-start gap-2.5 text-sm text-slate-600"
+										key={feature}
+										className="flex items-start gap-2.5 text-sm font-medium text-slate-600"
 									>
-										<CheckCircle2 className="mt-0.5 h-4 w-4 shrink-0 text-emerald-600" />
-										{f}
+										<Check className="mt-0.5 h-4 w-4 shrink-0 text-emerald-600" />{" "}
+										{feature}
 									</li>
 								))}
 							</ul>
-
-							<a
-								href="#contact"
-								className={`mt-8 rounded-xl px-6 py-3.5 text-center font-bold transition-all ${
-									plan.popular
-										? "bg-gradient-to-r from-emerald-600 to-teal-600 text-white shadow-lg shadow-emerald-600/30 hover:shadow-xl"
-										: "border-2 border-emerald-600 text-emerald-700 hover:bg-emerald-50"
-								}`}
+							<Link
+								to="/login"
+								className={`mt-8 flex items-center justify-center gap-2 rounded-xl px-5 py-3.5 text-sm font-bold transition-all ${plan.popular ? "bg-emerald-600 text-white shadow-lg shadow-emerald-600/25 hover:bg-emerald-700" : "border-2 border-emerald-600 text-emerald-700 hover:bg-emerald-50"}`}
 							>
-								{plan.cta}
-							</a>
+								{plan.cta} <ArrowRight className="h-4 w-4" />
+							</Link>
 						</div>
 					))}
 				</div>
+				<p className="mt-8 text-center text-xs font-medium text-slate-500">
+					সব প্যাকেজে নিরাপদ ডেটা · কোনো hidden charge নেই · প্রয়োজনে যেকোনো সময়
+					আপগ্রেড করুন
+				</p>
 			</div>
 		</section>
 	);
 }
 
 /* ------------------------------------------------------------------ */
-/* FAQ                                                                 */
+/* FAQ and CTA                                                         */
 /* ------------------------------------------------------------------ */
 
 const faqs = [
 	{
-		q: "কুরিয়ারবাইট কীভাবে কাজ করে?",
-		a: "আপনি কাস্টমারের মোবাইল নাম্বার দিয়ে চেক করলে আমরা বিভিন্ন কুরিয়ার পার্টনার থেকে সেই নাম্বারে নেওয়া পার্সেলের হিস্ট্রি সংগ্রহ করে একটি সহজ রিপোর্টে দেখাই — মোট পার্সেল, ডেলিভারি, ক্যানসেল ও সাকসেস রেশিও।",
+		q: "প্রতিদিন ৫টি ফ্রি সার্চ কীভাবে কাজ করবে?",
+		a: "প্রতিদিন প্রতিটি visitor পাঁচটি কাস্টমার নাম্বার কোনো খরচ ছাড়াই চেক করতে পারবেন। ফাংশনালিটি যুক্ত হলে অ্যাকাউন্ট ও usage tracking-এর মাধ্যমে এই সীমা নিয়ন্ত্রণ করা হবে।",
 	},
 	{
-		q: "শুধু মোবাইল নাম্বার দিয়েই কি এত তথ্য পাওয়া যায়?",
-		a: "হ্যাঁ। বাংলাদেশের কুরিয়ার সেবাগুলো পার্সেল গ্রহণের সময় মোবাইল নাম্বার যাচাই করে, তাই নাম্বার দিয়েই একজন কাস্টমারের গ্রহণের ইতিহাস বের করা সম্ভব।",
+		q: "৫টি সার্চ শেষ হলে কী হবে?",
+		a: "আপনি সেদিনের free limit শেষ করলে লগইন করে একটি প্যাকেজ বেছে নিতে পারবেন। প্যাকেজ নিলে আরও বেশি সার্চ, পূর্ণাঙ্গ রিপোর্ট ও team-oriented সুবিধা পাওয়া যাবে।",
 	},
 	{
-		q: "কাস্টমারের তথ্য কি নিরাপদ থাকবে?",
-		a: "অবশ্যই। আমরা শুধু পার্সেল হিস্ট্রি সম্পর্কিত প্রয়োজনীয় তথ্যই দেখাই — ব্যক্তিগত তথ্য, ঠিকানা বা আর্থিক বিষয় সম্পূর্ণ গোপন রাখা হয়। SSL এনক্রিপশন ব্যবহৃত হয়।",
+		q: "ফ্রি প্ল্যানে কি কার্ড লাগবে?",
+		a: "না। ফ্রি ব্যবহার শুরু করতে কোনো কার্ড বা পেমেন্ট লাগবে না। আগে ব্যবহার করে আপনার ব্যবসায়ের জন্য উপকারিতা বুঝে নিন।",
 	},
 	{
-		q: "কোন কোন কুরিয়ারের হিস্ট্রি পাওয়া যায়?",
-		a: "পাথাও, স্টেডফাস্ট, RedX, সান্দারবান সহ দেশের ৫০+ জনপ্রিয় কুরিয়ারের হিস্ট্রি ধাপে ধাপে যুক্ত হচ্ছে।",
-	},
-	{
-		q: "রেজাল্ট পেতে কত সময় লাগে?",
-		a: "সাধারণত ১ সেকেন্ডেরও কম সময়ে রেজাল্ট পাওয়া যায়। নেটওয়ার্ক ধীর থাকলে কয়েক সেকেন্ডও লাগতে পারে।",
+		q: "রিপোর্টে কী কী দেখা যাবে?",
+		a: "মোট পার্সেল, সফল ডেলিভারি, ক্যানসেল/রিটার্ন, কুরিয়ারভিত্তিক ইতিহাস, সাকসেস রেশিও ও একটি সহজ risk/action hint দেখা যাবে।",
 	},
 ];
 
 function Faq() {
-	const [open, setOpen] = useState<number | null>(0);
-
+	const [open, setOpen] = useState(0);
 	return (
-		<section id="faq" className="section-pad bg-white/60">
+		<section id="faq" className="section-pad">
 			<div className="maxw px-4 sm:px-6 lg:px-8">
-				<div className="text-center">
-					<span className="inline-flex items-center gap-1.5 rounded-full bg-emerald-100 px-4 py-1.5 text-sm font-bold text-emerald-700">
-						<MessageCircle className="h-4 w-4" /> FAQ
-					</span>
-					<h2 className="mt-4 text-3xl font-extrabold tracking-tight text-slate-900 md:text-4xl">
-						প্রায়শই জিজ্ঞাসিত প্রশ্ন
-					</h2>
-				</div>
-
-				<div className="mx-auto mt-12 max-w-3xl space-y-3">
-					{faqs.map((faq, i) => {
-						const isOpen = open === i;
-						return (
-							<div
-								key={faq.q}
-								className={`overflow-hidden rounded-2xl border bg-white transition-all ${
-									isOpen
-										? "border-emerald-200 shadow-md"
-										: "border-slate-100 shadow-sm"
-								}`}
-							>
-								<button
-									type="button"
-									onClick={() => setOpen(isOpen ? null : i)}
-									className="flex w-full items-center justify-between gap-4 px-6 py-5 text-left"
-									aria-expanded={isOpen}
-								>
-									<span className="font-bold text-slate-800">{faq.q}</span>
-									<span
-										className={`flex h-8 w-8 shrink-0 items-center justify-center rounded-full transition-all ${
-											isOpen
-												? "bg-emerald-600 text-white"
-												: "bg-emerald-50 text-emerald-700"
-										}`}
-									>
-										<ChevronDown
-											className={`h-4 w-4 transition-transform ${isOpen ? "rotate-180" : ""}`}
-										/>
-									</span>
-								</button>
+				<div className="grid gap-12 lg:grid-cols-[0.8fr_1.2fr]">
+					<div>
+						<p className="text-xs font-bold uppercase tracking-[0.2em] text-emerald-700">
+							প্রশ্ন থাকতেই পারে
+						</p>
+						<h2 className="mt-3 text-3xl font-extrabold tracking-tight text-slate-900 sm:text-4xl">
+							শুরু করার আগে
+							<br />
+							সবকিছু জেনে নিন
+						</h2>
+						<p className="mt-4 text-base leading-relaxed text-slate-600">
+							ফ্রি দিয়ে শুরু করা, usage limit আর রিপোর্ট নিয়ে সাধারণ প্রশ্নগুলোর উত্তর
+							এখানে।
+						</p>
+					</div>
+					<div className="space-y-3">
+						{faqs.map((faq, index) => {
+							const isOpen = open === index;
+							return (
 								<div
-									className={`grid transition-all duration-300 ease-in-out ${
-										isOpen
-											? "grid-rows-[1fr] opacity-100"
-											: "grid-rows-[0fr] opacity-0"
-									}`}
+									key={faq.q}
+									className={`overflow-hidden rounded-2xl border bg-white transition-all ${isOpen ? "border-emerald-200 shadow-md" : "border-slate-200/80 shadow-sm"}`}
 								>
-									<div className="overflow-hidden">
-										<p className="px-6 pb-5 text-sm leading-relaxed text-slate-500">
-											{faq.a}
-										</p>
+									{" "}
+									<button
+										type="button"
+										onClick={() => setOpen(isOpen ? -1 : index)}
+										aria-expanded={isOpen}
+										aria-controls={`faq-panel-${index}`}
+										className="flex w-full items-center justify-between gap-4 px-5 py-5 text-left"
+									>
+										<span className="text-sm font-extrabold text-slate-800">
+											{faq.q}
+										</span>
+										<span
+											className={`flex h-8 w-8 shrink-0 items-center justify-center rounded-full transition-all ${isOpen ? "bg-emerald-600 text-white" : "bg-emerald-50 text-emerald-700"}`}
+										>
+											<ChevronDown
+												className={`h-4 w-4 transition-transform ${isOpen ? "rotate-180" : ""}`}
+											/>
+										</span>
+									</button>{" "}
+									<div
+										id={`faq-panel-${index}`}
+										className={`grid transition-all duration-300 ${isOpen ? "grid-rows-[1fr] opacity-100" : "grid-rows-[0fr] opacity-0"}`}
+									>
+										<div className="overflow-hidden">
+											<p className="px-5 pb-5 text-sm leading-relaxed text-slate-500">
+												{faq.a}
+											</p>
+										</div>
 									</div>
 								</div>
-							</div>
-						);
-					})}
-				</div>
-			</div>
-		</section>
-	);
-}
-
-/* ------------------------------------------------------------------ */
-/* Contact CTA                                                         */
-/* ------------------------------------------------------------------ */
-
-const contactInfo = [
-	{
-		icon: MapPin,
-		title: "অফিস ঠিকানা",
-		lines: ["লেভেল-০, লেইন-১, ব্লক-এ", "হালিশহর, চট্টগ্রাম"],
-	},
-	{
-		icon: Phone,
-		title: "হটলাইন",
-		lines: ["01891-614300", "01688-444555"],
-	},
-	{
-		icon: Mail,
-		title: "ইমেইল",
-		lines: ["business.appbyte@gmail.com"],
-	},
-];
-
-function ContactCta() {
-	return (
-		<section id="contact" className="section-pad">
-			<div className="maxw px-4 sm:px-6 lg:px-8">
-				{/* CTA panel */}
-				<div className="relative overflow-hidden rounded-3xl bg-gradient-to-br from-emerald-800 via-emerald-700 to-teal-700 px-6 py-16 text-center shadow-2xl shadow-emerald-900/30 md:px-16">
-					<div
-						aria-hidden
-						className="pointer-events-none absolute -left-20 -top-20 h-64 w-64 rounded-full bg-white/10 blur-3xl"
-					/>
-					<div
-						aria-hidden
-						className="pointer-events-none absolute -bottom-24 -right-16 h-72 w-72 rounded-full bg-teal-300/20 blur-3xl"
-					/>
-					<div className="relative">
-						<Clock className="mx-auto h-10 w-10 text-emerald-200" />
-						<h2 className="mx-auto mt-5 max-w-2xl text-3xl font-extrabold leading-tight text-white md:text-4xl">
-							আজই শুরু করুন — প্রতিটি পার্সেল হোক লাভজনক
-						</h2>
-						<p className="mx-auto mt-4 max-w-2xl text-lg text-emerald-50/90">
-							পার্সেল পাঠানোর আগে কাস্টমার চেক করা এখন প্রতিটি সফল ই-কমার্স ব্যবসার অভ্যাস। ফ্রি
-							প্ল্যান দিয়ে শুরু করুন।
-						</p>
-						<div className="mt-8 flex flex-col items-center justify-center gap-4 sm:flex-row">
-							<a
-								href="#hero"
-								className="inline-flex items-center gap-2 rounded-xl bg-white px-8 py-4 text-base font-bold text-emerald-800 shadow-xl transition-all hover:-translate-y-0.5 hover:bg-emerald-50"
-							>
-								<Search className="h-5 w-5" />
-								বিনামূল্যে চেক শুরু করুন
-							</a>
-							<a
-								href="mailto:business.appbyte@gmail.com"
-								className="inline-flex items-center gap-2 rounded-xl border-2 border-white/30 px-8 py-4 text-base font-bold text-white transition-all hover:-translate-y-0.5 hover:bg-white/10"
-							>
-								<MessageCircle className="h-5 w-5" />
-								সাপোর্টে কথা বলুন
-							</a>
-						</div>
+							);
+						})}
 					</div>
 				</div>
-
-				{/* Contact cards */}
-				<div className="mt-12 grid gap-6 md:grid-cols-3">
-					{contactInfo.map((c) => (
-						<div
-							key={c.title}
-							className="flex items-start gap-4 rounded-2xl border border-slate-100 bg-white p-6 shadow-sm transition-all hover:-translate-y-0.5 hover:shadow-lg"
-						>
-							<span className="flex h-11 w-11 shrink-0 items-center justify-center rounded-xl bg-emerald-100 text-emerald-700">
-								<c.icon className="h-5 w-5" />
-							</span>
-							<div>
-								<h3 className="font-bold text-slate-900">{c.title}</h3>
-								{c.lines.map((line) => (
-									<p key={line} className="mt-0.5 text-sm text-slate-500">
-										{line}
-									</p>
-								))}
-							</div>
-						</div>
-					))}
-				</div>
 			</div>
 		</section>
 	);
 }
 
-/* ------------------------------------------------------------------ */
-/* Page                                                                */
-/* ------------------------------------------------------------------ */
+function FinalCta() {
+	return (
+		<section id="contact" className="pb-20 sm:pb-28">
+			<div className="maxw px-4 sm:px-6 lg:px-8">
+				<div className="relative overflow-hidden rounded-[2rem] bg-gradient-to-br from-[#0f6b4d] to-[#0b4032] px-6 py-14 text-center shadow-2xl shadow-emerald-900/20 sm:px-12">
+					<div
+						aria-hidden
+						className="absolute -left-20 -top-32 h-80 w-80 rounded-full bg-emerald-300/15 blur-3xl"
+					/>
+					<div
+						aria-hidden
+						className="absolute -bottom-40 -right-20 h-96 w-96 rounded-full bg-teal-300/15 blur-3xl"
+					/>
+					<div className="relative">
+						<span className="inline-flex items-center gap-2 rounded-full border border-white/15 bg-white/10 px-3.5 py-2 text-xs font-bold text-emerald-100">
+							<Zap className="h-3.5 w-3.5" /> আজই আপনার প্রথম চেক করুন
+						</span>
+						<h2 className="mx-auto mt-5 max-w-2xl text-3xl font-extrabold leading-tight text-white sm:text-4xl">
+							আপনার পরের COD অর্ডারটি
+							<br />
+							অনুমানের ওপর ছেড়ে দেবেন না
+						</h2>
+						<p className="mx-auto mt-4 max-w-xl text-base leading-relaxed text-emerald-50/75">
+							প্রতিদিনের ৫টি ফ্রি সার্চ দিয়ে শুরু করুন। কুরিয়ারবাইট আপনার লাভ রক্ষা করতে কতটা
+							সাহায্য করে, নিজেই দেখুন।
+						</p>
+						<div className="mt-8 flex flex-col items-center justify-center gap-3 sm:flex-row">
+							<a
+								href="#hero"
+								className="inline-flex items-center gap-2 rounded-xl bg-white px-7 py-3.5 text-sm font-extrabold text-[#0f6b4d] shadow-xl transition hover:-translate-y-0.5 hover:bg-emerald-50"
+							>
+								<Search className="h-4 w-4" /> ফ্রি সার্চ শুরু করুন
+							</a>
+							<a
+								href="#pricing"
+								className="inline-flex items-center gap-2 rounded-xl border border-white/25 px-7 py-3.5 text-sm font-bold text-white transition hover:bg-white/10"
+							>
+								প্যাকেজ দেখুন <ArrowRight className="h-4 w-4" />
+							</a>
+						</div>
+						<p className="mt-5 text-xs font-medium text-emerald-100/55">
+							কোনো কার্ড লাগবে না · কোনো commitment নেই
+						</p>
+					</div>
+				</div>
+			</div>
+		</section>
+	);
+}
 
 function Home() {
 	return (
 		<div>
 			<Hero />
-			<CourierMarquee />
+			<BusinessOutcome />
 			<HowItWorks />
-			<Features />
-			<ReportPreview />
-			<WhyChooseUs />
+			<FeatureShowcase />
+			<FreemiumSection />
 			<Pricing />
 			<Faq />
-			<ContactCta />
+			<FinalCta />
 		</div>
 	);
 }

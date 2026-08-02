@@ -5,7 +5,7 @@ import { useEffect, useRef, useState } from "react";
 const NAV_ITEMS = [
 	{ label: "কিভাবে কাজ করে", section: "how" },
 	{ label: "ফিচারসমূহ", section: "features" },
-	{ label: "রিপোর্ট", section: "report" },
+	{ label: "ফ্রি কীভাবে কাজ করে", section: "free" },
 	{ label: "প্রাইসিং", section: "pricing" },
 	{ label: "FAQ", section: "faq" },
 	{ label: "Login", to: "/login" },
