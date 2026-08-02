@@ -29,9 +29,6 @@ export default function SignIn({ onSignUp }: { onSignUp?: () => void }) {
 		<section className="flex min-h-[32rem] items-center justify-center px-4 py-12 sm:px-6">
 			<div className="w-full max-w-md rounded-3xl border border-slate-200/80 bg-white p-6 shadow-[0_20px_60px_rgba(15,53,42,0.1)] sm:p-9">
 				<div className="mb-8">
-					<p className="mb-2 text-sm font-bold uppercase tracking-[0.16em] text-emerald-700">
-						আবারও স্বাগতম
-					</p>
 					<h1 className="text-3xl font-extrabold tracking-tight text-slate-900">
 						লগইন করুন
 					</h1>
@@ -42,7 +39,10 @@ export default function SignIn({ onSignUp }: { onSignUp?: () => void }) {
 
 				<form className="space-y-5" onSubmit={handleSubmit} noValidate>
 					<div>
-						<label htmlFor="phone" className="mb-2 block text-sm font-bold text-slate-700">
+						<label
+							htmlFor="phone"
+							className="mb-2 block text-sm font-bold text-slate-700"
+						>
 							মোবাইল নাম্বার
 						</label>
 						<div className="relative">
@@ -71,13 +71,13 @@ export default function SignIn({ onSignUp }: { onSignUp?: () => void }) {
 								className="h-14 w-full rounded-2xl border border-slate-200 bg-slate-50 pl-[6.25rem] pr-4 text-base font-semibold tracking-wide text-slate-900 outline-none transition focus:border-emerald-500 focus:bg-white focus:ring-4 focus:ring-emerald-500/10"
 							/>
 						</div>
-						<p id="phone-hint" className="mt-2 text-xs text-slate-400">
-							উদাহরণ: 01712345678
-						</p>
 					</div>
 
 					<div>
-						<label htmlFor="password" className="mb-2 block text-sm font-bold text-slate-700">
+						<label
+							htmlFor="password"
+							className="mb-2 block text-sm font-bold text-slate-700"
+						>
 							পাসওয়ার্ড
 						</label>
 						<div className="relative">
@@ -106,20 +106,27 @@ export default function SignIn({ onSignUp }: { onSignUp?: () => void }) {
 								className="absolute right-3 top-1/2 -translate-y-1/2 rounded-lg p-2 text-slate-400 transition hover:bg-slate-200/70 hover:text-slate-600 focus:outline-none focus:ring-2 focus:ring-emerald-500/30"
 								aria-label={showPassword ? "পাসওয়ার্ড লুকান" : "পাসওয়ার্ড দেখুন"}
 							>
-								{showPassword ? <EyeOff className="h-5 w-5" /> : <Eye className="h-5 w-5" />}
+								{showPassword ? (
+									<EyeOff className="h-5 w-5" />
+								) : (
+									<Eye className="h-5 w-5" />
+								)}
 							</button>
 						</div>
 					</div>
 
 					{error && (
-						<p className="rounded-xl bg-rose-50 px-4 py-3 text-sm font-semibold text-rose-700" role="alert">
+						<p
+							className="rounded-xl bg-rose-50 px-4 py-3 text-sm font-semibold text-rose-700"
+							role="alert"
+						>
 							{error}
 						</p>
 					)}
 
 					<button
 						type="submit"
-						className="h-14 w-full rounded-2xl bg-emerald-700 text-sm font-extrabold text-white shadow-lg shadow-emerald-700/20 transition hover:bg-emerald-800 focus:outline-none focus:ring-4 focus:ring-emerald-500/25"
+						className="h-14 w-full rounded-2xl bg-secondary cursor-pointer text-sm font-extrabold text-white shadow-lg shadow-emerald-700/20 transition  focus:outline-none focus:ring-4 focus:ring-emerald-500/25"
 					>
 						লগইন করুন
 					</button>
@@ -131,7 +138,7 @@ export default function SignIn({ onSignUp }: { onSignUp?: () => void }) {
 						<button
 							type="button"
 							onClick={onSignUp}
-							className="bg-gradient-to-r from-emerald-600 via-teal-500 to-cyan-500 bg-clip-text font-extrabold text-transparent transition hover:from-emerald-500 hover:via-teal-400 hover:to-cyan-400 focus:outline-none focus:ring-2 focus:ring-emerald-500/30 focus:ring-offset-2"
+							className="bg-secondary cursor-pointer bg-clip-text font-extrabold text-transparent transition  focus:outline-none focus:ring-0"
 						>
 							সাইন আপ করুন
 						</button>

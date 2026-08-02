@@ -63,9 +63,6 @@ export default function SignUp({ onLogin }: { onLogin?: () => void }) {
 		<section className="flex min-h-[38rem] items-center justify-center px-4 py-12 sm:px-6">
 			<div className="w-full max-w-md rounded-3xl border border-slate-200/80 bg-white p-6 shadow-[0_20px_60px_rgba(15,53,42,0.1)] sm:p-9">
 				<div className="mb-8">
-					<p className="mb-2 text-sm font-bold uppercase tracking-[0.16em] text-emerald-700">
-						শুরু করুন
-					</p>
 					<h1 className="text-3xl font-extrabold tracking-tight text-slate-900">
 						আপনার অ্যাকাউন্ট তৈরি করুন
 					</h1>
@@ -76,7 +73,10 @@ export default function SignUp({ onLogin }: { onLogin?: () => void }) {
 
 				<form className="space-y-5" onSubmit={handleSubmit} noValidate>
 					<div>
-						<label htmlFor="name" className="mb-2 block text-sm font-bold text-slate-700">
+						<label
+							htmlFor="name"
+							className="mb-2 block text-sm font-bold text-slate-700"
+						>
 							পুরো নাম
 						</label>
 						<div className="relative">
@@ -88,7 +88,9 @@ export default function SignUp({ onLogin }: { onLogin?: () => void }) {
 								id="name"
 								name="name"
 								aria-invalid={errorField === "name"}
-								aria-describedby={errorField === "name" ? "form-error" : undefined}
+								aria-describedby={
+									errorField === "name" ? "form-error" : undefined
+								}
 								type="text"
 								autoComplete="name"
 								value={name}
@@ -104,7 +106,10 @@ export default function SignUp({ onLogin }: { onLogin?: () => void }) {
 					</div>
 
 					<div>
-						<label htmlFor="number" className="mb-2 block text-sm font-bold text-slate-700">
+						<label
+							htmlFor="number"
+							className="mb-2 block text-sm font-bold text-slate-700"
+						>
 							মোবাইল নাম্বার
 						</label>
 						<div className="relative">
@@ -119,7 +124,11 @@ export default function SignUp({ onLogin }: { onLogin?: () => void }) {
 								id="number"
 								name="number"
 								aria-invalid={errorField === "number"}
-								aria-describedby={errorField === "number" ? "number-hint form-error" : "number-hint"}
+								aria-describedby={
+									errorField === "number"
+										? "number-hint form-error"
+										: "number-hint"
+								}
 								type="tel"
 								inputMode="numeric"
 								autoComplete="tel-national"
@@ -134,13 +143,13 @@ export default function SignUp({ onLogin }: { onLogin?: () => void }) {
 								className="h-14 w-full rounded-2xl border border-slate-200 bg-slate-50 pl-[6.25rem] pr-4 text-base font-semibold tracking-wide text-slate-900 outline-none transition focus:border-emerald-500 focus:bg-white focus:ring-4 focus:ring-emerald-500/10"
 							/>
 						</div>
-						<p id="number-hint" className="mt-2 text-xs text-slate-400">
-							উদাহরণ: 01712345678
-						</p>
 					</div>
 
 					<div>
-						<label htmlFor="password" className="mb-2 block text-sm font-bold text-slate-700">
+						<label
+							htmlFor="password"
+							className="mb-2 block text-sm font-bold text-slate-700"
+						>
 							পাসওয়ার্ড
 						</label>
 						<div className="relative">
@@ -152,7 +161,9 @@ export default function SignUp({ onLogin }: { onLogin?: () => void }) {
 								id="password"
 								name="password"
 								aria-invalid={errorField === "password"}
-								aria-describedby={errorField === "password" ? "form-error" : undefined}
+								aria-describedby={
+									errorField === "password" ? "form-error" : undefined
+								}
 								type={showPassword ? "text" : "password"}
 								autoComplete="new-password"
 								value={password}
@@ -171,13 +182,20 @@ export default function SignUp({ onLogin }: { onLogin?: () => void }) {
 								className="absolute right-3 top-1/2 -translate-y-1/2 rounded-lg p-2 text-slate-400 transition hover:bg-slate-200/70 hover:text-slate-600 focus:outline-none focus:ring-2 focus:ring-emerald-500/30"
 								aria-label={showPassword ? "পাসওয়ার্ড লুকান" : "পাসওয়ার্ড দেখুন"}
 							>
-								{showPassword ? <EyeOff className="h-5 w-5" /> : <Eye className="h-5 w-5" />}
+								{showPassword ? (
+									<EyeOff className="h-5 w-5" />
+								) : (
+									<Eye className="h-5 w-5" />
+								)}
 							</button>
 						</div>
 					</div>
 
 					<div>
-						<label htmlFor="confirm-password" className="mb-2 block text-sm font-bold text-slate-700">
+						<label
+							htmlFor="confirm-password"
+							className="mb-2 block text-sm font-bold text-slate-700"
+						>
 							পাসওয়ার্ড নিশ্চিত করুন
 						</label>
 						<div className="relative">
@@ -189,7 +207,9 @@ export default function SignUp({ onLogin }: { onLogin?: () => void }) {
 								id="confirm-password"
 								name="confirmPassword"
 								aria-invalid={errorField === "confirmPassword"}
-								aria-describedby={errorField === "confirmPassword" ? "form-error" : undefined}
+								aria-describedby={
+									errorField === "confirmPassword" ? "form-error" : undefined
+								}
 								type={showConfirmPassword ? "text" : "password"}
 								autoComplete="new-password"
 								value={confirmPassword}
@@ -207,7 +227,11 @@ export default function SignUp({ onLogin }: { onLogin?: () => void }) {
 								className="absolute right-3 top-1/2 -translate-y-1/2 rounded-lg p-2 text-slate-400 transition hover:bg-slate-200/70 hover:text-slate-600 focus:outline-none focus:ring-2 focus:ring-emerald-500/30"
 								aria-label={showConfirmPassword ? "পাসওয়ার্ড লুকান" : "পাসওয়ার্ড দেখুন"}
 							>
-								{showConfirmPassword ? <EyeOff className="h-5 w-5" /> : <Eye className="h-5 w-5" />}
+								{showConfirmPassword ? (
+									<EyeOff className="h-5 w-5" />
+								) : (
+									<Eye className="h-5 w-5" />
+								)}
 							</button>
 						</div>
 					</div>
@@ -223,7 +247,10 @@ export default function SignUp({ onLogin }: { onLogin?: () => void }) {
 					)}
 
 					{submitted && (
-						<p className="rounded-xl bg-emerald-50 px-4 py-3 text-sm font-semibold text-emerald-700" role="status">
+						<p
+							className="rounded-xl bg-emerald-50 px-4 py-3 text-sm font-semibold text-emerald-700"
+							role="status"
+						>
 							তথ্যগুলো ঠিক আছে। এখন আপনার অ্যাকাউন্ট তৈরি করা যাবে।
 						</p>
 					)}

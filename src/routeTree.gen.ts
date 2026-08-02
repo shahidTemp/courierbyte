@@ -12,7 +12,6 @@ import { Route as rootRouteImport } from './routes/__root'
 import { Route as WebsiteRouteRouteImport } from './routes/_website/route'
 import { Route as WebsiteIndexRouteImport } from './routes/_website/index'
 import { Route as WebsiteLoginRouteImport } from './routes/_website/login'
-import { Route as WebsiteRegisterRouteImport } from './routes/_website/register'
 
 const WebsiteRouteRoute = WebsiteRouteRouteImport.update({
   id: '/_website',
@@ -28,40 +27,27 @@ const WebsiteLoginRoute = WebsiteLoginRouteImport.update({
   path: '/login',
   getParentRoute: () => WebsiteRouteRoute,
 } as any)
-const WebsiteRegisterRoute = WebsiteRegisterRouteImport.update({
-  id: '/register',
-  path: '/register',
-  getParentRoute: () => WebsiteRouteRoute,
-} as any)
 
 export interface FileRoutesByFullPath {
   '/': typeof WebsiteIndexRoute
   '/login': typeof WebsiteLoginRoute
-  '/register': typeof WebsiteRegisterRoute
 }
 export interface FileRoutesByTo {
   '/login': typeof WebsiteLoginRoute
-  '/register': typeof WebsiteRegisterRoute
   '/': typeof WebsiteIndexRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
   '/_website': typeof WebsiteRouteRouteWithChildren
   '/_website/login': typeof WebsiteLoginRoute
-  '/_website/register': typeof WebsiteRegisterRoute
   '/_website/': typeof WebsiteIndexRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
-  fullPaths: '/' | '/login' | '/register'
+  fullPaths: '/' | '/login'
   fileRoutesByTo: FileRoutesByTo
-  to: '/login' | '/register' | '/'
-  id:
-    | '__root__'
-    | '/_website'
-    | '/_website/login'
-    | '/_website/register'
-    | '/_website/'
+  to: '/login' | '/'
+  id: '__root__' | '/_website' | '/_website/login' | '/_website/'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
@@ -91,25 +77,16 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof WebsiteLoginRouteImport
       parentRoute: typeof WebsiteRouteRoute
     }
-    '/_website/register': {
-      id: '/_website/register'
-      path: '/register'
-      fullPath: '/register'
-      preLoaderRoute: typeof WebsiteRegisterRouteImport
-      parentRoute: typeof WebsiteRouteRoute
-    }
   }
 }
 
 interface WebsiteRouteRouteChildren {
   WebsiteLoginRoute: typeof WebsiteLoginRoute
-  WebsiteRegisterRoute: typeof WebsiteRegisterRoute
   WebsiteIndexRoute: typeof WebsiteIndexRoute
 }
 
 const WebsiteRouteRouteChildren: WebsiteRouteRouteChildren = {
   WebsiteLoginRoute: WebsiteLoginRoute,
-  WebsiteRegisterRoute: WebsiteRegisterRoute,
   WebsiteIndexRoute: WebsiteIndexRoute,
 }
 
