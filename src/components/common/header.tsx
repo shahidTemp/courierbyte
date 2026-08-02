@@ -1,13 +1,13 @@
 import { Link, useNavigate } from "@tanstack/react-router";
-import { Menu, X } from "lucide-react";
+import { Menu, PackageSearch, X } from "lucide-react";
 import { useEffect, useRef, useState } from "react";
 
 const NAV_ITEMS = [
-	{ label: "ই-কমার্স", href: "/shop" },
-	{ label: "SMS", href: "/sms" },
+	{ label: "কিভাবে কাজ করে", section: "how" },
 	{ label: "ফিচারসমূহ", section: "features" },
-	{ label: "বিস্তারিত", section: "details" },
-	{ label: "প্যাকেজ", section: "packages" },
+	{ label: "রিপোর্ট", section: "report" },
+	{ label: "প্রাইসিং", section: "pricing" },
+	{ label: "FAQ", section: "faq" },
 	{ label: "Login", to: "/login" },
 ] as const;
 
@@ -37,13 +37,6 @@ function NavItemLink({
 			>
 				{item.label}
 			</Link>
-		);
-	}
-	if ("href" in item) {
-		return (
-			<a href={item.href} onClick={onNavigate} className={linkClasses}>
-				{item.label}
-			</a>
 		);
 	}
 	return (
@@ -102,12 +95,13 @@ const Header = () => {
 	return (
 		<header className="text-secondary">
 			<div className="maxw px-4 sm:px-6 lg:px-8 py-4 flex items-center justify-between gap-4">
-				<Link to="/" className="shrink-0">
-					<img
-						src="https://appbyte.net/images/logo.png"
-						alt="Arazshop"
-						className="h-10 w-auto"
-					/>
+				<Link to="/" className="flex shrink-0 items-center gap-2.5">
+					<span className="flex h-10 w-10 items-center justify-center rounded-xl bg-gradient-to-br from-emerald-600 to-teal-600 text-white shadow-lg shadow-emerald-600/25">
+						<PackageSearch className="h-5 w-5" />
+					</span>
+					<span className="text-xl font-extrabold tracking-tight">
+						কুরিয়ারবাইট
+					</span>
 				</Link>
 
 				<nav className="hidden md:flex items-center gap-6">
@@ -154,12 +148,17 @@ const Header = () => {
 				}`}
 			>
 				<div className="flex items-center justify-between px-4 py-4 border-b border-secondary/10">
-					<Link to="/" onClick={close} className="shrink-0">
-						<img
-							src="https://appbyte.net/images/logo.png"
-							alt="Arazshop"
-							className="h-9 w-auto"
-						/>
+					<Link
+						to="/"
+						onClick={close}
+						className="flex shrink-0 items-center gap-2.5"
+					>
+						<span className="flex h-9 w-9 items-center justify-center rounded-lg bg-gradient-to-br from-emerald-600 to-teal-600 text-white">
+							<PackageSearch className="h-5 w-5" />
+						</span>
+						<span className="text-lg font-extrabold tracking-tight">
+							কুরিয়ারবাইট
+						</span>
 					</Link>
 					<button
 						type="button"

@@ -4,10 +4,73 @@
 @import 'tw-animate-css';
 
 @theme {
-  --font-sans: "Manrope", ui-sans-serif, system-ui, sans-serif;
+  --font-sans: "Manrope", "Hind Siliguri", ui-sans-serif, system-ui, sans-serif;
   --color-primary: #f0f9ff;
   --color-secondary: #237A57;
-  --animate-marquee: marquee 25s linear infinite;
+  --color-secondary-dark: #1c5c40;
+  --animate-marquee: marquee 32s linear infinite;
+  --animate-blob: blob 9s ease-in-out infinite;
+  --animate-fade-in-up: fade-in-up 0.7s ease-out both;
+
+  @keyframes marquee {
+    from {
+      transform: translateX(0);
+    }
+    to {
+      transform: translateX(-50%);
+    }
+  }
+
+  @keyframes blob {
+    0%,
+    100% {
+      transform: translate(0, 0) scale(1);
+    }
+    25% {
+      transform: translate(30px, -30px) scale(1.05);
+    }
+    50% {
+      transform: translate(-20px, 20px) scale(0.95);
+    }
+    75% {
+      transform: translate(20px, 30px) scale(1.02);
+    }
+  }
+
+  @keyframes fade-in-up {
+    from {
+      opacity: 0;
+      transform: translateY(24px);
+    }
+    to {
+      opacity: 1;
+      transform: translateY(0);
+    }
+  }
+}
+
+.gradient-text {
+  background: linear-gradient(
+    100deg,
+    var(--color-secondary-dark),
+    #2ea37c 60%,
+    #3fc18f
+  );
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+}
+
+.section-pad {
+  padding-top: 5rem;
+  padding-bottom: 5rem;
+}
+
+@media (min-width: 768px) {
+  .section-pad {
+    padding-top: 7rem;
+    padding-bottom: 7rem;
+  }
 }
 
 
@@ -20,7 +83,7 @@ body {
 body {
   margin: 0;
   color: #173a40;
-  font-family: ui-sans-serif, system-ui, sans-serif;
+  font-family: "Manrope", "Hind Siliguri", ui-sans-serif, system-ui, sans-serif;
   background-color: #e7f3ec;
   background:
     radial-gradient(1100px 620px at -8% -10%, color-mix(in oklab, var(--color-secondary) 36%, transparent), transparent 58%),
