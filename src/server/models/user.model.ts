@@ -3,8 +3,8 @@ import mongoose from 'mongoose';
 const userSchema = new mongoose.Schema({
   name: { type: String, required: true },
   number: { type: String, required: true, unique: true },
-  password: { type: String, required: true },
-  apiKey: { type: String, required: true, unique: true, index: true }, 
+  password: { type: String, required: true, select: false },
+  apiKey: { type: String, required: true, unique: true, index: true, select: false },
   isActive: { type: Boolean, default: true }, 
   
   // Role-based access control field
