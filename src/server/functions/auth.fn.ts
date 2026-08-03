@@ -27,9 +27,6 @@ export const createUser = createServerFn({ method: "POST" })
 		const hashedPassword = await bcrypt.hash(data.password, 12);
 		const apiKey = crypto.randomBytes(32).toString("hex");
 
-		console.log("hashedPassword :- ", hashedPassword);
-		console.log("api key :- ", apiKey);
-
 		const user = await User.create({
 			name: data.name,
 			number: data.number,
@@ -40,10 +37,14 @@ export const createUser = createServerFn({ method: "POST" })
 		// সাইনআপ সফল হলে সাথে সাথে session cookie সেট করে দিচ্ছি
 		const session = await useAppSession();
 		await session.update({ userId: user._id.toString(), role: user.role });
+
+		// পাসওয়ার্ড কখনোই ক্লায়েন্টে ফেরত পাঠানো উচিত নয়
+		const { password: _password, ...safeUser } = user.toObject();
+
 		return {
 			success: true as const,
-			user: JSON.parse(JSON.stringify(user)), // Mongoose ObjectId কে JSON এ convert করার জন্য
-			apiKey,
+			user: JSON.parse(JSON.stringify(safeUser)), // Mongoose ObjectId কে JSON এ convert করার জন্য
+			apiKey, // সাইনআপের সময় একবারই দেখানো হয়
 		};
 	});
 
@@ -61,7 +62,14 @@ export const loginUser = createServerFn({ method: "POST" })
 		const session = await useAppSession();
 		await session.update({ userId: user._id.toString(), role: user.role });
 
-		return JSON.parse(JSON.stringify(user));
+		// পাসওয়ার্ড ও apiKey কখনোই ক্লায়েন্টে ফেরত পাঠানো উচিত নয়
+		const {
+			password: _password,
+			apiKey: _apiKey,
+			...safeUser
+		} = user.toObject();
+
+		return JSON.parse(JSON.stringify(safeUser));
 	});
 
 export const logoutUser = createServerFn({ method: "POST" }).handler(
@@ -75,7 +83,9 @@ export const validateUser = createServerFn({ method: "GET" }).handler(
 	async () => {
 		const session = await useAppSession();
 		if (!session.data.userId) return null;
-		return await User.findById(session.data.userId);
+
+		const user = await User.findById(session.data.userId).lean();
+		return user ? JSON.parse(JSON.stringify(user)) : null;
 	},
 );
 

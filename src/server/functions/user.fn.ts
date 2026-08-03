@@ -1,6 +1,5 @@
 import { createServerFn } from "@tanstack/react-start";
 import { User } from "@/server/models/user.model";
-import { useAppSession } from "@/utils/session";
 
 export const getUsers = createServerFn({ method: "GET" }).handler(async () => {
 	const users = await User.find()

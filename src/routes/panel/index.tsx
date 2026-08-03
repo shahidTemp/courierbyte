@@ -6,7 +6,25 @@ export const Route = createFileRoute("/panel/")({
 });
 
 function RouteComponent() {
-	const { user, isLoading } = useAuth();
+	const { user, isLoading, error } = useAuth();
+
+	if (isLoading) {
+		return (
+			<main className="p-6">
+				<p className="text-slate-500">Loading user...</p>
+			</main>
+		);
+	}
+
+	if (error) {
+		return (
+			<main className="p-6">
+				<p className="rounded-lg bg-rose-50 p-4 text-sm font-semibold text-rose-700">
+					Authentication error: {error.message}
+				</p>
+			</main>
+		);
+	}
 
 	return (
 		<main className="p-6">
