@@ -1,6 +1,7 @@
 import { Link, useNavigate } from "@tanstack/react-router";
-import { LogIn, Menu, PackageSearch, X } from "lucide-react";
+import { LayoutDashboard, LogIn, Menu, PackageSearch, X } from "lucide-react";
 import { useEffect, useRef, useState } from "react";
+import { useAuth } from "@/context/userContext";
 
 const NAV_ITEMS = [
 	{ label: "কিভাবে কাজ করে", section: "how" },
@@ -15,7 +16,7 @@ type NavItem = (typeof NAV_ITEMS)[number];
 const linkClasses =
 	"text-sm font-medium text-secondary transition-colors hover:text-secondary/70";
 
-const loginBtnClasses =
+const authBtnClasses =
 	"inline-flex items-center gap-2 rounded-full bg-gradient-to-r from-secondary to-secondary-dark px-5 py-2.5 text-sm font-bold text-white shadow-md shadow-secondary/25 transition-all duration-300 hover:-translate-y-0.5 hover:shadow-lg hover:shadow-secondary/35 hover:from-secondary/90 hover:to-secondary-dark/90";
 
 function NavItemLink({
@@ -36,6 +37,25 @@ function NavItemLink({
 		>
 			{item.label}
 		</a>
+	);
+}
+
+function AuthButton({ onClick }: { onClick?: () => void }) {
+	const { isAuthenticated } = useAuth();
+
+	return (
+		<Link
+			to={isAuthenticated ? "/panel" : "/login"}
+			onClick={onClick}
+			className={authBtnClasses}
+		>
+			{isAuthenticated ? (
+				<LayoutDashboard className="h-3.5 w-3.5" />
+			) : (
+				<LogIn className="h-3.5 w-3.5" />
+			)}
+			{isAuthenticated ? "Panel" : "Login"}
+		</Link>
 	);
 }
 
@@ -98,10 +118,7 @@ const Header = () => {
 							onSectionClick={scrollToSection}
 						/>
 					))}
-					<Link to="/login" className={loginBtnClasses}>
-						<LogIn className="h-3.5 w-3.5" />
-						Login
-					</Link>
+					<AuthButton />
 				</nav>
 
 				<button
@@ -168,10 +185,7 @@ const Header = () => {
 						/>
 					))}
 					<hr className="border-secondary/10" />
-					<Link to="/login" onClick={close} className={loginBtnClasses}>
-						<LogIn className="h-3.5 w-3.5" />
-						Login
-					</Link>
+					<AuthButton onClick={close} />
 				</nav>
 			</aside>
 		</header>
