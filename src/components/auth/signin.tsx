@@ -1,3 +1,4 @@
+import { useNavigate } from "@tanstack/react-router";
 import { Eye, EyeOff, LockKeyhole, Phone } from "lucide-react";
 import { type FormEvent, useState } from "react";
 import { loginUser } from "@/server/functions/auth.fn";
@@ -5,6 +6,7 @@ import { loginUser } from "@/server/functions/auth.fn";
 const BANGLADESHI_MOBILE = /^01[3-9]\d{8}$/;
 
 export default function SignIn({ onSignUp }: { onSignUp?: () => void }) {
+	const navigate = useNavigate();
 	const [phone, setPhone] = useState("");
 	const [password, setPassword] = useState("");
 	const [showPassword, setShowPassword] = useState(false);
@@ -35,6 +37,14 @@ export default function SignIn({ onSignUp }: { onSignUp?: () => void }) {
 					? error.message
 					: "লগইন করা যায়নি। পরে আবার চেষ্টা করুন।",
 			);
+			setIsSubmitting(false);
+			return;
+		}
+
+		try {
+			await navigate({ to: "/panel" });
+		} catch {
+			setError("প্যানেলে যাওয়া যায়নি। পরে আবার চেষ্টা করুন।");
 		} finally {
 			setIsSubmitting(false);
 		}
