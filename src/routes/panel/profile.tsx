@@ -141,17 +141,9 @@ function RouteComponent() {
 	return (
 		<main className="min-h-screen px-4 py-8 sm:px-6 lg:px-10 lg:py-12">
 			<div className="mx-auto max-w-3xl">
-				<div className="mb-8">
-					<p className="mb-2 text-sm font-bold uppercase tracking-[0.16em] text-secondary/70">
-						Account settings
-					</p>
-					<h1 className="text-3xl font-extrabold tracking-tight text-secondary-dark sm:text-4xl">
-						প্রোফাইল আপডেট করুন
-					</h1>
-					<p className="mt-2 text-slate-500">
-						আপনার ব্যক্তিগত তথ্য পরিবর্তন করুন।
-					</p>
-				</div>
+				<h1 className="mb-8 text-3xl text-center font-extrabold tracking-tight text-secondary-dark sm:text-4xl">
+					প্রোফাইল আপডেট করুন
+				</h1>
 
 				<div className="overflow-hidden rounded-3xl border border-secondary/10 bg-white shadow-xl shadow-secondary/10">
 					<div className="flex items-center gap-4 border-b border-secondary/10 bg-secondary/[0.04] px-6 py-5 sm:px-8">
@@ -168,7 +160,11 @@ function RouteComponent() {
 						</div>
 					</div>
 
-					<form className="space-y-6 p-6 sm:p-8" onSubmit={handleSubmit} noValidate>
+					<form
+						className="space-y-6 p-6 sm:p-8"
+						onSubmit={handleSubmit}
+						noValidate
+					>
 						<div className="grid gap-6 sm:grid-cols-2">
 							<div>
 								<label
@@ -187,8 +183,8 @@ function RouteComponent() {
 										name="name"
 										type="text"
 										autoComplete="name"
-									value={form.name}
-									onChange={handleChange}
+										value={form.name}
+										onChange={handleChange}
 										placeholder="আপনার পুরো নাম লিখুন"
 										className="h-14 w-full rounded-2xl border border-slate-200 bg-slate-50 pl-12 pr-4 text-base text-slate-900 outline-none transition focus:border-secondary focus:bg-white focus:ring-4 focus:ring-secondary/10"
 									/>
@@ -213,8 +209,8 @@ function RouteComponent() {
 										type="tel"
 										inputMode="numeric"
 										autoComplete="tel-national"
-									value={form.number}
-									onChange={handleChange}
+										value={form.number}
+										onChange={handleChange}
 										placeholder="01XXXXXXXXX"
 										className="h-14 w-full rounded-2xl border border-slate-200 bg-slate-50 pl-12 pr-4 text-base font-semibold tracking-wide text-slate-900 outline-none transition focus:border-secondary focus:bg-white focus:ring-4 focus:ring-secondary/10"
 									/>
@@ -224,7 +220,9 @@ function RouteComponent() {
 
 						<div className="border-t border-secondary/10 pt-6">
 							<div className="mb-4">
-								<h2 className="font-extrabold text-secondary-dark">পাসওয়ার্ড পরিবর্তন</h2>
+								<h2 className="font-extrabold text-secondary-dark">
+									পাসওয়ার্ড পরিবর্তন
+								</h2>
 								<p className="mt-1 text-sm text-slate-500">
 									পাসওয়ার্ড পরিবর্তন না করতে চাইলে এই ঘরগুলো খালি রাখুন।
 								</p>
@@ -274,7 +272,7 @@ function RouteComponent() {
 											type={visibility.password ? "text" : "password"}
 											autoComplete="new-password"
 											value={form.password}
-										onChange={handleChange}
+											onChange={handleChange}
 											placeholder="কমপক্ষে ৬টি অক্ষর"
 											className="h-14 w-full rounded-2xl border border-slate-200 bg-slate-50 pl-12 pr-12 text-base text-slate-900 outline-none transition focus:border-secondary focus:bg-white focus:ring-4 focus:ring-secondary/10"
 										/>
@@ -287,9 +285,15 @@ function RouteComponent() {
 												}))
 											}
 											className="absolute right-3 top-1/2 -translate-y-1/2 rounded-lg p-2 text-slate-400 transition hover:bg-secondary/10 hover:text-secondary focus:outline-none focus:ring-2 focus:ring-secondary/30"
-											aria-label={visibility.password ? "পাসওয়ার্ড লুকান" : "পাসওয়ার্ড দেখুন"}
+											aria-label={
+												visibility.password ? "পাসওয়ার্ড লুকান" : "পাসওয়ার্ড দেখুন"
+											}
 										>
-											{visibility.password ? <EyeOff className="h-5 w-5" /> : <Eye className="h-5 w-5" />}
+											{visibility.password ? (
+												<EyeOff className="h-5 w-5" />
+											) : (
+												<Eye className="h-5 w-5" />
+											)}
 										</button>
 									</div>
 								</div>
@@ -311,8 +315,8 @@ function RouteComponent() {
 											name="confirmPassword"
 											type={visibility.confirmPassword ? "text" : "password"}
 											autoComplete="new-password"
-										value={form.confirmPassword}
-										onChange={handleChange}
+											value={form.confirmPassword}
+											onChange={handleChange}
 											placeholder="পাসওয়ার্ডটি আবার লিখুন"
 											className="h-14 w-full rounded-2xl border border-slate-200 bg-slate-50 pl-12 pr-12 text-base text-slate-900 outline-none transition focus:border-secondary focus:bg-white focus:ring-4 focus:ring-secondary/10"
 										/>
@@ -325,9 +329,17 @@ function RouteComponent() {
 												}))
 											}
 											className="absolute right-3 top-1/2 -translate-y-1/2 rounded-lg p-2 text-slate-400 transition hover:bg-secondary/10 hover:text-secondary focus:outline-none focus:ring-2 focus:ring-secondary/30"
-											aria-label={visibility.confirmPassword ? "পাসওয়ার্ড লুকান" : "পাসওয়ার্ড দেখুন"}
+											aria-label={
+												visibility.confirmPassword
+													? "পাসওয়ার্ড লুকান"
+													: "পাসওয়ার্ড দেখুন"
+											}
 										>
-											{visibility.confirmPassword ? <EyeOff className="h-5 w-5" /> : <Eye className="h-5 w-5" />}
+											{visibility.confirmPassword ? (
+												<EyeOff className="h-5 w-5" />
+											) : (
+												<Eye className="h-5 w-5" />
+											)}
 										</button>
 									</div>
 								</div>
@@ -335,13 +347,19 @@ function RouteComponent() {
 						</div>
 
 						{status.error && (
-							<p className="rounded-xl bg-rose-50 px-4 py-3 text-sm font-semibold text-rose-700" role="alert">
+							<p
+								className="rounded-xl bg-rose-50 px-4 py-3 text-sm font-semibold text-rose-700"
+								role="alert"
+							>
 								{status.error}
 							</p>
 						)}
 
 						{status.success && (
-							<p className="flex items-center gap-2 rounded-xl bg-emerald-50 px-4 py-3 text-sm font-semibold text-emerald-700" role="status">
+							<p
+								className="flex items-center gap-2 rounded-xl bg-emerald-50 px-4 py-3 text-sm font-semibold text-emerald-700"
+								role="status"
+							>
 								<CheckCircle2 className="h-5 w-5 shrink-0" aria-hidden="true" />
 								{status.success}
 							</p>
