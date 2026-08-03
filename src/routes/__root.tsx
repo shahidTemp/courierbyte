@@ -50,7 +50,9 @@ function RootComponent() {
 
 	return (
 		<QueryClientProvider client={queryClient}>
-			<Outlet />
+			<UserProvider>
+				<Outlet />
+			</UserProvider>
 		</QueryClientProvider>
 	);
 }
