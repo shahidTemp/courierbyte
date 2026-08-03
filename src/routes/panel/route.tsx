@@ -13,7 +13,6 @@ function UserLayout() {
 
 	if (isLoading) return <Loader />;
 
-	// Panel is only for regular users. Admins/super admins get their own section.
 	if (!isAuthenticated) return <Navigate to="/login" />;
 	if (user?.role !== "user" || !user?.isActive) return <Navigate to="/" />;
 
