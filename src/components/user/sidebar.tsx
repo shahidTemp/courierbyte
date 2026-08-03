@@ -111,7 +111,7 @@ function SidebarContent({ onNavigate }) {
 				<button
 					type="button"
 					onClick={handleLogout}
-					className="group flex w-full items-center gap-3 rounded-xl px-3.5 py-2.5 text-sm font-medium text-rose-600 transition-all duration-200 hover:bg-rose-50 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-rose-300"
+					className="group flex w-full items-center gap-3 rounded-xl px-3.5 py-2.5 text-sm font-medium bg-rose-600 text-white shadow-sm shadow-rose-600/25 transition-all duration-200 hover:bg-rose-700 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-rose-300 focus-visible:ring-offset-1"
 				>
 					<LogOut className="h-5 w-5 shrink-0 transition-transform duration-200 group-hover:-translate-x-0.5" />
 					Logout
