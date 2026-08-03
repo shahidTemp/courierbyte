@@ -8,6 +8,7 @@ import {
 	Scripts,
 } from "@tanstack/react-router";
 import { TanStackRouterDevtoolsPanel } from "@tanstack/react-router-devtools";
+import { UserProvider } from "@/context/userContext";
 import appCss from "../styles.css?url";
 
 interface MyRouterContext {
