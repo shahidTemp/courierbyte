@@ -3,6 +3,7 @@ import crypto from "node:crypto";
 import { createServerFn } from "@tanstack/react-start";
 import { z } from "zod";
 import { User } from "@/server/models/user.model";
+import { authMiddleware } from "@/server/middleware";
 import { useAppSession } from "@/utils/session";
 
 const createUserSchema = z.object({
@@ -98,20 +99,14 @@ export const validateUser = createServerFn({ method: "GET" }).handler(
 );
 
 export const updateUser = createServerFn({ method: "POST" })
+	.middleware([authMiddleware])
 	.validator(updateUserSchema)
-	.handler(async ({ data }) => {
-		const session = await useAppSession();
-		if (!session.data.userId) throw new Error("Unauthorized");
-
-		const actor = await User.findById(session.data.userId);
-		if (!actor) throw new Error("Unauthorized");
-		if (!actor.isActive) throw new Error("এই অ্যাকাউন্টটি নিষ্ক্রিয়");
-
-		const isOwner = actor._id.equals(data.userId);
-		const isSuperAdmin = actor.role === "super_admin";
+	.handler(async ({ data, context }) => {
+		const isOwner = context.actor.id === data.userId;
+		const isSuperAdmin = context.actor.role === "super_admin";
 		if (!isOwner && !isSuperAdmin) throw new Error("Forbidden");
 
-		const user = isOwner ? actor : await User.findById(data.userId);
+		const user = await User.findById(data.userId);
 		if (!user) throw new Error("User not found");
 
 		if (data.name !== undefined) user.name = data.name;
@@ -132,21 +127,6 @@ export const updateUser = createServerFn({ method: "POST" })
 				throw new Error("এই নম্বরটি ইতিমধ্যে ব্যবহার করা হয়েছে");
 			}
 			throw error;
-		}
-
-		if (
-			isOwner &&
-			isSuperAdmin &&
-			(data.role !== undefined || data.isActive !== undefined)
-		) {
-			if (user.isActive) {
-				await session.update({
-					userId: user._id.toString(),
-					role: user.role,
-				});
-			} else {
-				await session.clear();
-			}
 		}
 
 		const {
