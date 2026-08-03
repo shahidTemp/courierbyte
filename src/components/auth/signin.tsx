@@ -1,12 +1,14 @@
 import { useNavigate } from "@tanstack/react-router";
 import { Eye, EyeOff, LockKeyhole, Phone } from "lucide-react";
 import { type FormEvent, useState } from "react";
+import { useAuth } from "@/context/userContext";
 import { loginUser } from "@/server/functions/auth.fn";
 
 const BANGLADESHI_MOBILE = /^01[3-9]\d{8}$/;
 
 export default function SignIn({ onSignUp }: { onSignUp?: () => void }) {
 	const navigate = useNavigate();
+	const { refreshUser } = useAuth();
 	const [phone, setPhone] = useState("");
 	const [password, setPassword] = useState("");
 	const [showPassword, setShowPassword] = useState(false);
@@ -31,6 +33,7 @@ export default function SignIn({ onSignUp }: { onSignUp?: () => void }) {
 
 		try {
 			await loginUser({ data: { number: phone, password } });
+			await refreshUser();
 			await navigate({ to: "/panel" });
 		} catch (error) {
 			setError(
