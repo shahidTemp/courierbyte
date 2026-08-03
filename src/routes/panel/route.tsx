@@ -7,9 +7,9 @@ export const Route = createFileRoute("/panel")({
 
 function UserLayout() {
 	return (
-		<div className="flex flex-col min-h-screen">
+		<div className="min-h-screen lg:flex">
 			<Sidebar />
-			<main className="flex-1">
+			<main className="min-w-0 flex-1">
 				<Outlet />
 			</main>
 		</div>

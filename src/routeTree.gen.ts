@@ -14,6 +14,12 @@ import { Route as PanelRouteRouteImport } from './routes/panel/route'
 import { Route as WebsiteIndexRouteImport } from './routes/_website/index'
 import { Route as WebsiteLoginRouteImport } from './routes/_website/login'
 import { Route as PanelIndexRouteImport } from './routes/panel/index'
+import { Route as PanelBillingRouteImport } from './routes/panel/billing'
+import { Route as PanelDeveloperApiRouteImport } from './routes/panel/developer-api'
+import { Route as PanelFeedbackRouteImport } from './routes/panel/feedback'
+import { Route as PanelFraudCheckerRouteImport } from './routes/panel/fraud-checker'
+import { Route as PanelProfileRouteImport } from './routes/panel/profile'
+import { Route as PanelSubscriptionPlansRouteImport } from './routes/panel/subscription-plans'
 
 const WebsiteRouteRoute = WebsiteRouteRouteImport.update({
   id: '/_website',
@@ -39,15 +45,57 @@ const PanelIndexRoute = PanelIndexRouteImport.update({
   path: '/',
   getParentRoute: () => PanelRouteRoute,
 } as any)
+const PanelBillingRoute = PanelBillingRouteImport.update({
+  id: '/billing',
+  path: '/billing',
+  getParentRoute: () => PanelRouteRoute,
+} as any)
+const PanelDeveloperApiRoute = PanelDeveloperApiRouteImport.update({
+  id: '/developer-api',
+  path: '/developer-api',
+  getParentRoute: () => PanelRouteRoute,
+} as any)
+const PanelFeedbackRoute = PanelFeedbackRouteImport.update({
+  id: '/feedback',
+  path: '/feedback',
+  getParentRoute: () => PanelRouteRoute,
+} as any)
+const PanelFraudCheckerRoute = PanelFraudCheckerRouteImport.update({
+  id: '/fraud-checker',
+  path: '/fraud-checker',
+  getParentRoute: () => PanelRouteRoute,
+} as any)
+const PanelProfileRoute = PanelProfileRouteImport.update({
+  id: '/profile',
+  path: '/profile',
+  getParentRoute: () => PanelRouteRoute,
+} as any)
+const PanelSubscriptionPlansRoute = PanelSubscriptionPlansRouteImport.update({
+  id: '/subscription-plans',
+  path: '/subscription-plans',
+  getParentRoute: () => PanelRouteRoute,
+} as any)
 
 export interface FileRoutesByFullPath {
   '/': typeof WebsiteIndexRoute
   '/panel': typeof PanelRouteRouteWithChildren
   '/login': typeof WebsiteLoginRoute
+  '/panel/billing': typeof PanelBillingRoute
+  '/panel/developer-api': typeof PanelDeveloperApiRoute
+  '/panel/feedback': typeof PanelFeedbackRoute
+  '/panel/fraud-checker': typeof PanelFraudCheckerRoute
+  '/panel/profile': typeof PanelProfileRoute
+  '/panel/subscription-plans': typeof PanelSubscriptionPlansRoute
   '/panel/': typeof PanelIndexRoute
 }
 export interface FileRoutesByTo {
   '/login': typeof WebsiteLoginRoute
+  '/panel/billing': typeof PanelBillingRoute
+  '/panel/developer-api': typeof PanelDeveloperApiRoute
+  '/panel/feedback': typeof PanelFeedbackRoute
+  '/panel/fraud-checker': typeof PanelFraudCheckerRoute
+  '/panel/profile': typeof PanelProfileRoute
+  '/panel/subscription-plans': typeof PanelSubscriptionPlansRoute
   '/': typeof WebsiteIndexRoute
   '/panel': typeof PanelIndexRoute
 }
@@ -56,19 +104,50 @@ export interface FileRoutesById {
   '/_website': typeof WebsiteRouteRouteWithChildren
   '/panel': typeof PanelRouteRouteWithChildren
   '/_website/login': typeof WebsiteLoginRoute
+  '/panel/billing': typeof PanelBillingRoute
+  '/panel/developer-api': typeof PanelDeveloperApiRoute
+  '/panel/feedback': typeof PanelFeedbackRoute
+  '/panel/fraud-checker': typeof PanelFraudCheckerRoute
+  '/panel/profile': typeof PanelProfileRoute
+  '/panel/subscription-plans': typeof PanelSubscriptionPlansRoute
   '/_website/': typeof WebsiteIndexRoute
   '/panel/': typeof PanelIndexRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
-  fullPaths: '/' | '/panel' | '/login' | '/panel/'
+  fullPaths:
+    | '/'
+    | '/panel'
+    | '/login'
+    | '/panel/billing'
+    | '/panel/developer-api'
+    | '/panel/feedback'
+    | '/panel/fraud-checker'
+    | '/panel/profile'
+    | '/panel/subscription-plans'
+    | '/panel/'
   fileRoutesByTo: FileRoutesByTo
-  to: '/login' | '/' | '/panel'
+  to:
+    | '/login'
+    | '/panel/billing'
+    | '/panel/developer-api'
+    | '/panel/feedback'
+    | '/panel/fraud-checker'
+    | '/panel/profile'
+    | '/panel/subscription-plans'
+    | '/'
+    | '/panel'
   id:
     | '__root__'
     | '/_website'
     | '/panel'
     | '/_website/login'
+    | '/panel/billing'
+    | '/panel/developer-api'
+    | '/panel/feedback'
+    | '/panel/fraud-checker'
+    | '/panel/profile'
+    | '/panel/subscription-plans'
     | '/_website/'
     | '/panel/'
   fileRoutesById: FileRoutesById
@@ -115,6 +194,48 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof PanelIndexRouteImport
       parentRoute: typeof PanelRouteRoute
     }
+    '/panel/billing': {
+      id: '/panel/billing'
+      path: '/billing'
+      fullPath: '/panel/billing'
+      preLoaderRoute: typeof PanelBillingRouteImport
+      parentRoute: typeof PanelRouteRoute
+    }
+    '/panel/developer-api': {
+      id: '/panel/developer-api'
+      path: '/developer-api'
+      fullPath: '/panel/developer-api'
+      preLoaderRoute: typeof PanelDeveloperApiRouteImport
+      parentRoute: typeof PanelRouteRoute
+    }
+    '/panel/feedback': {
+      id: '/panel/feedback'
+      path: '/feedback'
+      fullPath: '/panel/feedback'
+      preLoaderRoute: typeof PanelFeedbackRouteImport
+      parentRoute: typeof PanelRouteRoute
+    }
+    '/panel/fraud-checker': {
+      id: '/panel/fraud-checker'
+      path: '/fraud-checker'
+      fullPath: '/panel/fraud-checker'
+      preLoaderRoute: typeof PanelFraudCheckerRouteImport
+      parentRoute: typeof PanelRouteRoute
+    }
+    '/panel/profile': {
+      id: '/panel/profile'
+      path: '/profile'
+      fullPath: '/panel/profile'
+      preLoaderRoute: typeof PanelProfileRouteImport
+      parentRoute: typeof PanelRouteRoute
+    }
+    '/panel/subscription-plans': {
+      id: '/panel/subscription-plans'
+      path: '/subscription-plans'
+      fullPath: '/panel/subscription-plans'
+      preLoaderRoute: typeof PanelSubscriptionPlansRouteImport
+      parentRoute: typeof PanelRouteRoute
+    }
   }
 }
 
@@ -133,10 +254,22 @@ const WebsiteRouteRouteWithChildren = WebsiteRouteRoute._addFileChildren(
 )
 
 interface PanelRouteRouteChildren {
+  PanelBillingRoute: typeof PanelBillingRoute
+  PanelDeveloperApiRoute: typeof PanelDeveloperApiRoute
+  PanelFeedbackRoute: typeof PanelFeedbackRoute
+  PanelFraudCheckerRoute: typeof PanelFraudCheckerRoute
+  PanelProfileRoute: typeof PanelProfileRoute
+  PanelSubscriptionPlansRoute: typeof PanelSubscriptionPlansRoute
   PanelIndexRoute: typeof PanelIndexRoute
 }
 
 const PanelRouteRouteChildren: PanelRouteRouteChildren = {
+  PanelBillingRoute: PanelBillingRoute,
+  PanelDeveloperApiRoute: PanelDeveloperApiRoute,
+  PanelFeedbackRoute: PanelFeedbackRoute,
+  PanelFraudCheckerRoute: PanelFraudCheckerRoute,
+  PanelProfileRoute: PanelProfileRoute,
+  PanelSubscriptionPlansRoute: PanelSubscriptionPlansRoute,
   PanelIndexRoute: PanelIndexRoute,
 }
 
@@ -151,12 +284,3 @@ const rootRouteChildren: RootRouteChildren = {
 export const routeTree = rootRouteImport
   ._addFileChildren(rootRouteChildren)
   ._addFileTypes<FileRouteTypes>()
-
-import type { getRouter } from './router.tsx'
-import type { createStart } from '@tanstack/react-start'
-declare module '@tanstack/react-start' {
-  interface Register {
-    ssr: true
-    router: Awaited<ReturnType<typeof getRouter>>
-  }
-}
