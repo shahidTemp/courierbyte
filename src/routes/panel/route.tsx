@@ -8,10 +8,10 @@ export const Route = createFileRoute("/panel")({
 });
 
 function UserLayout() {
-	const { isLoading, isAuthenticated } = useAuth();
+	const { isLoading, isAuthenticated, user } = useAuth();
 	const navigate = useNavigate();
 	if (isLoading) return <Loader />;
-	if (isAuthenticated) return navigate({ to: "/" });
+	if (isAuthenticated || user?.role != "user") return navigate({ to: "/" });
 
 	return (
 		<div className="min-h-screen lg:flex">
