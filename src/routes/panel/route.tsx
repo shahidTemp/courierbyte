@@ -1,5 +1,5 @@
 // @ts-nocheck
-import { Navigate, createFileRoute, Outlet } from "@tanstack/react-router";
+import { createFileRoute, Navigate, Outlet } from "@tanstack/react-router";
 import { Loader } from "@/components/common/loader";
 import { Sidebar } from "@/components/user/sidebar";
 import { useAuth } from "@/context/userContext";
@@ -15,7 +15,7 @@ function UserLayout() {
 
 	// Panel is only for regular users. Admins/super admins get their own section.
 	if (!isAuthenticated) return <Navigate to="/login" />;
-	if (user?.role !== "user") return <Navigate to="/" />;
+	if (user?.role !== "user" || !user?.isActive) return <Navigate to="/" />;
 
 	return (
 		<div className="min-h-screen lg:flex">
