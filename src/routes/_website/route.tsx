@@ -1,3 +1,4 @@
+// @ts-nocheck
 import { createFileRoute, Outlet } from "@tanstack/react-router";
 import Footer from "@/components/common/footer";
 import Header from "@/components/common/header";

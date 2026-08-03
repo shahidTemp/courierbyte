@@ -1,4 +1,4 @@
-//@ts-nocheck
+// @ts-nocheck
 
 import { definePlugin } from "nitro";
 import mongoose from "mongoose";

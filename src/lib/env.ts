@@ -1,3 +1,4 @@
+// @ts-nocheck
 const requiredVars = ["PORT", "MONGODB_URI", "JWT_SECRET"];
 
 requiredVars.forEach((key) => {

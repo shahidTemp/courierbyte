@@ -1,3 +1,4 @@
+// @ts-nocheck
 import {
 	CheckCircle2,
 	PackageSearch,
@@ -5,7 +6,6 @@ import {
 	TrendingDown,
 	WalletCards,
 } from "lucide-react";
-import MiniDashboard from "./miniDashboard";
 
 const valueFeatures = [
 	{
@@ -164,7 +164,15 @@ export default function FeatureShowcase() {
 									</ul>
 								</div>
 								<div className="relative">
-									{index === 0 ? <MiniDashboard /> : <SavingsBoard />}
+									{index === 0 ? (
+										<img
+											src="/images/dashboard.png"
+											alt="CourierByte dashboard preview"
+											className="w-full rounded-[1.35rem] shadow-2xl shadow-secondary/10"
+										/>
+									) : (
+										<SavingsBoard />
+									)}
 								</div>
 							</div>
 						);

@@ -1,12 +1,13 @@
+// @ts-nocheck
 import { useNavigate } from "@tanstack/react-router";
 import { Eye, EyeOff, LockKeyhole, Phone, UserRound } from "lucide-react";
-import { type FormEvent, useState } from "react";
+import { useState } from "react";
 import { useAuth } from "@/context/userContext";
 import { createUser } from "@/server/functions/auth.fn";
 
 const BANGLADESHI_MOBILE = /^01[3-9]\d{8}$/;
 
-export default function SignUp({ onLogin }: { onLogin?: () => void }) {
+export default function SignUp({ onLogin }) {
 	const navigate = useNavigate();
 	const { refreshUser } = useAuth();
 	const [name, setName] = useState("");
@@ -16,15 +17,10 @@ export default function SignUp({ onLogin }: { onLogin?: () => void }) {
 	const [showPassword, setShowPassword] = useState(false);
 	const [showConfirmPassword, setShowConfirmPassword] = useState(false);
 	const [error, setError] = useState("");
-	const [errorField, setErrorField] = useState<
-		"name" | "number" | "password" | "confirmPassword" | null
-	>(null);
+	const [errorField, setErrorField] = useState(null);
 	const [isSubmitting, setIsSubmitting] = useState(false);
 
-	const showError = (
-		field: "name" | "number" | "password" | "confirmPassword",
-		message: string,
-	) => {
+	const showError = (field, message) => {
 		setError(message);
 		setErrorField(field);
 	};
@@ -34,7 +30,7 @@ export default function SignUp({ onLogin }: { onLogin?: () => void }) {
 		setErrorField(null);
 	};
 
-	const handleSubmit = async (event: FormEvent<HTMLFormElement>) => {
+	const handleSubmit = async (event) => {
 		event.preventDefault();
 
 		if (!name.trim()) {

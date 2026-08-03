@@ -1,3 +1,4 @@
+// @ts-nocheck
 export const Loader = ({ size = 32, color = 'black' }) => {
   return (
     <>

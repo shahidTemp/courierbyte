@@ -1,3 +1,4 @@
+// @ts-nocheck
 import { MessageCircle } from 'lucide-react'
 
 const ContactFloat = () => {

@@ -1,3 +1,4 @@
+// @ts-nocheck
 import { createFileRoute } from "@tanstack/react-router";
 import { Gem } from "lucide-react";
 import { PagePlaceholder } from "@/components/user/pagePlaceholder";

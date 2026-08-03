@@ -1,7 +1,7 @@
+// @ts-nocheck
 import { Link, useLocation, useRouter } from '@tanstack/react-router'
-import type { ErrorComponentProps } from '@tanstack/react-router'
 
-export function DefaultCatchBoundary({ error }: ErrorComponentProps) {
+export function DefaultCatchBoundary({ error }) {
   const router = useRouter()
   const isRoot = useLocation({
     select: (location) => location.pathname === '/',

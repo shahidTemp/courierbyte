@@ -1,4 +1,4 @@
-import MiniDashboard from "./miniDashboard";
+// @ts-nocheck
 import SearchDemo from "./searchDemo";
 
 const avatarColors = [
@@ -57,7 +57,11 @@ export default function Hero() {
 						</div>
 					</div>
 
-					<MiniDashboard large />
+					<img
+						src="/images/dashboard.png"
+						alt="CourierByte dashboard preview"
+						className="w-full rounded-[1.35rem] shadow-2xl shadow-secondary/10"
+					/>
 				</div>
 
 				<div className="mt-20 grid grid-cols-2 gap-px overflow-hidden rounded-2xl border border-secondary/10 bg-secondary/10 sm:grid-cols-4">

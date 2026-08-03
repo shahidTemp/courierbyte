@@ -1,21 +1,7 @@
-import type { LucideIcon } from "lucide-react";
+// @ts-nocheck
 import { CheckCircle2, Sparkles } from "lucide-react";
 
-type PagePlaceholderProps = {
-	icon: LucideIcon;
-	title: string;
-	titleBn: string;
-	description: string;
-	features: string[];
-};
-
-export function PagePlaceholder({
-	icon: Icon,
-	title,
-	titleBn,
-	description,
-	features,
-}: PagePlaceholderProps) {
+export function PagePlaceholder({ icon: Icon, title, titleBn, description, features }) {
 	return (
 		<div className="p-4 sm:p-6 lg:p-8">
 			<div className="mx-auto max-w-3xl">

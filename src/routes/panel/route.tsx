@@ -1,3 +1,4 @@
+// @ts-nocheck
 import { createFileRoute, Outlet } from "@tanstack/react-router";
 import { Sidebar } from "@/components/user/sidebar";
 

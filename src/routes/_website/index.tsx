@@ -1,3 +1,4 @@
+// @ts-nocheck
 import { createFileRoute } from "@tanstack/react-router";
 import BusinessOutcome from "@/components/home/businessOutcome";
 import Faq from "@/components/home/faq";

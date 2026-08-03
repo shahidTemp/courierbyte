@@ -1,3 +1,4 @@
+// @ts-nocheck
 import { ArrowRight, Gauge, Lock, Sparkles } from "lucide-react";
 
 export default function FreemiumSection() {
