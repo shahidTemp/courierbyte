@@ -1,123 +1,85 @@
-// @ts-nocheck
-
 import {
 	createContext,
 	useCallback,
 	useContext,
 	useEffect,
-	useRef,
 	useState,
+	type ReactNode,
 } from "react";
 import { logoutUser, validateUser } from "@/server/functions/auth.fn";
 
-const initialAuthState = {
-	user: null,
-	isFetching: true,
-	error: null,
-	isAuthenticated: false,
+type User = {
+	_id: string;
+	name: string;
+	number: string;
+	role: "user" | "admin" | "super_admin";
+	isActive: boolean;
+	createdAt: string;
+	updatedAt: string;
 };
 
-const Context = createContext(undefined);
+type AuthContextValue = {
+	user: User | null;
+	isLoading: boolean;
+	isAuthenticated: boolean;
+	error: Error | null;
+	logout: () => Promise<void>;
+	refreshUser: () => Promise<void>;
+};
 
-const toError = (error, fallbackMessage) =>
-	error instanceof Error ? error : new Error(fallbackMessage);
+const AuthContext = createContext<AuthContextValue | undefined>(undefined);
 
-export const UserProvider = ({ children }) => {
-	const [authState, setAuthState] = useState(initialAuthState);
-	const isMountedRef = useRef(false);
-	const requestIdRef = useRef(0);
+export const UserProvider = ({ children }: { children: ReactNode }) => {
+	// `undefined` = initial validation is still in progress
+	const [user, setUser] = useState<User | null | undefined>(undefined);
+	const [error, setError] = useState<Error | null>(null);
 
 	const refreshUser = useCallback(async () => {
-		const requestId = ++requestIdRef.current;
-
 		try {
 			const data = await validateUser();
-
-			if (!isMountedRef.current || requestId !== requestIdRef.current) {
-				return;
-			}
-
-			const user = data ?? null;
-			setAuthState({
-				user,
-				isFetching: false,
-				error: null,
-				isAuthenticated: user !== null,
-			});
-		} catch (error) {
-			if (!isMountedRef.current || requestId !== requestIdRef.current) {
-				return;
-			}
-
-			setAuthState({
-				user: null,
-				isFetching: false,
-				error: toError(error, "Authentication check failed"),
-				isAuthenticated: false,
-			});
+			setUser(data ?? null);
+			setError(null);
+		} catch (err) {
+			setUser(null);
+			setError(
+				err instanceof Error ? err : new Error("Authentication check failed"),
+			);
 		}
 	}, []);
 
 	useEffect(() => {
-		isMountedRef.current = true;
 		void refreshUser();
-
-		return () => {
-			isMountedRef.current = false;
-			requestIdRef.current += 1;
-		};
 	}, [refreshUser]);
 
-	const setAuthenticatedUser = useCallback((user) => {
-		requestIdRef.current += 1;
-		setAuthState({
-			user,
-			isFetching: false,
-			error: null,
-			isAuthenticated: user !== null,
-		});
-	}, []);
-
 	const logout = useCallback(async () => {
-		requestIdRef.current += 1;
-		let logoutError = null;
-
 		try {
 			await logoutUser();
-		} catch (error) {
-			logoutError = toError(error, "Logout failed");
-			console.error("Logout error:", logoutError);
+		} catch (err) {
+			console.error("Logout error:", err);
 		} finally {
-			if (isMountedRef.current) {
-				setAuthState({
-					user: null,
-					isFetching: false,
-					error: logoutError,
-					isAuthenticated: false,
-				});
-			}
+			setUser(null);
+			setError(null);
 		}
 	}, []);
 
 	return (
-		<Context.Provider
+		<AuthContext.Provider
 			value={{
-				user: authState.user,
-				isLoading: authState.isFetching,
-				isAuthenticated: authState.isAuthenticated,
-				error: authState.error,
+				user: user ?? null,
+				isLoading: user === undefined,
+				isAuthenticated: user != null,
+				error,
 				logout,
 				refreshUser,
-				setAuthenticatedUser,
 			}}
 		>
 			{children}
-		</Context.Provider>
+		</AuthContext.Provider>
 	);
 };
 
 export const useAuth = () => {
-	const context = useContext(Context);
+	const context = useContext(AuthContext);
 
 	if (context === undefined) {
 		throw new Error("useAuth must be used within a UserProvider");
