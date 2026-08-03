@@ -43,8 +43,8 @@ export default function SignUp({ onLogin }: { onLogin?: () => void }) {
 			return;
 		}
 
-		if (password.length < 8) {
-			showError("password", "পাসওয়ার্ডে কমপক্ষে ৮টি অক্ষর থাকতে হবে।");
+		if (password.length < 6) {
+			showError("password", "পাসওয়ার্ডে কমপক্ষে ৬টি অক্ষর থাকতে হবে।");
 			return;
 		}
 
