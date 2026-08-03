@@ -31,6 +31,7 @@ export default function SignIn({ onSignUp }: { onSignUp?: () => void }) {
 
 		try {
 			await loginUser({ data: { number: phone, password } });
+			await navigate({ to: "/panel" });
 		} catch (error) {
 			setError(
 				error instanceof Error
@@ -39,14 +40,6 @@ export default function SignIn({ onSignUp }: { onSignUp?: () => void }) {
 			);
 			setIsSubmitting(false);
 			return;
-		}
-
-		try {
-			await navigate({ to: "/panel" });
-		} catch {
-			setError("প্যানেলে যাওয়া যায়নি। পরে আবার চেষ্টা করুন।");
-		} finally {
-			setIsSubmitting(false);
 		}
 	};
 

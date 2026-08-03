@@ -63,6 +63,7 @@ export default function SignUp({ onLogin }: { onLogin?: () => void }) {
 			await createUser({
 				data: { name, number, password },
 			});
+			await navigate({ to: "/panel" });
 		} catch (error) {
 			setError(
 				error instanceof Error
@@ -71,14 +72,6 @@ export default function SignUp({ onLogin }: { onLogin?: () => void }) {
 			);
 			setIsSubmitting(false);
 			return;
-		}
-
-		try {
-			await navigate({ to: "/panel" });
-		} catch {
-			setError("প্যানেলে যাওয়া যায়নি। পরে আবার চেষ্টা করুন।");
-		} finally {
-			setIsSubmitting(false);
 		}
 	};
 
@@ -116,7 +109,8 @@ export default function SignUp({ onLogin }: { onLogin?: () => void }) {
 								}
 								type="text"
 								autoComplete="name"
-								value={name}								onChange={(event) => {
+								value={name}
+								onChange={(event) => {
 									setName(event.target.value);
 									clearError();
 								}}
@@ -148,7 +142,8 @@ export default function SignUp({ onLogin }: { onLogin?: () => void }) {
 								type="tel"
 								inputMode="numeric"
 								autoComplete="tel-national"
-								value={number}								onChange={(event) => {
+								value={number}
+								onChange={(event) => {
 									setNumber(event.target.value.replace(/\D/g, "").slice(0, 11));
 									clearError();
 								}}
@@ -179,7 +174,8 @@ export default function SignUp({ onLogin }: { onLogin?: () => void }) {
 								}
 								type={showPassword ? "text" : "password"}
 								autoComplete="new-password"
-								value={password}								onChange={(event) => {
+								value={password}
+								onChange={(event) => {
 									setPassword(event.target.value);
 									clearError();
 								}}
@@ -222,7 +218,8 @@ export default function SignUp({ onLogin }: { onLogin?: () => void }) {
 								}
 								type={showConfirmPassword ? "text" : "password"}
 								autoComplete="new-password"
-								value={confirmPassword}								onChange={(event) => {
+								value={confirmPassword}
+								onChange={(event) => {
 									setConfirmPassword(event.target.value);
 									clearError();
 								}}
