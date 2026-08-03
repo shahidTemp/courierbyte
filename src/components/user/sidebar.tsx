@@ -66,21 +66,9 @@ function NavItemLink({
 const sectionLabel =
 	"mb-2 px-3.5 text-[11px] font-bold uppercase tracking-[0.14em] text-secondary/50";
 
-function getInitials(name?: string) {
-	return (
-		name
-			?.split(" ")
-			.filter(Boolean)
-			.map((word) => Array.from(word)[0])
-			.slice(0, 2)
-			.join("")
-			.toUpperCase() || "U"
-	);
-}
-
 function Brand({ onClick }: { onClick?: () => void }) {
 	return (
-		<Link to="/panel" onClick={onClick} className="flex items-center gap-3">
+		<Link to="/" onClick={onClick} className="flex items-center gap-3">
 			<span className="flex h-10 w-10 shrink-0 items-center justify-center rounded-xl bg-gradient-to-br from-secondary to-secondary-dark text-white shadow-md shadow-secondary/25">
 				<PackageSearch className="h-5 w-5" />
 			</span>
@@ -97,7 +85,7 @@ function Brand({ onClick }: { onClick?: () => void }) {
 }
 
 function SidebarContent({ onNavigate }: { onNavigate?: () => void }) {
-	const { user, logout } = useAuth();
+	const { logout } = useAuth();
 	const navigate = useNavigate();
 
 	const handleLogout = async () => {
@@ -108,10 +96,6 @@ function SidebarContent({ onNavigate }: { onNavigate?: () => void }) {
 
 	return (
 		<div className="flex h-full flex-col">
-			<div className="px-4 pb-5 pt-6">
-				<Brand onClick={onNavigate} />
-			</div>
-
 			<nav
 				aria-label="Main navigation"
 				className="flex-1 space-y-6 overflow-y-auto px-3"
@@ -136,26 +120,6 @@ function SidebarContent({ onNavigate }: { onNavigate?: () => void }) {
 			</nav>
 
 			<div className="border-t border-secondary/10 p-3">
-				{user && (
-					<Link
-						to="/panel/profile"
-						onClick={onNavigate}
-						className="mb-2 flex items-center gap-3 rounded-xl px-2.5 py-2.5 transition-colors duration-200 hover:bg-secondary/10"
-					>
-						<span className="flex h-10 w-10 shrink-0 items-center justify-center rounded-full bg-gradient-to-br from-secondary to-secondary-dark text-sm font-bold text-white">
-							{getInitials(user.name)}
-						</span>
-						<span className="min-w-0 flex-1">
-							<span className="block truncate text-sm font-bold text-secondary-dark">
-								{user.name}
-							</span>
-							<span className="block truncate text-xs text-secondary/60">
-								{user.number}
-							</span>
-						</span>
-					</Link>
-				)}
-
 				<button
 					type="button"
 					onClick={handleLogout}
@@ -171,7 +135,6 @@ function SidebarContent({ onNavigate }: { onNavigate?: () => void }) {
 
 export const Sidebar = () => {
 	const [open, setOpen] = useState(false);
-	const triggerRef = useRef<HTMLButtonElement>(null);
 	const drawerRef = useRef<HTMLElement>(null);
 
 	useEffect(() => {
@@ -183,7 +146,6 @@ export const Sidebar = () => {
 		return () => {
 			document.body.style.overflow = "";
 			window.removeEventListener("keydown", onKey);
-			triggerRef.current?.focus();
 		};
 	}, [open]);
 
@@ -202,15 +164,21 @@ export const Sidebar = () => {
 		<>
 			{/* Desktop sidebar */}
 			<aside className="hidden shrink-0 border-r border-secondary/10 bg-white lg:sticky lg:top-0 lg:flex lg:h-screen lg:w-72 lg:flex-col">
+				<div className="px-4 pb-5 pt-6">
+					<Brand />
+				</div>
 				<SidebarContent />
 			</aside>
 
-			{/* Mobile top bar */}
-			<header className="sticky top-0 z-40 flex items-center justify-between border-b border-secondary/10 bg-white/95 px-4 py-3 backdrop-blur lg:hidden">
+			{/* Mobile top bar — hidden while the drawer is open so the brand doesn't repeat */}
+			<header
+				className={`sticky top-0 z-40 flex items-center justify-between border-b border-secondary/10 bg-white/95 px-4 py-3 backdrop-blur transition-opacity duration-300 lg:hidden ${
+					open ? "pointer-events-none opacity-0" : "opacity-100"
+				}`}
+			>
 				<Brand onClick={close} />
 				<button
 					type="button"
-					ref={triggerRef}
 					onClick={() => setOpen(true)}
 					className="rounded-lg p-2 text-secondary transition-colors hover:bg-secondary/10 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-secondary/30"
 					aria-label="Open menu"
