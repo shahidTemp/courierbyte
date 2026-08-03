@@ -61,7 +61,7 @@ export const loginUser = createServerFn({ method: "POST" })
 		const session = await useAppSession();
 		await session.update({ userId: user._id.toString(), role: user.role });
 
-		return { id: user._id, name: user.name, role: user.role };
+		return JSON.parse(JSON.stringify(user));
 	});
 
 export const logoutUser = createServerFn({ method: "POST" }).handler(

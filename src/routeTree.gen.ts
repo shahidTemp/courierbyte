@@ -10,11 +10,18 @@
 
 import { Route as rootRouteImport } from './routes/__root'
 import { Route as WebsiteRouteRouteImport } from './routes/_website/route'
+import { Route as PanelRouteRouteImport } from './routes/panel/route'
 import { Route as WebsiteIndexRouteImport } from './routes/_website/index'
 import { Route as WebsiteLoginRouteImport } from './routes/_website/login'
+import { Route as PanelIndexRouteImport } from './routes/panel/index'
 
 const WebsiteRouteRoute = WebsiteRouteRouteImport.update({
   id: '/_website',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const PanelRouteRoute = PanelRouteRouteImport.update({
+  id: '/panel',
+  path: '/panel',
   getParentRoute: () => rootRouteImport,
 } as any)
 const WebsiteIndexRoute = WebsiteIndexRouteImport.update({
@@ -27,31 +34,48 @@ const WebsiteLoginRoute = WebsiteLoginRouteImport.update({
   path: '/login',
   getParentRoute: () => WebsiteRouteRoute,
 } as any)
+const PanelIndexRoute = PanelIndexRouteImport.update({
+  id: '/',
+  path: '/',
+  getParentRoute: () => PanelRouteRoute,
+} as any)
 
 export interface FileRoutesByFullPath {
   '/': typeof WebsiteIndexRoute
+  '/panel': typeof PanelRouteRouteWithChildren
   '/login': typeof WebsiteLoginRoute
+  '/panel/': typeof PanelIndexRoute
 }
 export interface FileRoutesByTo {
   '/login': typeof WebsiteLoginRoute
   '/': typeof WebsiteIndexRoute
+  '/panel': typeof PanelIndexRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
   '/_website': typeof WebsiteRouteRouteWithChildren
+  '/panel': typeof PanelRouteRouteWithChildren
   '/_website/login': typeof WebsiteLoginRoute
   '/_website/': typeof WebsiteIndexRoute
+  '/panel/': typeof PanelIndexRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
-  fullPaths: '/' | '/login'
+  fullPaths: '/' | '/panel' | '/login' | '/panel/'
   fileRoutesByTo: FileRoutesByTo
-  to: '/login' | '/'
-  id: '__root__' | '/_website' | '/_website/login' | '/_website/'
+  to: '/login' | '/' | '/panel'
+  id:
+    | '__root__'
+    | '/_website'
+    | '/panel'
+    | '/_website/login'
+    | '/_website/'
+    | '/panel/'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
   WebsiteRouteRoute: typeof WebsiteRouteRouteWithChildren
+  PanelRouteRoute: typeof PanelRouteRouteWithChildren
 }
 
 declare module '@tanstack/react-router' {
@@ -61,6 +85,13 @@ declare module '@tanstack/react-router' {
       path: ''
       fullPath: '/'
       preLoaderRoute: typeof WebsiteRouteRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/panel': {
+      id: '/panel'
+      path: '/panel'
+      fullPath: '/panel'
+      preLoaderRoute: typeof PanelRouteRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/_website/': {
@@ -76,6 +107,13 @@ declare module '@tanstack/react-router' {
       fullPath: '/login'
       preLoaderRoute: typeof WebsiteLoginRouteImport
       parentRoute: typeof WebsiteRouteRoute
+    }
+    '/panel/': {
+      id: '/panel/'
+      path: '/'
+      fullPath: '/panel/'
+      preLoaderRoute: typeof PanelIndexRouteImport
+      parentRoute: typeof PanelRouteRoute
     }
   }
 }
@@ -94,8 +132,21 @@ const WebsiteRouteRouteWithChildren = WebsiteRouteRoute._addFileChildren(
   WebsiteRouteRouteChildren,
 )
 
+interface PanelRouteRouteChildren {
+  PanelIndexRoute: typeof PanelIndexRoute
+}
+
+const PanelRouteRouteChildren: PanelRouteRouteChildren = {
+  PanelIndexRoute: PanelIndexRoute,
+}
+
+const PanelRouteRouteWithChildren = PanelRouteRoute._addFileChildren(
+  PanelRouteRouteChildren,
+)
+
 const rootRouteChildren: RootRouteChildren = {
   WebsiteRouteRoute: WebsiteRouteRouteWithChildren,
+  PanelRouteRoute: PanelRouteRouteWithChildren,
 }
 export const routeTree = rootRouteImport
   ._addFileChildren(rootRouteChildren)
