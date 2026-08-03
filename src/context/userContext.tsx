@@ -12,7 +12,6 @@ import { logoutUser, validateUser } from "@/server/functions/auth.fn";
 const AuthContext = createContext(undefined);
 
 export const UserProvider = ({ children }) => {
-	// `undefined` = initial validation is still in progress
 	const [user, setUser] = useState(undefined);
 	const [error, setError] = useState(null);
 
