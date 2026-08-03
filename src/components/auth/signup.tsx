@@ -1,6 +1,6 @@
-import { createUser } from "@/server/functions/user.fn";
 import { Eye, EyeOff, LockKeyhole, Phone, UserRound } from "lucide-react";
 import { type FormEvent, useState } from "react";
+import { createUser } from "@/server/functions/auth.fn";
 
 const BANGLADESHI_MOBILE = /^01[3-9]\d{8}$/;
 
@@ -15,8 +15,6 @@ export default function SignUp({ onLogin }: { onLogin?: () => void }) {
 	const [errorField, setErrorField] = useState<
 		"name" | "number" | "password" | "confirmPassword" | null
 	>(null);
-	const [submitted, setSubmitted] = useState(false);
-	const [apiKey, setApiKey] = useState("");
 	const [isSubmitting, setIsSubmitting] = useState(false);
 
 	const showError = (
@@ -29,8 +27,6 @@ export default function SignUp({ onLogin }: { onLogin?: () => void }) {
 
 	const handleSubmit = async (event: FormEvent<HTMLFormElement>) => {
 		event.preventDefault();
-		setSubmitted(false);
-		setApiKey("");
 
 		if (!name.trim()) {
 			showError("name", "আপনার নাম লিখুন।");
@@ -57,20 +53,15 @@ export default function SignUp({ onLogin }: { onLogin?: () => void }) {
 		setIsSubmitting(true);
 
 		try {
-			const result = await createUser({
+			await createUser({
 				data: { name, number, password },
 			});
-
-			if (!result.success) {
-				setError(result.message);
-				setErrorField("number");
-				return;
-			}
-
-			setApiKey(result.apiKey);
-			setSubmitted(true);
-		} catch {
-			setError("অ্যাকাউন্ট তৈরি করা যায়নি। পরে আবার চেষ্টা করুন।");
+		} catch (error) {
+			setError(
+				error instanceof Error
+					? error.message
+					: "অ্যাকাউন্ট তৈরি করা যায়নি। পরে আবার চেষ্টা করুন।",
+			);
 		} finally {
 			setIsSubmitting(false);
 		}
@@ -79,8 +70,6 @@ export default function SignUp({ onLogin }: { onLogin?: () => void }) {
 	const clearFeedback = () => {
 		setError("");
 		setErrorField(null);
-		setSubmitted(false);
-		setApiKey("");
 	};
 
 	return (
@@ -267,21 +256,9 @@ export default function SignUp({ onLogin }: { onLogin?: () => void }) {
 						</p>
 					)}
 
-					{submitted && (
-						<div
-							className="space-y-3 rounded-xl bg-secondary/10 px-4 py-3 text-sm font-semibold text-secondary"
-							role="status"
-						>
-							<p>অ্যাকাউন্ট তৈরি হয়েছে। API key-টি এখনই কপি করে নিরাপদে রাখুন।</p>
-							<code className="block break-all rounded-lg bg-white px-3 py-2 text-xs text-slate-700">
-								{apiKey}
-							</code>
-						</div>
-					)}
-
 					<button
 						type="submit"
-						disabled={isSubmitting || submitted}
+						disabled={isSubmitting}
 						className="h-14 w-full rounded-2xl bg-secondary text-sm font-extrabold text-white shadow-lg shadow-secondary/20 transition hover:bg-secondary-dark focus:outline-none focus:ring-4 focus:ring-secondary/25 disabled:cursor-not-allowed disabled:opacity-60"
 					>
 						{isSubmitting ? "অ্যাকাউন্ট তৈরি হচ্ছে..." : "অ্যাকাউন্ট তৈরি করুন"}
