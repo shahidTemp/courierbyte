@@ -21,57 +21,79 @@ export const Route = createFileRoute("/panel/profile")({
 
 function RouteComponent() {
 	const { user, isLoading, refreshUser } = useAuth();
-	const [name, setName] = useState("");
-	const [number, setNumber] = useState("");
-	const [password, setPassword] = useState("");
-	const [confirmPassword, setConfirmPassword] = useState("");
-	const [showPassword, setShowPassword] = useState(false);
-	const [showConfirmPassword, setShowConfirmPassword] = useState(false);
-	const [error, setError] = useState("");
-	const [success, setSuccess] = useState("");
-	const [isSubmitting, setIsSubmitting] = useState(false);
+	const [form, setForm] = useState({
+		name: "",
+		number: "",
+		password: "",
+		confirmPassword: "",
+	});
+	const [status, setStatus] = useState({
+		error: "",
+		success: "",
+		isSubmitting: false,
+	});
+	const [visibility, setVisibility] = useState({
+		password: false,
+		confirmPassword: false,
+	});
 
 	useEffect(() => {
 		if (!user) return;
-		setName(user.name ?? "");
-		setNumber(user.number ?? "");
+		setForm((current) => ({
+			...current,
+			name: user.name ?? "",
+			number: user.number ?? "",
+		}));
 	}, [user]);
 
 	const clearMessages = () => {
-		setError("");
-		setSuccess("");
+		setStatus((current) => ({ ...current, error: "", success: "" }));
+	};
+
+	const showError = (error) => {
+		setStatus((current) => ({ ...current, error }));
+	};
+
+	const handleChange = (event) => {
+		const { name, value } = event.target;
+		const nextValue =
+			name === "number" ? value.replace(/\D/g, "").slice(0, 11) : value;
+
+		setForm((current) => ({ ...current, [name]: nextValue }));
+		clearMessages();
 	};
 
 	const handleSubmit = async (event) => {
 		event.preventDefault();
 		clearMessages();
 
+		const { name, number, password, confirmPassword } = form;
 		const trimmedName = name.trim();
 		const trimmedNumber = number.trim();
 		const userId = user?._id?.toString?.() ?? user?.id?.toString?.();
 
 		if (!userId) {
-			setError("আপনার অ্যাকাউন্টের তথ্য পাওয়া যায়নি। পরে আবার চেষ্টা করুন।");
+			showError("আপনার অ্যাকাউন্টের তথ্য পাওয়া যায়নি। পরে আবার চেষ্টা করুন।");
 			return;
 		}
 		if (!trimmedName) {
-			setError("আপনার নাম লিখুন।");
+			showError("আপনার নাম লিখুন।");
 			return;
 		}
 		if (!BANGLADESHI_MOBILE.test(trimmedNumber)) {
-			setError("সঠিক ১১ সংখ্যার মোবাইল নাম্বার দিন।");
+			showError("সঠিক ১১ সংখ্যার মোবাইল নাম্বার দিন।");
 			return;
 		}
 		if (password && password.length < 6) {
-			setError("নতুন পাসওয়ার্ডে কমপক্ষে ৬টি অক্ষর থাকতে হবে।");
+			showError("নতুন পাসওয়ার্ডে কমপক্ষে ৬টি অক্ষর থাকতে হবে।");
 			return;
 		}
 		if (password !== confirmPassword) {
-			setError("নতুন পাসওয়ার্ড দুটি এক নয়।");
+			showError("নতুন পাসওয়ার্ড দুটি এক নয়।");
 			return;
 		}
 
-		setIsSubmitting(true);
+		setStatus((current) => ({ ...current, isSubmitting: true }));
 		try {
 			await updateUser({
 				data: {
@@ -82,17 +104,23 @@ function RouteComponent() {
 				},
 			});
 			await refreshUser();
-			setPassword("");
-			setConfirmPassword("");
-			setSuccess("আপনার তথ্য সফলভাবে আপডেট হয়েছে।");
+			setForm((current) => ({
+				...current,
+				password: "",
+				confirmPassword: "",
+			}));
+			setStatus((current) => ({
+				...current,
+				success: "আপনার তথ্য সফলভাবে আপডেট হয়েছে।",
+			}));
 		} catch (submitError) {
-			setError(
+			showError(
 				submitError instanceof Error
 					? submitError.message
 					: "তথ্য আপডেট করা যায়নি। পরে আবার চেষ্টা করুন।",
 			);
 		} finally {
-			setIsSubmitting(false);
+			setStatus((current) => ({ ...current, isSubmitting: false }));
 		}
 	};
 
@@ -153,11 +181,8 @@ function RouteComponent() {
 										name="name"
 										type="text"
 										autoComplete="name"
-										value={name}
-										onChange={(event) => {
-											setName(event.target.value);
-											clearMessages();
-										}}
+									value={form.name}
+									onChange={handleChange}
 										placeholder="আপনার পুরো নাম লিখুন"
 										className="h-14 w-full rounded-2xl border border-slate-200 bg-slate-50 pl-12 pr-4 text-base text-slate-900 outline-none transition focus:border-secondary focus:bg-white focus:ring-4 focus:ring-secondary/10"
 									/>
@@ -182,11 +207,8 @@ function RouteComponent() {
 										type="tel"
 										inputMode="numeric"
 										autoComplete="tel-national"
-										value={number}
-										onChange={(event) => {
-											setNumber(event.target.value.replace(/\D/g, "").slice(0, 11));
-											clearMessages();
-										}}
+									value={form.number}
+									onChange={handleChange}
 										placeholder="01XXXXXXXXX"
 										className="h-14 w-full rounded-2xl border border-slate-200 bg-slate-50 pl-12 pr-4 text-base font-semibold tracking-wide text-slate-900 outline-none transition focus:border-secondary focus:bg-white focus:ring-4 focus:ring-secondary/10"
 									/>
@@ -218,23 +240,25 @@ function RouteComponent() {
 										<input
 											id="new-password"
 											name="password"
-											type={showPassword ? "text" : "password"}
+											type={visibility.password ? "text" : "password"}
 											autoComplete="new-password"
-											value={password}
-											onChange={(event) => {
-												setPassword(event.target.value);
-												clearMessages();
-											}}
+											value={form.password}
+										onChange={handleChange}
 											placeholder="কমপক্ষে ৬টি অক্ষর"
 											className="h-14 w-full rounded-2xl border border-slate-200 bg-slate-50 pl-12 pr-12 text-base text-slate-900 outline-none transition focus:border-secondary focus:bg-white focus:ring-4 focus:ring-secondary/10"
 										/>
 										<button
 											type="button"
-											onClick={() => setShowPassword((visible) => !visible)}
+											onClick={() =>
+												setVisibility((current) => ({
+													...current,
+													password: !current.password,
+												}))
+											}
 											className="absolute right-3 top-1/2 -translate-y-1/2 rounded-lg p-2 text-slate-400 transition hover:bg-secondary/10 hover:text-secondary focus:outline-none focus:ring-2 focus:ring-secondary/30"
-											aria-label={showPassword ? "পাসওয়ার্ড লুকান" : "পাসওয়ার্ড দেখুন"}
+											aria-label={visibility.password ? "পাসওয়ার্ড লুকান" : "পাসওয়ার্ড দেখুন"}
 										>
-											{showPassword ? <EyeOff className="h-5 w-5" /> : <Eye className="h-5 w-5" />}
+											{visibility.password ? <EyeOff className="h-5 w-5" /> : <Eye className="h-5 w-5" />}
 										</button>
 									</div>
 								</div>
@@ -254,49 +278,51 @@ function RouteComponent() {
 										<input
 											id="confirm-password"
 											name="confirmPassword"
-											type={showConfirmPassword ? "text" : "password"}
+											type={visibility.confirmPassword ? "text" : "password"}
 											autoComplete="new-password"
-											value={confirmPassword}
-											onChange={(event) => {
-												setConfirmPassword(event.target.value);
-												clearMessages();
-											}}
+										value={form.confirmPassword}
+										onChange={handleChange}
 											placeholder="পাসওয়ার্ডটি আবার লিখুন"
 											className="h-14 w-full rounded-2xl border border-slate-200 bg-slate-50 pl-12 pr-12 text-base text-slate-900 outline-none transition focus:border-secondary focus:bg-white focus:ring-4 focus:ring-secondary/10"
 										/>
 										<button
 											type="button"
-											onClick={() => setShowConfirmPassword((visible) => !visible)}
+											onClick={() =>
+												setVisibility((current) => ({
+													...current,
+													confirmPassword: !current.confirmPassword,
+												}))
+											}
 											className="absolute right-3 top-1/2 -translate-y-1/2 rounded-lg p-2 text-slate-400 transition hover:bg-secondary/10 hover:text-secondary focus:outline-none focus:ring-2 focus:ring-secondary/30"
-											aria-label={showConfirmPassword ? "পাসওয়ার্ড লুকান" : "পাসওয়ার্ড দেখুন"}
+											aria-label={visibility.confirmPassword ? "পাসওয়ার্ড লুকান" : "পাসওয়ার্ড দেখুন"}
 										>
-											{showConfirmPassword ? <EyeOff className="h-5 w-5" /> : <Eye className="h-5 w-5" />}
+											{visibility.confirmPassword ? <EyeOff className="h-5 w-5" /> : <Eye className="h-5 w-5" />}
 										</button>
 									</div>
 								</div>
 							</div>
 						</div>
 
-						{error && (
+						{status.error && (
 							<p className="rounded-xl bg-rose-50 px-4 py-3 text-sm font-semibold text-rose-700" role="alert">
-								{error}
+								{status.error}
 							</p>
 						)}
 
-						{success && (
+						{status.success && (
 							<p className="flex items-center gap-2 rounded-xl bg-emerald-50 px-4 py-3 text-sm font-semibold text-emerald-700" role="status">
 								<CheckCircle2 className="h-5 w-5 shrink-0" aria-hidden="true" />
-								{success}
+								{status.success}
 							</p>
 						)}
 
 						<button
 							type="submit"
-							disabled={isSubmitting || !user}
+							disabled={status.isSubmitting || !user}
 							className="inline-flex h-14 w-full items-center justify-center gap-2 rounded-2xl bg-secondary text-sm font-extrabold text-white shadow-lg shadow-secondary/20 transition hover:bg-secondary-dark focus:outline-none focus:ring-4 focus:ring-secondary/25 disabled:cursor-not-allowed disabled:opacity-60"
 						>
 							<Save className="h-5 w-5" aria-hidden="true" />
-							{isSubmitting ? "আপডেট হচ্ছে..." : "তথ্য আপডেট করুন"}
+							{status.isSubmitting ? "আপডেট হচ্ছে..." : "তথ্য আপডেট করুন"}
 						</button>
 					</form>
 				</div>
