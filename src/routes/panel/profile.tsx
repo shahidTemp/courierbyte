@@ -24,6 +24,7 @@ function RouteComponent() {
 	const [form, setForm] = useState({
 		name: "",
 		number: "",
+		currentPassword: "",
 		password: "",
 		confirmPassword: "",
 	});
@@ -67,7 +68,7 @@ function RouteComponent() {
 		event.preventDefault();
 		clearMessages();
 
-		const { name, number, password, confirmPassword } = form;
+		const { name, number, currentPassword, password, confirmPassword } = form;
 		const trimmedName = name.trim();
 		const trimmedNumber = number.trim();
 		const userId = user?._id?.toString?.() ?? user?.id?.toString?.();
@@ -82,6 +83,10 @@ function RouteComponent() {
 		}
 		if (!BANGLADESHI_MOBILE.test(trimmedNumber)) {
 			showError("সঠিক ১১ সংখ্যার মোবাইল নাম্বার দিন।");
+			return;
+		}
+		if (password && !currentPassword) {
+			showError("পাসওয়ার্ড পরিবর্তন করতে বর্তমান পাসওয়ার্ড দিন।");
 			return;
 		}
 		if (password && password.length < 6) {
@@ -100,12 +105,13 @@ function RouteComponent() {
 					userId,
 					name: trimmedName,
 					number: trimmedNumber,
-					...(password ? { password } : {}),
+					...(password ? { currentPassword, password } : {}),
 				},
 			});
 			await refreshUser();
 			setForm((current) => ({
 				...current,
+				currentPassword: "",
 				password: "",
 				confirmPassword: "",
 			}));
@@ -222,6 +228,31 @@ function RouteComponent() {
 								<p className="mt-1 text-sm text-slate-500">
 									পাসওয়ার্ড পরিবর্তন না করতে চাইলে এই ঘরগুলো খালি রাখুন।
 								</p>
+							</div>
+
+							<div className="mb-6">
+								<label
+									htmlFor="current-password"
+									className="mb-2 block text-sm font-bold text-slate-700"
+								>
+									বর্তমান পাসওয়ার্ড
+								</label>
+								<div className="relative">
+									<LockKeyhole
+										className="pointer-events-none absolute left-4 top-1/2 h-[18px] w-[18px] -translate-y-1/2 text-slate-400"
+										aria-hidden="true"
+									/>
+									<input
+										id="current-password"
+										name="currentPassword"
+										type="password"
+										autoComplete="current-password"
+										value={form.currentPassword}
+										onChange={handleChange}
+										placeholder="বর্তমান পাসওয়ার্ড লিখুন"
+										className="h-14 w-full rounded-2xl border border-slate-200 bg-slate-50 pl-12 pr-4 text-base text-slate-900 outline-none transition focus:border-secondary focus:bg-white focus:ring-4 focus:ring-secondary/10"
+									/>
+								</div>
 							</div>
 
 							<div className="grid gap-6 sm:grid-cols-2">

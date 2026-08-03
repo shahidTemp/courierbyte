@@ -22,6 +22,7 @@ const updateUserSchema = z.object({
 	name: z.string().trim().min(1).optional(),
 	number: z.string().trim().min(1).optional(),
 	password: z.string().min(6).optional(),
+	currentPassword: z.string().optional(),
 	role: z.enum(["user", "admin", "super_admin"]).optional(),
 	isActive: z.boolean().optional(),
 });
@@ -106,12 +107,23 @@ export const updateUser = createServerFn({ method: "POST" })
 		const isSuperAdmin = context.actor.role === "super_admin";
 		if (!isOwner && !isSuperAdmin) throw new Error("Forbidden");
 
-		const user = await User.findById(data.userId);
+		const userQuery = User.findById(data.userId);
+		if (data.password !== undefined) userQuery.select("+password");
+
+		const user = await userQuery;
 		if (!user) throw new Error("User not found");
 
+		if (data.password !== undefined) {
+			if (
+				!data.currentPassword ||
+				!(await user.comparePassword(data.currentPassword))
+			) {
+				throw new Error("বর্তমান পাসওয়ার্ড সঠিক নয়");
+			}
+			user.password = data.password;
+		}
 		if (data.name !== undefined) user.name = data.name;
 		if (data.number !== undefined) user.number = data.number;
-		if (data.password !== undefined) user.password = data.password;
 
 		if (isSuperAdmin) {
 			if (data.role !== undefined) user.role = data.role;
