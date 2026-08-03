@@ -192,7 +192,7 @@ export const Sidebar = () => {
 				tabIndex={-1}
 				inert={!open}
 				aria-hidden={!open}
-				className={`fixed inset-y-0 left-0 z-50 w-72 max-w-[85vw] bg-white shadow-2xl transition-transform duration-300 ease-in-out lg:hidden ${
+				className={`fixed inset-y-0 left-0 z-50 flex w-72 max-w-[85vw] flex-col overflow-hidden bg-white shadow-2xl transition-transform duration-300 ease-in-out lg:hidden ${
 					open ? "translate-x-0" : "-translate-x-full"
 				}`}
 			>
