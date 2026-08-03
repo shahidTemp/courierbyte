@@ -1,7 +1,6 @@
 // @ts-nocheck
 import crypto from "node:crypto";
 import { createServerFn } from "@tanstack/react-start";
-import mongoose from "mongoose";
 import { z } from "zod";
 import { User } from "@/server/models/user.model";
 import { useAppSession } from "@/utils/session";
@@ -17,29 +16,14 @@ const loginSchema = z.object({
 	password: z.string().min(6),
 });
 
-const updateUserSchema = z
-	.object({
-		userId: z
-			.string()
-			.refine(mongoose.Types.ObjectId.isValid, "Invalid user ID"),
-		name: z.string().trim().min(1).optional(),
-		number: z.string().trim().min(1).optional(),
-		password: z.string().min(6).optional(),
-		role: z.enum(["user", "admin", "super_admin"]).optional(),
-		isActive: z.boolean().optional(),
-	})
-	.strict()
-	.refine(
-		({ name, number, password, role, isActive }) =>
-			name !== undefined ||
-			number !== undefined ||
-			password !== undefined ||
-			role !== undefined ||
-			isActive !== undefined,
-		{
-			message: "At least one field is required to update the user",
-		},
-	);
+const updateUserSchema = z.object({
+	userId: z.string().min(1),
+	name: z.string().trim().min(1).optional(),
+	number: z.string().trim().min(1).optional(),
+	password: z.string().min(6).optional(),
+	role: z.enum(["user", "admin", "super_admin"]).optional(),
+	isActive: z.boolean().optional(),
+});
 
 const toSafeUser = (user) => {
 	const { password: _password, apiKey: _apiKey, ...safeUser } = user;
