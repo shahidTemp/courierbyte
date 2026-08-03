@@ -25,18 +25,6 @@ const updateUserSchema = z.object({
 	isActive: z.boolean().optional(),
 });
 
-const toSafeUser = (user) => {
-	const { password: _password, apiKey: _apiKey, ...safeUser } = user;
-	return JSON.parse(JSON.stringify(safeUser));
-};
-
-const getSessionUser = async () => {
-	const session = await useAppSession();
-	if (!session.data.userId) return null;
-
-	return User.findById(session.data.userId);
-};
-
 export const createUser = createServerFn({ method: "POST" })
 	.validator(createUserSchema)
 	.handler(async ({ data }) => {
@@ -55,9 +43,10 @@ export const createUser = createServerFn({ method: "POST" })
 		const session = await useAppSession();
 		await session.update({ userId: user._id.toString(), role: user.role });
 
+		const { password: _password, ...safeUser } = user.toObject();
 		return {
 			success: true,
-			user: toSafeUser(user.toObject()),
+			user: JSON.parse(JSON.stringify(safeUser)),
 			apiKey: user.apiKey,
 		};
 	});
@@ -76,7 +65,12 @@ export const loginUser = createServerFn({ method: "POST" })
 		const session = await useAppSession();
 		await session.update({ userId: user._id.toString(), role: user.role });
 
-		return toSafeUser(user.toObject());
+		const {
+			password: _password,
+			apiKey: _apiKey,
+			...safeUser
+		} = user.toObject();
+		return JSON.parse(JSON.stringify(safeUser));
 	});
 
 export const logoutUser = createServerFn({ method: "POST" }).handler(
@@ -88,15 +82,28 @@ export const logoutUser = createServerFn({ method: "POST" }).handler(
 
 export const validateUser = createServerFn({ method: "GET" }).handler(
 	async () => {
-		const user = await getSessionUser();
-		return user?.isActive ? toSafeUser(user.toObject()) : null;
+		const session = await useAppSession();
+		if (!session.data.userId) return null;
+
+		const user = await User.findById(session.data.userId);
+		if (!user?.isActive) return null;
+
+		const {
+			password: _password,
+			apiKey: _apiKey,
+			...safeUser
+		} = user.toObject();
+		return JSON.parse(JSON.stringify(safeUser));
 	},
 );
 
 export const updateUser = createServerFn({ method: "POST" })
 	.validator(updateUserSchema)
 	.handler(async ({ data }) => {
-		const actor = await getSessionUser();
+		const session = await useAppSession();
+		if (!session.data.userId) throw new Error("Unauthorized");
+
+		const actor = await User.findById(session.data.userId);
 		if (!actor) throw new Error("Unauthorized");
 		if (!actor.isActive) throw new Error("এই অ্যাকাউন্টটি নিষ্ক্রিয়");
 
@@ -127,7 +134,6 @@ export const updateUser = createServerFn({ method: "POST" })
 			throw error;
 		}
 
-		const session = await useAppSession();
 		if (
 			isOwner &&
 			isSuperAdmin &&
@@ -143,5 +149,10 @@ export const updateUser = createServerFn({ method: "POST" })
 			}
 		}
 
-		return toSafeUser(user.toObject());
+		const {
+			password: _password,
+			apiKey: _apiKey,
+			...safeUser
+		} = user.toObject();
+		return JSON.parse(JSON.stringify(safeUser));
 	});
