@@ -12,11 +12,7 @@ function RouteComponent() {
 		<main className="p-6">
 			<h1 className="mb-4 text-2xl font-bold">Current user</h1>
 			<pre className="overflow-x-auto rounded-lg bg-slate-900 p-4 text-sm text-white">
-				{isLoading
-					? "Loading..."
-					: user
-						? JSON.stringify(user, null, 2)
-						: "No user found"}
+				{JSON.stringify(user, null, 2)}
 			</pre>
 		</main>
 	);
