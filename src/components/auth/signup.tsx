@@ -25,6 +25,11 @@ export default function SignUp({ onLogin }: { onLogin?: () => void }) {
 		setErrorField(field);
 	};
 
+	const clearError = () => {
+		setError("");
+		setErrorField(null);
+	};
+
 	const handleSubmit = async (event: FormEvent<HTMLFormElement>) => {
 		event.preventDefault();
 
@@ -67,11 +72,6 @@ export default function SignUp({ onLogin }: { onLogin?: () => void }) {
 		}
 	};
 
-	const clearFeedback = () => {
-		setError("");
-		setErrorField(null);
-	};
-
 	return (
 		<section className="flex min-h-[38rem] items-center justify-center px-4 py-12 sm:px-6">
 			<div className="w-full max-w-md rounded-3xl border border-slate-200/80 bg-white p-6 shadow-2xl shadow-secondary/10 sm:p-9">
@@ -106,13 +106,11 @@ export default function SignUp({ onLogin }: { onLogin?: () => void }) {
 								}
 								type="text"
 								autoComplete="name"
-								value={name}
-								onChange={(event) => {
+								value={name}								onChange={(event) => {
 									setName(event.target.value);
-									clearFeedback();
+									clearError();
 								}}
 								placeholder="আপনার পুরো নাম লিখুন"
-								required
 								className="h-14 w-full rounded-2xl border border-slate-200 bg-slate-50 pl-12 pr-4 text-base text-slate-900 outline-none transition focus:border-secondary focus:bg-white focus:ring-4 focus:ring-secondary/10"
 							/>
 						</div>
@@ -135,21 +133,16 @@ export default function SignUp({ onLogin }: { onLogin?: () => void }) {
 								name="number"
 								aria-invalid={errorField === "number"}
 								aria-describedby={
-									errorField === "number"
-										? "number-hint form-error"
-										: "number-hint"
+									errorField === "number" ? "form-error" : undefined
 								}
 								type="tel"
 								inputMode="numeric"
 								autoComplete="tel-national"
-								value={number}
-								onChange={(event) => {
+								value={number}								onChange={(event) => {
 									setNumber(event.target.value.replace(/\D/g, "").slice(0, 11));
-									clearFeedback();
+									clearError();
 								}}
 								placeholder="01XXXXXXXXX"
-								pattern="01[3-9][0-9]{8}"
-								required
 								className="h-14 w-full rounded-2xl border border-slate-200 bg-slate-50 pl-12 pr-4 text-base font-semibold tracking-wide text-slate-900 outline-none transition focus:border-secondary focus:bg-white focus:ring-4 focus:ring-secondary/10"
 							/>
 						</div>
@@ -176,14 +169,11 @@ export default function SignUp({ onLogin }: { onLogin?: () => void }) {
 								}
 								type={showPassword ? "text" : "password"}
 								autoComplete="new-password"
-								value={password}
-								onChange={(event) => {
+								value={password}								onChange={(event) => {
 									setPassword(event.target.value);
-									clearFeedback();
+									clearError();
 								}}
 								placeholder="একটি পাসওয়ার্ড তৈরি করুন"
-								minLength={8}
-								required
 								className="h-14 w-full rounded-2xl border border-slate-200 bg-slate-50 pl-12 pr-12 text-base text-slate-900 outline-none transition focus:border-secondary focus:bg-white focus:ring-4 focus:ring-secondary/10"
 							/>
 							<button
@@ -222,13 +212,11 @@ export default function SignUp({ onLogin }: { onLogin?: () => void }) {
 								}
 								type={showConfirmPassword ? "text" : "password"}
 								autoComplete="new-password"
-								value={confirmPassword}
-								onChange={(event) => {
+								value={confirmPassword}								onChange={(event) => {
 									setConfirmPassword(event.target.value);
-									clearFeedback();
+									clearError();
 								}}
 								placeholder="পাসওয়ার্ডটি আবার লিখুন"
-								required
 								className="h-14 w-full rounded-2xl border border-slate-200 bg-slate-50 pl-12 pr-12 text-base text-slate-900 outline-none transition focus:border-secondary focus:bg-white focus:ring-4 focus:ring-secondary/10"
 							/>
 							<button

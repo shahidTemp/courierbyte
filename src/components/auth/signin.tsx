@@ -1,5 +1,6 @@
 import { Eye, EyeOff, LockKeyhole, Phone } from "lucide-react";
 import { type FormEvent, useState } from "react";
+import { loginUser } from "@/server/functions/auth.fn";
 
 const BANGLADESHI_MOBILE = /^01[3-9]\d{8}$/;
 
@@ -8,8 +9,9 @@ export default function SignIn({ onSignUp }: { onSignUp?: () => void }) {
 	const [password, setPassword] = useState("");
 	const [showPassword, setShowPassword] = useState(false);
 	const [error, setError] = useState("");
+	const [isSubmitting, setIsSubmitting] = useState(false);
 
-	const handleSubmit = (event: FormEvent<HTMLFormElement>) => {
+	const handleSubmit = async (event: FormEvent<HTMLFormElement>) => {
 		event.preventDefault();
 
 		if (!BANGLADESHI_MOBILE.test(phone)) {
@@ -23,6 +25,19 @@ export default function SignIn({ onSignUp }: { onSignUp?: () => void }) {
 		}
 
 		setError("");
+		setIsSubmitting(true);
+
+		try {
+			await loginUser({ data: { number: phone, password } });
+		} catch (error) {
+			setError(
+				error instanceof Error
+					? error.message
+					: "লগইন করা যায়নি। পরে আবার চেষ্টা করুন।",
+			);
+		} finally {
+			setIsSubmitting(false);
+		}
 	};
 
 	return (
@@ -62,9 +77,6 @@ export default function SignIn({ onSignUp }: { onSignUp?: () => void }) {
 									setError("");
 								}}
 								placeholder="01XXXXXXXXX"
-								pattern="01[3-9][0-9]{8}"
-								required
-								aria-describedby="phone-hint"
 								className="h-14 w-full rounded-2xl border border-slate-200 bg-slate-50 pl-12 pr-4 text-base font-semibold tracking-wide text-slate-900 outline-none transition focus:border-secondary focus:bg-white focus:ring-4 focus:ring-secondary/10"
 							/>
 						</div>
@@ -93,8 +105,6 @@ export default function SignIn({ onSignUp }: { onSignUp?: () => void }) {
 									setError("");
 								}}
 								placeholder="পাসওয়ার্ড লিখুন"
-								minLength={8}
-								required
 								className="h-14 w-full rounded-2xl border border-slate-200 bg-slate-50 pl-12 pr-12 text-base text-slate-900 outline-none transition focus:border-secondary focus:bg-white focus:ring-4 focus:ring-secondary/10"
 							/>
 							<button
@@ -123,9 +133,10 @@ export default function SignIn({ onSignUp }: { onSignUp?: () => void }) {
 
 					<button
 						type="submit"
-						className="h-14 w-full rounded-2xl bg-secondary cursor-pointer text-sm font-extrabold text-white shadow-lg shadow-secondary/20 transition focus:outline-none focus:ring-4 focus:ring-secondary/25"
+						disabled={isSubmitting}
+						className="h-14 w-full rounded-2xl bg-secondary text-sm font-extrabold text-white shadow-lg shadow-secondary/20 transition focus:outline-none focus:ring-4 focus:ring-secondary/25 disabled:cursor-not-allowed disabled:opacity-60"
 					>
-						লগইন করুন
+						{isSubmitting ? "লগইন হচ্ছে..." : "লগইন করুন"}
 					</button>
 				</form>
 
@@ -135,7 +146,7 @@ export default function SignIn({ onSignUp }: { onSignUp?: () => void }) {
 						<button
 							type="button"
 							onClick={onSignUp}
-							className="bg-secondary cursor-pointer bg-clip-text font-extrabold text-transparent transition  focus:outline-none focus:ring-0"
+							className="bg-secondary bg-clip-text font-extrabold text-transparent transition focus:outline-none focus:ring-2 focus:ring-secondary/30 focus:ring-offset-2"
 						>
 							সাইন আপ করুন
 						</button>
