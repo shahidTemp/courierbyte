@@ -86,6 +86,22 @@ export const createAdmin = createServerFn({ method: "POST" })
 		}
 	});
 
+export const deleteAdminById = createServerFn({ method: "POST" })
+	.middleware([requireRole("super_admin")])
+	.validator(adminIdSchema)
+	.handler(async ({ data }) => {
+		const deletedAdmin = await User.findOneAndDelete({
+			_id: data.id,
+			role: "admin",
+		});
+
+		if (!deletedAdmin) {
+			throw new Error("Admin not found");
+		}
+
+		return { success: true, id: data.id };
+	});
+
 export const updateAdmin = createServerFn({ method: "POST" })
 	.middleware([requireRole("super_admin")])
 	.validator(updateAdminSchema)
