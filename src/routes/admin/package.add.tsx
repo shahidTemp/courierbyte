@@ -17,7 +17,7 @@ const emptyForm = {
 	yearly_price: "",
 	duration_in_days: "",
 	api_call_limit: "",
-	features: "",
+	features: [],
 	is_active: true,
 };
 
@@ -49,6 +49,34 @@ function AddPackage() {
 		setMessage({ type: "", text: "" });
 	};
 
+	const addFeature = () => {
+		if (form.features.length < 50) {
+			setForm((current) => ({
+				...current,
+				features: [...current.features, { id: crypto.randomUUID(), value: "" }],
+			}));
+		}
+	};
+
+	const updateFeature = (index, value) => {
+		setForm((current) => ({
+			...current,
+			features: current.features.map((feature, featureIndex) =>
+				featureIndex === index ? { ...feature, value } : feature,
+			),
+		}));
+		setMessage({ type: "", text: "" });
+	};
+
+	const removeFeature = (index) => {
+		setForm((current) => ({
+			...current,
+			features: current.features.filter(
+				(_, featureIndex) => featureIndex !== index,
+			),
+		}));
+	};
+
 	const handleReset = () => {
 		setForm(emptyForm);
 		setMessage({ type: "", text: "" });
@@ -57,8 +85,7 @@ function AddPackage() {
 	const handleSubmit = async (event) => {
 		event.preventDefault();
 		const features = form.features
-			.split("\n")
-			.map((feature) => feature.trim())
+			.map((feature) => feature.value.trim())
 			.filter(Boolean);
 
 		if (
@@ -132,12 +159,13 @@ function AddPackage() {
 					</Field>
 
 					<Field label="Description" htmlFor="description">
-						<textarea
+						<input
 							id="description"
 							name="description"
+							type="text"
 							value={form.description}
 							onChange={handleChange}
-							className={`${inputClass} min-h-28 resize-y`}
+							className={inputClass}
 							placeholder="Enter a short description of the package."
 							required
 							maxLength={2000}
@@ -202,16 +230,46 @@ function AddPackage() {
 						</Field>
 					</div>
 
-					<Field label="Features" htmlFor="features">
-						<textarea
-							id="features"
-							name="features"
-							value={form.features}
-							onChange={handleChange}
-							className={`${inputClass} min-h-28 resize-y`}
-							placeholder="Enter one feature per line."
-						/>
-					</Field>
+					<div>
+						<div className="mb-2 flex items-center justify-between gap-3">
+							<span className="text-sm font-bold text-slate-700">Features</span>
+							<button
+								type="button"
+								onClick={addFeature}
+								disabled={form.features.length >= 50}
+								className="text-sm font-bold text-secondary transition hover:text-secondary-dark disabled:cursor-not-allowed disabled:opacity-50"
+							>
+								Add Feature
+							</button>
+						</div>
+
+						<div className="space-y-3">
+							{form.features.map((feature, index) => (
+								<div key={feature.id} className="flex gap-3">
+									<input
+										id={`feature-${index}`}
+										type="text"
+										value={feature.value}
+										onChange={(event) =>
+											updateFeature(index, event.target.value)
+										}
+										className={`${inputClass} flex-1`}
+										placeholder="Enter a feature"
+										maxLength={200}
+										aria-label={`Feature ${index + 1}`}
+									/>
+									<button
+										type="button"
+										onClick={() => removeFeature(index)}
+										className="rounded-xl border border-rose-200 px-4 text-sm font-bold text-rose-600 transition hover:bg-rose-50 focus:outline-none focus:ring-4 focus:ring-rose-100"
+										aria-label={`Delete feature ${index + 1}`}
+									>
+										Delete
+									</button>
+								</div>
+							))}
+						</div>
+					</div>
 
 					<label className="flex items-center gap-3 text-sm font-semibold text-slate-700">
 						<input
