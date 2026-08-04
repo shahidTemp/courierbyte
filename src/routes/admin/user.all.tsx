@@ -114,24 +114,10 @@ function AdminAllPage() {
 		<main className="min-h-screen bg-slate-50 px-4 py-6 sm:px-6 lg:px-8">
 			<div className="mx-auto max-w-7xl">
 				<div className="mb-6 flex flex-col gap-4 sm:flex-row sm:items-end sm:justify-between">
-					<h1 className="mt-1 text-3xl font-extrabold tracking-tight text-secondary-dark">
-						All users
-					</h1>
-
-					<div className="flex w-full flex-col gap-3 sm:w-auto sm:flex-row sm:items-center">
-						<div className="relative w-full sm:w-64">
-							<Search
-								aria-hidden="true"
-								className="pointer-events-none absolute left-3 top-1/2 size-4 -translate-y-1/2 text-slate-400"
-							/>
-							<input
-								aria-label="Search users"
-								value={searchTerm}
-								onChange={(event) => setSearchTerm(event.target.value)}
-								placeholder="Search users..."
-								className="w-full rounded-xl border border-slate-200 bg-white py-3 pl-10 pr-4 text-sm text-slate-900 outline-none transition focus:border-secondary focus:ring-4 focus:ring-secondary/10"
-							/>
-						</div>
+					<div className="flex items-center justify-between sm:contents">
+						<h1 className="mt-1 text-3xl font-extrabold tracking-tight text-secondary-dark">
+							All users
+						</h1>
 						<button
 							type="button"
 							onClick={() => {
@@ -139,11 +125,25 @@ function AdminAllPage() {
 								setSelectedUser(null);
 								setIsUserModalOpen(true);
 							}}
-							className="inline-flex items-center justify-center gap-2 rounded-xl bg-secondary px-4 py-3 text-sm font-bold text-white transition hover:bg-secondary-dark focus:outline-none focus:ring-4 focus:ring-secondary/20"
+							className="inline-flex items-center justify-center gap-2 rounded-xl bg-secondary px-4 py-3 text-sm font-bold text-white transition hover:bg-secondary-dark focus:outline-none focus:ring-4 focus:ring-secondary/20 sm:order-3"
 						>
 							<Plus className="size-4" />
 							Add user
 						</button>
+					</div>
+
+					<div className="relative w-full sm:order-2 sm:w-64">
+						<Search
+							aria-hidden="true"
+							className="pointer-events-none absolute left-3 top-1/2 size-4 -translate-y-1/2 text-slate-400"
+						/>
+						<input
+							aria-label="Search users"
+							value={searchTerm}
+							onChange={(event) => setSearchTerm(event.target.value)}
+							placeholder="Search users..."
+							className="w-full rounded-xl border border-slate-200 bg-white py-3 pl-10 pr-4 text-sm text-slate-900 outline-none transition focus:border-secondary focus:ring-4 focus:ring-secondary/10"
+						/>
 					</div>
 				</div>
 
