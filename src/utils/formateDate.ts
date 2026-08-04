@@ -1,6 +1,6 @@
-export const formateDate = (createdAt) => {
+export const formateDate = (createdAt: string | number | Date) => {
 	const date = new Date(createdAt);
-	const options = {
+	const options: Intl.DateTimeFormatOptions = {
 		year: "numeric",
 		month: "long",
 		day: "numeric",
