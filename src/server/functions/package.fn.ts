@@ -14,19 +14,11 @@ const packageDataSchema = z.object({
 	is_active: z.boolean(),
 });
 
-const packageIdSchema = z.object({
-	id: z.string().regex(/^[a-f\d]{24}$/i, "Invalid package ID"),
-});
-
-const updatePackageSchema = packageIdSchema.extend(packageDataSchema.shape);
-
-const serializePackages = (packages: unknown) => JSON.parse(JSON.stringify(packages));
-
 export const getPackages = createServerFn({ method: "GET" })
 	.middleware([requireRole(["admin", "super_admin"])])
 	.handler(async () => {
 		const packages = await PackageModel.find().sort({ createdAt: -1 }).lean();
-		return serializePackages(packages);
+		return JSON.parse(JSON.stringify(packages));
 	});
 
 export const createPackage = createServerFn({ method: "POST" })
@@ -35,7 +27,7 @@ export const createPackage = createServerFn({ method: "POST" })
 	.handler(async ({ data }) => {
 		try {
 			const packageItem = await PackageModel.create(data);
-			return serializePackages(packageItem.toObject());
+			return JSON.parse(JSON.stringify(packageItem.toObject()));
 		} catch (error) {
 			if (
 				error &&
@@ -51,7 +43,13 @@ export const createPackage = createServerFn({ method: "POST" })
 
 export const updatePackage = createServerFn({ method: "POST" })
 	.middleware([requireRole(["admin", "super_admin"])])
-	.validator(updatePackageSchema)
+	.validator(
+		z
+			.object({
+				id: z.string().regex(/^[a-f\d]{24}$/i, "Invalid package ID"),
+			})
+			.extend(packageDataSchema.shape),
+	)
 	.handler(async ({ data }) => {
 		const { id, ...packageData } = data;
 		try {
@@ -62,7 +60,7 @@ export const updatePackage = createServerFn({ method: "POST" })
 			).lean();
 
 			if (!packageItem) throw new Error("Package not found");
-			return serializePackages(packageItem);
+			return JSON.parse(JSON.stringify(packageItem));
 		} catch (error) {
 			if (
 				error &&
