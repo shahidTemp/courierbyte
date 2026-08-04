@@ -146,20 +146,6 @@ function RouteComponent() {
 				</h1>
 
 				<div className="overflow-hidden rounded-3xl border border-secondary/10 bg-white shadow-xl shadow-secondary/10">
-					<div className="flex items-center gap-4 border-b border-secondary/10 bg-secondary/[0.04] px-6 py-5 sm:px-8">
-						<div className="flex h-12 w-12 items-center justify-center rounded-2xl bg-secondary text-white shadow-lg shadow-secondary/20">
-							<UserRound className="h-6 w-6" aria-hidden="true" />
-						</div>
-						<div>
-							<h2 className="text-lg font-extrabold text-secondary-dark">
-								অ্যাকাউন্টের তথ্য
-							</h2>
-							<p className="text-sm text-slate-500">
-								নাম ও মোবাইল নাম্বার আপডেট করুন
-							</p>
-						</div>
-					</div>
-
 					<form
 						className="space-y-6 p-6 sm:p-8"
 						onSubmit={handleSubmit}

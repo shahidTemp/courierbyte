@@ -10,9 +10,11 @@
 
 import { Route as rootRouteImport } from './routes/__root'
 import { Route as WebsiteRouteRouteImport } from './routes/_website/route'
+import { Route as AdminRouteRouteImport } from './routes/admin/route'
 import { Route as PanelRouteRouteImport } from './routes/panel/route'
 import { Route as WebsiteIndexRouteImport } from './routes/_website/index'
 import { Route as WebsiteLoginRouteImport } from './routes/_website/login'
+import { Route as AdminIndexRouteImport } from './routes/admin/index'
 import { Route as PanelIndexRouteImport } from './routes/panel/index'
 import { Route as PanelBillingRouteImport } from './routes/panel/billing'
 import { Route as PanelDeveloperApiRouteImport } from './routes/panel/developer-api'
@@ -20,9 +22,15 @@ import { Route as PanelFeedbackRouteImport } from './routes/panel/feedback'
 import { Route as PanelFraudCheckerRouteImport } from './routes/panel/fraud-checker'
 import { Route as PanelProfileRouteImport } from './routes/panel/profile'
 import { Route as PanelSubscriptionPlansRouteImport } from './routes/panel/subscription-plans'
+import { Route as AdminPackageAddRouteImport } from './routes/admin/package.add'
 
 const WebsiteRouteRoute = WebsiteRouteRouteImport.update({
   id: '/_website',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const AdminRouteRoute = AdminRouteRouteImport.update({
+  id: '/admin',
+  path: '/admin',
   getParentRoute: () => rootRouteImport,
 } as any)
 const PanelRouteRoute = PanelRouteRouteImport.update({
@@ -39,6 +47,11 @@ const WebsiteLoginRoute = WebsiteLoginRouteImport.update({
   id: '/login',
   path: '/login',
   getParentRoute: () => WebsiteRouteRoute,
+} as any)
+const AdminIndexRoute = AdminIndexRouteImport.update({
+  id: '/',
+  path: '/',
+  getParentRoute: () => AdminRouteRoute,
 } as any)
 const PanelIndexRoute = PanelIndexRouteImport.update({
   id: '/',
@@ -75,9 +88,15 @@ const PanelSubscriptionPlansRoute = PanelSubscriptionPlansRouteImport.update({
   path: '/subscription-plans',
   getParentRoute: () => PanelRouteRoute,
 } as any)
+const AdminPackageAddRoute = AdminPackageAddRouteImport.update({
+  id: '/package/add',
+  path: '/package/add',
+  getParentRoute: () => AdminRouteRoute,
+} as any)
 
 export interface FileRoutesByFullPath {
   '/': typeof WebsiteIndexRoute
+  '/admin': typeof AdminRouteRouteWithChildren
   '/panel': typeof PanelRouteRouteWithChildren
   '/login': typeof WebsiteLoginRoute
   '/panel/billing': typeof PanelBillingRoute
@@ -86,7 +105,9 @@ export interface FileRoutesByFullPath {
   '/panel/fraud-checker': typeof PanelFraudCheckerRoute
   '/panel/profile': typeof PanelProfileRoute
   '/panel/subscription-plans': typeof PanelSubscriptionPlansRoute
+  '/admin/': typeof AdminIndexRoute
   '/panel/': typeof PanelIndexRoute
+  '/admin/package/add': typeof AdminPackageAddRoute
 }
 export interface FileRoutesByTo {
   '/login': typeof WebsiteLoginRoute
@@ -97,11 +118,14 @@ export interface FileRoutesByTo {
   '/panel/profile': typeof PanelProfileRoute
   '/panel/subscription-plans': typeof PanelSubscriptionPlansRoute
   '/': typeof WebsiteIndexRoute
+  '/admin': typeof AdminIndexRoute
   '/panel': typeof PanelIndexRoute
+  '/admin/package/add': typeof AdminPackageAddRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
   '/_website': typeof WebsiteRouteRouteWithChildren
+  '/admin': typeof AdminRouteRouteWithChildren
   '/panel': typeof PanelRouteRouteWithChildren
   '/_website/login': typeof WebsiteLoginRoute
   '/panel/billing': typeof PanelBillingRoute
@@ -111,12 +135,15 @@ export interface FileRoutesById {
   '/panel/profile': typeof PanelProfileRoute
   '/panel/subscription-plans': typeof PanelSubscriptionPlansRoute
   '/_website/': typeof WebsiteIndexRoute
+  '/admin/': typeof AdminIndexRoute
   '/panel/': typeof PanelIndexRoute
+  '/admin/package/add': typeof AdminPackageAddRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
   fullPaths:
     | '/'
+    | '/admin'
     | '/panel'
     | '/login'
     | '/panel/billing'
@@ -125,7 +152,9 @@ export interface FileRouteTypes {
     | '/panel/fraud-checker'
     | '/panel/profile'
     | '/panel/subscription-plans'
+    | '/admin/'
     | '/panel/'
+    | '/admin/package/add'
   fileRoutesByTo: FileRoutesByTo
   to:
     | '/login'
@@ -136,10 +165,13 @@ export interface FileRouteTypes {
     | '/panel/profile'
     | '/panel/subscription-plans'
     | '/'
+    | '/admin'
     | '/panel'
+    | '/admin/package/add'
   id:
     | '__root__'
     | '/_website'
+    | '/admin'
     | '/panel'
     | '/_website/login'
     | '/panel/billing'
@@ -149,11 +181,14 @@ export interface FileRouteTypes {
     | '/panel/profile'
     | '/panel/subscription-plans'
     | '/_website/'
+    | '/admin/'
     | '/panel/'
+    | '/admin/package/add'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
   WebsiteRouteRoute: typeof WebsiteRouteRouteWithChildren
+  AdminRouteRoute: typeof AdminRouteRouteWithChildren
   PanelRouteRoute: typeof PanelRouteRouteWithChildren
 }
 
@@ -164,6 +199,13 @@ declare module '@tanstack/react-router' {
       path: ''
       fullPath: '/'
       preLoaderRoute: typeof WebsiteRouteRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/admin': {
+      id: '/admin'
+      path: '/admin'
+      fullPath: '/admin'
+      preLoaderRoute: typeof AdminRouteRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/panel': {
@@ -186,6 +228,13 @@ declare module '@tanstack/react-router' {
       fullPath: '/login'
       preLoaderRoute: typeof WebsiteLoginRouteImport
       parentRoute: typeof WebsiteRouteRoute
+    }
+    '/admin/': {
+      id: '/admin/'
+      path: '/'
+      fullPath: '/admin/'
+      preLoaderRoute: typeof AdminIndexRouteImport
+      parentRoute: typeof AdminRouteRoute
     }
     '/panel/': {
       id: '/panel/'
@@ -236,6 +285,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof PanelSubscriptionPlansRouteImport
       parentRoute: typeof PanelRouteRoute
     }
+    '/admin/package/add': {
+      id: '/admin/package/add'
+      path: '/package/add'
+      fullPath: '/admin/package/add'
+      preLoaderRoute: typeof AdminPackageAddRouteImport
+      parentRoute: typeof AdminRouteRoute
+    }
   }
 }
 
@@ -251,6 +307,20 @@ const WebsiteRouteRouteChildren: WebsiteRouteRouteChildren = {
 
 const WebsiteRouteRouteWithChildren = WebsiteRouteRoute._addFileChildren(
   WebsiteRouteRouteChildren,
+)
+
+interface AdminRouteRouteChildren {
+  AdminIndexRoute: typeof AdminIndexRoute
+  AdminPackageAddRoute: typeof AdminPackageAddRoute
+}
+
+const AdminRouteRouteChildren: AdminRouteRouteChildren = {
+  AdminIndexRoute: AdminIndexRoute,
+  AdminPackageAddRoute: AdminPackageAddRoute,
+}
+
+const AdminRouteRouteWithChildren = AdminRouteRoute._addFileChildren(
+  AdminRouteRouteChildren,
 )
 
 interface PanelRouteRouteChildren {
@@ -279,6 +349,7 @@ const PanelRouteRouteWithChildren = PanelRouteRoute._addFileChildren(
 
 const rootRouteChildren: RootRouteChildren = {
   WebsiteRouteRoute: WebsiteRouteRouteWithChildren,
+  AdminRouteRoute: AdminRouteRouteWithChildren,
   PanelRouteRoute: PanelRouteRouteWithChildren,
 }
 export const routeTree = rootRouteImport
