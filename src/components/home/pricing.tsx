@@ -11,18 +11,6 @@ export const packagesQuery = queryOptions({
 
 const formatPrice = (price: number) =>
 	`৳${Number(price).toLocaleString("bn-BD")}`;
-const formatLimit = (limit: number, durationInDays: number) => {
-	if (limit === 0) return "আনলিমিটেড API কল";
-	const period =
-		durationInDays === 30 ? "মাসে" : durationInDays === 365 ? "বছরে" : "এই সময়ে";
-	return `${period} ${Number(limit).toLocaleString("bn-BD")}টি API কল`;
-};
-
-const formatPeriod = (durationInDays: number) => {
-	if (durationInDays === 30) return "/মাস";
-	if (durationInDays === 365) return "/বছর";
-	return `${Number(durationInDays).toLocaleString("bn-BD")} দিন`;
-};
 
 export default function Pricing() {
 	const { data: packages = [], isLoading, isError } = useQuery(packagesQuery);
@@ -75,29 +63,17 @@ export default function Pricing() {
 				) : (
 					<div className="mx-auto mt-12 grid max-w-6xl gap-5 lg:grid-cols-3">
 						{packages.map((plan) => {
-							const period = formatPeriod(plan.duration_in_days);
-							const features = [
-								formatLimit(plan.api_call_limit, plan.duration_in_days),
-								...plan.features,
-							];
-
 							return (
 								<div
 									key={plan._id}
 									className="relative flex flex-col rounded-2xl border border-slate-200/80 bg-white p-7 shadow-sm transition-all hover:-translate-y-1 hover:shadow-2xl"
 								>
-									<p className="text-xs font-bold uppercase tracking-[0.15em] text-secondary">
-										আপনার জন্য সঠিক প্যাকেজ
-									</p>
-									<h3 className="mt-3 text-xl font-extrabold text-slate-900">
+									<h3 className="text-xl font-extrabold text-slate-900">
 										{plan.name}
 									</h3>
-									<div className="mt-4 flex items-baseline gap-1">
+									<div className="mt-4">
 										<span className="text-4xl font-extrabold tracking-tight text-slate-900">
 											{formatPrice(plan.price)}
-										</span>
-										<span className="text-sm font-semibold text-slate-400">
-											{period}
 										</span>
 									</div>
 									<p className="mt-2 text-sm text-slate-500">
@@ -105,7 +81,7 @@ export default function Pricing() {
 									</p>
 									<div className="my-6 h-px bg-slate-100" />
 									<ul className="flex-1 space-y-3.5">
-										{features.map((feature, featureIndex) => (
+										{plan.features.map((feature, featureIndex) => (
 											<li
 												// biome-ignore lint/suspicious/noArrayIndexKey: package features are position-controlled
 												key={`${plan._id}-${featureIndex}`}
