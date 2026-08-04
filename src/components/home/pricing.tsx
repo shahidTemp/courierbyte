@@ -44,7 +44,7 @@ export default function Pricing() {
 							onClick={() => setBillingCycle("yearly")}
 							className={`rounded-lg px-5 py-2 text-sm font-bold transition-all ${billingCycle === "yearly" ? "bg-secondary text-white shadow-sm" : "text-slate-500 hover:bg-secondary/10 hover:text-secondary"}`}
 						>
-							বার্ষিক
+							বাৎসরিক
 						</button>
 					</fieldset>
 				</div>
@@ -121,11 +121,6 @@ export default function Pricing() {
 						})}
 					</div>
 				)}
-
-				<p className="mt-8 text-center text-xs font-medium text-slate-500">
-					সব প্যাকেজে নিরাপদ ডেটা · কোনো hidden charge নেই · প্রয়োজনে যেকোনো সময়
-					আপগ্রেড করুন
-				</p>
 			</div>
 		</section>
 	);
