@@ -4,7 +4,6 @@ import { useServerFn } from "@tanstack/react-start";
 import { Search } from "lucide-react";
 import { useMemo, useState } from "react";
 import { type UserRow, UserTable } from "@/components/admin/userTable";
-import { Loader } from "@/components/common/loader";
 import { useAuth } from "@/context/userContext";
 import { deleteUserById, getUsers } from "@/server/functions/user.fn";
 
@@ -24,7 +23,7 @@ function AdminAllPage() {
 	};
 	const queryClient = useQueryClient();
 	const deleteUserFn = useServerFn(deleteUserById);
-	const { data: users = [], error, isPending } = useQuery(usersQuery);
+	const { data: users = [] } = useQuery(usersQuery);
 	const [searchTerm, setSearchTerm] = useState("");
 
 	const filteredUsers = useMemo(() => {
@@ -53,17 +52,9 @@ function AdminAllPage() {
 		<main className="min-h-screen bg-slate-50 px-4 py-6 sm:px-6 lg:px-8">
 			<div className="mx-auto max-w-7xl">
 				<div className="mb-6 flex flex-col gap-4 sm:flex-row sm:items-end sm:justify-between">
-					<div>
-						<p className="text-sm font-semibold uppercase tracking-[0.16em] text-secondary">
-							Administration
-						</p>
-						<h1 className="mt-1 text-3xl font-extrabold tracking-tight text-secondary-dark">
-							All users
-						</h1>
-						<p className="mt-2 text-sm text-slate-500">
-							View and manage registered users from one place.
-						</p>
-					</div>
+					<h1 className="mt-1 text-3xl font-extrabold tracking-tight text-secondary-dark">
+						All users
+					</h1>
 
 					<div className="relative w-full sm:max-w-xs">
 						<Search
@@ -80,23 +71,13 @@ function AdminAllPage() {
 					</div>
 				</div>
 
-				{error ? (
-					<div className="mb-6 rounded-xl bg-rose-50 px-4 py-3 text-sm font-semibold text-rose-700">
-						<p role="alert">Users could not be loaded.</p>
-					</div>
-				) : isPending ? (
-					<div className="rounded-2xl bg-white py-16 shadow-sm">
-						<Loader />
-					</div>
-				) : (
-					<UserTable
-						data={filteredUsers}
-						searchTerm={searchTerm}
-						canDelete={user?.role === "super_admin"}
-						onDeleteItem={handleDelete}
-						onEditItem={() => undefined}
-					/>
-				)}
+				<UserTable
+					data={filteredUsers}
+					searchTerm={searchTerm}
+					canDelete={user?.role === "super_admin"}
+					onDeleteItem={handleDelete}
+					onEditItem={() => undefined}
+				/>
 			</div>
 		</main>
 	);

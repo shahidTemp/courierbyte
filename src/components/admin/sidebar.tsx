@@ -20,11 +20,11 @@ import { useAuth } from "@/context/userContext";
 // These `to` paths map to the admin routes defined under src/routes/admin/.
 const MAIN_NAV = [
 	{ label: "Dashboard", to: "/admin", icon: LayoutDashboard },
+	{ label: "Users", to: "/admin/user/all", icon: Users },
 	{ label: "Fraud Checker", to: "/admin/fraud-checker", icon: ShieldCheck },
 	{ label: "Subscription Plans", to: "/admin/subscription-plans", icon: Gem },
 	{ label: "Billing", to: "/admin/billing", icon: Receipt },
 	{ label: "Developer API", to: "/admin/developer-api", icon: Code2 },
-	{ label: "Users", to: "/admin/user/all", icon: Users },
 ];
 
 const ACCOUNT_NAV = [
