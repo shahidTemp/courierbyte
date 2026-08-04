@@ -7,9 +7,12 @@ import FinalCta from "@/components/home/finalCta";
 import FreemiumSection from "@/components/home/freemiumSection";
 import Hero from "@/components/home/hero";
 import HowItWorks from "@/components/home/howItWorks";
-import Pricing from "@/components/home/pricing";
+import Pricing, { packagesQuery } from "@/components/home/pricing";
 
-export const Route = createFileRoute("/_website/")({ component: Home });
+export const Route = createFileRoute("/_website/")({
+	loader: ({ context }) => context.queryClient.prefetchQuery(packagesQuery),
+	component: Home,
+});
 
 function Home() {
 	return (

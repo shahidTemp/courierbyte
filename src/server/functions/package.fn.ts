@@ -21,6 +21,15 @@ export const getPackages = createServerFn({ method: "GET" })
 		return JSON.parse(JSON.stringify(packages));
 	});
 
+export const getActivePackages = createServerFn({ method: "GET" }).handler(
+	async () => {
+		const packages = await PackageModel.find({ is_active: true })
+			.sort({ createdAt: 1 })
+			.lean();
+		return JSON.parse(JSON.stringify(packages));
+	},
+);
+
 export const createPackage = createServerFn({ method: "POST" })
 	.validator(packageDataSchema)
 	.middleware([requireRole(["admin", "super_admin"])])
