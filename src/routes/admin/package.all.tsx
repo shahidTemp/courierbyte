@@ -104,29 +104,27 @@ function PackagesPage() {
 		<main className="min-h-screen bg-slate-50 px-4 py-6 sm:px-6 lg:px-8">
 			<div className="mx-auto max-w-7xl">
 				<div className="mb-7 flex flex-col gap-4 lg:flex-row lg:items-end lg:justify-between">
-					<div>
+					<div className="flex items-center justify-between lg:contents">
 						<h1 className="text-3xl font-extrabold tracking-tight text-secondary-dark">
 							Packages
 						</h1>
-					</div>
-					<div className="flex w-full flex-col gap-3 sm:flex-row lg:w-auto">
-						<div className="relative min-w-0 flex-1 sm:w-64">
-							<Search className="pointer-events-none absolute left-3 top-1/2 size-4 -translate-y-1/2 text-slate-400" />
-							<input
-								aria-label="Search packages"
-								className="w-full rounded-xl border border-slate-200 bg-white py-3 pl-10 pr-4 text-sm outline-none transition focus:border-secondary focus:ring-4 focus:ring-secondary/10"
-								placeholder="Search packages..."
-								value={searchTerm}
-								onChange={(event) => setSearchTerm(event.target.value)}
-							/>
-						</div>
 						<button
 							type="button"
 							onClick={openCreate}
-							className="inline-flex items-center justify-center gap-2 rounded-xl bg-secondary px-4 py-3 text-sm font-bold text-white shadow-lg shadow-secondary/20 transition hover:bg-secondary-dark focus:outline-none focus:ring-4 focus:ring-secondary/20"
+							className="inline-flex items-center justify-center gap-2 rounded-xl bg-secondary px-4 py-3 text-sm font-bold text-white shadow-lg shadow-secondary/20 transition hover:bg-secondary-dark focus:outline-none focus:ring-4 focus:ring-secondary/20 lg:order-3"
 						>
 							<PackagePlus className="size-4" /> Add package
 						</button>
+					</div>
+					<div className="relative w-full lg:order-2 lg:w-64">
+						<Search className="pointer-events-none absolute left-3 top-1/2 size-4 -translate-y-1/2 text-slate-400" />
+						<input
+							aria-label="Search packages"
+							className="w-full rounded-xl border border-slate-200 bg-white py-3 pl-10 pr-4 text-sm outline-none transition focus:border-secondary focus:ring-4 focus:ring-secondary/10"
+							placeholder="Search packages..."
+							value={searchTerm}
+							onChange={(event) => setSearchTerm(event.target.value)}
+						/>
 					</div>
 				</div>
 				<PackageTable
