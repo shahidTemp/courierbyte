@@ -11,6 +11,7 @@ import {
 	Receipt,
 	ShieldCheck,
 	UserRound,
+	Users,
 	X,
 } from "lucide-react";
 import { useEffect, useRef, useState } from "react";
@@ -23,6 +24,7 @@ const MAIN_NAV = [
 	{ label: "Subscription Plans", to: "/admin/subscription-plans", icon: Gem },
 	{ label: "Billing", to: "/admin/billing", icon: Receipt },
 	{ label: "Developer API", to: "/admin/developer-api", icon: Code2 },
+	{ label: "Users", to: "/admin/user/all", icon: Users },
 ];
 
 const ACCOUNT_NAV = [
