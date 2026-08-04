@@ -1,5 +1,5 @@
 // @ts-nocheck
-import { Pencil, Shield, Trash2, Users } from "lucide-react";
+import { Pencil, Trash2, Users } from "lucide-react";
 import { useState } from "react";
 import DeleteModal from "@/components/common/deleteModal";
 import { formateDate } from "@/utils/formateDate";
@@ -10,8 +10,7 @@ const getHighlightedText = (text, highlight) => {
 
 	if (!safeHighlight || !safeText) return <span>{safeText}</span>;
 
-	const escapeRegExp = (value) =>
-		value.replace(/[.*+?^${}()|[\]\\]/g, "\\$&");
+	const escapeRegExp = (value) => value.replace(/[.*+?^${}()|[\]\\]/g, "\\$&");
 	const regex = new RegExp(`(${escapeRegExp(safeHighlight)})`, "gi");
 	let isHighlighted = false;
 	let highlightCount = 0;
@@ -84,22 +83,16 @@ export const UserTable = ({
 			<table className="w-full border-collapse">
 				<thead className="hidden md:table-header-group">
 					<tr>
-						{[
-							"Sl.",
-							"Name",
-							"Number",
-							"Status",
-							"Role",
-							"Created At",
-							"Actions",
-						].map((heading) => (
-							<th
-								className="bg-[#273c75] p-4 text-left text-white"
-								key={heading}
-							>
-								{heading}
-							</th>
-						))}
+						{["Sl.", "Name", "Number", "Status", "Created At", "Actions"].map(
+							(heading) => (
+								<th
+									className="bg-secondary p-4 text-left text-white"
+									key={heading}
+								>
+									{heading}
+								</th>
+							),
+						)}
 					</tr>
 				</thead>
 				<tbody className="block md:table-row-group">
@@ -139,15 +132,6 @@ export const UserTable = ({
 										Inactive
 									</span>
 								)}
-							</td>
-							<td className="flex items-center justify-between border-b border-gray-200 p-2 text-right md:table-cell md:p-4 md:text-left">
-								<span className="mr-4 font-semibold text-gray-700 md:hidden dark:text-white">
-									Role
-								</span>
-								<span className="inline-flex items-center gap-1 rounded-full bg-blue-100 px-3 py-1 text-xs font-semibold text-blue-800 dark:bg-blue-900/30 dark:text-blue-400">
-									<Shield className="size-3" />
-									{item.role}
-								</span>
 							</td>
 							<td className="flex items-center justify-between border-b border-gray-200 p-2 text-right md:table-cell md:p-4 md:text-left">
 								<span className="mr-4 font-semibold text-gray-700 md:hidden dark:text-white">
