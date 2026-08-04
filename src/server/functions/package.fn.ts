@@ -6,13 +6,13 @@ import { PackageModel } from "@/server/models/package.model";
 import { useAppSession } from "@/utils/session";
 
 const createPackageSchema = z.object({
-	name: z.string().trim().min(1),
-	description: z.string().trim().min(1),
-	price: z.number().min(0),
-	yearly_price: z.number().min(0),
-	duration_in_days: z.number().min(1),
-	api_call_limit: z.number().min(0),
-	features: z.array(z.string()).default([]),
+	name: z.string().trim().min(1).max(100),
+	description: z.string().trim().min(1).max(2000),
+	price: z.number().finite().min(0),
+	yearly_price: z.number().finite().min(0),
+	duration_in_days: z.number().finite().int().min(1),
+	api_call_limit: z.number().finite().int().min(0),
+	features: z.array(z.string().trim().min(1).max(200)).max(50).default([]),
 	is_active: z.boolean().default(true),
 });
 
