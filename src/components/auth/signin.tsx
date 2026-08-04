@@ -155,7 +155,7 @@ export default function SignIn({ onSignUp }) {
 							onClick={onSignUp}
 							className="bg-secondary bg-clip-text font-extrabold text-transparent transition focus:outline-none focus:ring-2 focus:ring-secondary/30 focus:ring-offset-2"
 						>
-							সাইন আপ করুন
+							নতুন একাউন্ট তৈরি করুন
 						</button>
 					</p>
 				)}
