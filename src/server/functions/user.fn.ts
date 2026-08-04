@@ -12,3 +12,14 @@ export const getUsers = createServerFn({ method: "GET" })
 
 		return JSON.parse(JSON.stringify(users));
 	});
+export const deleteUserById = createServerFn({ method: "DELETE" })
+	.middleware([requireRole("super_admin")])
+	.handler(async ({ id }) => {
+		const user = await User.findByIdAndDelete(id);
+
+		if (!user) {
+			throw new Error("User not found");
+		}
+
+		return JSON.parse(JSON.stringify(user));
+	});
