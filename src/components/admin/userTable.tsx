@@ -1,26 +1,9 @@
 import { Pencil, Shield, Trash2, Users } from "lucide-react";
-import { type MouseEvent, type ReactNode, useState } from "react";
+import { useState } from "react";
 import DeleteModal from "@/components/common/deleteModal";
 import { formateDate } from "@/utils/formateDate";
 
-export type UserRow = {
-	_id: string;
-	name: string;
-	number: string;
-	isActive: boolean;
-	role: string;
-	createdAt: string | Date;
-};
-
-type UserTableProps = {
-	data: UserRow[];
-	onDeleteItem: (id: string) => Promise<void>;
-	onEditItem?: (id: string) => void;
-	searchTerm: string;
-	canDelete?: boolean;
-};
-
-const getHighlightedText = (text: unknown, highlight: string): ReactNode => {
+const getHighlightedText = (text, highlight) => {
 	const safeText = text ? String(text) : "";
 	const safeHighlight = highlight.trim();
 
@@ -58,12 +41,12 @@ export const UserTable = ({
 	onEditItem,
 	searchTerm,
 	canDelete = false,
-}: UserTableProps) => {
-	const [deleteConfirm, setDeleteConfirm] = useState<string | null>(null);
+}) => {
+	const [deleteConfirm, setDeleteConfirm] = useState(null);
 	const [isDeleting, setIsDeleting] = useState(false);
 	const [deleteError, setDeleteError] = useState("");
 
-	const handleDeleteRequest = (userId: string) => {
+	const handleDeleteRequest = (userId) => {
 		setDeleteError("");
 		setDeleteConfirm(userId);
 	};
@@ -179,7 +162,7 @@ export const UserTable = ({
 									{onEditItem && (
 										<button
 											type="button"
-											onClick={(event: MouseEvent<HTMLButtonElement>) => {
+											onClick={(event) => {
 												event.stopPropagation();
 												onEditItem(item._id);
 											}}
@@ -192,7 +175,7 @@ export const UserTable = ({
 									{canDelete && (
 										<button
 											type="button"
-											onClick={(event: MouseEvent<HTMLButtonElement>) => {
+											onClick={(event) => {
 												event.stopPropagation();
 												handleDeleteRequest(item._id);
 											}}

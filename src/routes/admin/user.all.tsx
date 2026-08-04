@@ -3,13 +3,13 @@ import { createFileRoute } from "@tanstack/react-router";
 import { useServerFn } from "@tanstack/react-start";
 import { Search } from "lucide-react";
 import { useMemo, useState } from "react";
-import { type UserRow, UserTable } from "@/components/admin/userTable";
+import { UserTable } from "@/components/admin/userTable";
 import { useAuth } from "@/context/userContext";
 import { deleteUserById, getUsers } from "@/server/functions/user.fn";
 
 const usersQuery = queryOptions({
 	queryKey: ["users"],
-	queryFn: async (): Promise<UserRow[]> => getUsers(),
+	queryFn: async () => getUsers(),
 });
 
 export const Route = createFileRoute("/admin/user/all")({
@@ -18,9 +18,7 @@ export const Route = createFileRoute("/admin/user/all")({
 });
 
 function AdminAllPage() {
-	const { user } = useAuth() as {
-		user: { role?: string } | null;
-	};
+	const { user } = useAuth();
 	const queryClient = useQueryClient();
 	const deleteUserFn = useServerFn(deleteUserById);
 	const { data: users = [] } = useQuery(usersQuery);
@@ -39,9 +37,9 @@ function AdminAllPage() {
 		);
 	}, [searchTerm, users]);
 
-	const handleDelete = async (id: string) => {
+	const handleDelete = async (id) => {
 		await deleteUserFn({ data: { id } });
-		queryClient.setQueryData<UserRow[]>(
+		queryClient.setQueryData(
 			usersQuery.queryKey,
 			(currentUsers = []) =>
 				currentUsers.filter((currentUser) => currentUser._id !== id),
