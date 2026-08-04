@@ -80,7 +80,7 @@ export const UserTable = ({
 			id="admin-table"
 			className="m-0 overflow-x-auto rounded-2xl bg-white md:border md:border-gray-200 md:dark:border-gray-800 dark:bg-gray-900"
 		>
-			<table className="w-full border-collapse">
+			<table className="w-full border-separate border-spacing-0 md:border-collapse">
 				<thead className="hidden md:table-header-group">
 					<tr>
 						{["Sl.", "Name", "Number", "Status", "Created At", "Actions"].map(
