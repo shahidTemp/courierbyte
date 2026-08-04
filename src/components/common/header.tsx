@@ -34,11 +34,13 @@ function NavItemLink({ item, onSectionClick }) {
 }
 
 function AuthButton({ onClick }) {
-	const { isAuthenticated } = useAuth();
+	const { isAuthenticated, user } = useAuth();
+	const panelPath =
+		user?.role === "admin" || user?.role === "super_admin" ? "/admin" : "/panel";
 
 	return (
 		<Link
-			to={isAuthenticated ? "/panel" : "/login"}
+			to={isAuthenticated ? panelPath : "/login"}
 			onClick={onClick}
 			className={authBtnClasses}
 		>
