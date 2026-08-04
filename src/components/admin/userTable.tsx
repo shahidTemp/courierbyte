@@ -95,28 +95,28 @@ export const UserTable = ({
 				<tbody className="block md:table-row-group">
 					{data.map((item, index) => (
 						<tr
-							className="mb-4 block overflow-hidden rounded-lg border-2 border-slate-200 bg-white transition hover:bg-emerald-50/40 even:bg-slate-50 md:mb-0 md:table-row md:border-0 md:border-b dark:border-gray-700 dark:bg-gray-900 dark:text-white dark:even:bg-gray-800 dark:hover:bg-gray-800/80"
+							className="group mb-4 block bg-transparent transition md:mb-0 md:table-row dark:text-white"
 							key={item._id}
 						>
-							<td className="flex items-center justify-between border-b border-slate-200 p-2 text-right text-sm md:table-cell md:border-0 md:p-4 md:text-left dark:border-gray-700">
+							<td className="flex items-center justify-between border-x-2 border-b-2 border-slate-200 bg-white p-2 text-right text-sm transition first:rounded-t-lg first:border-t-2 last:rounded-b-lg group-hover:bg-emerald-50/40 md:table-cell md:border-x-0 md:border-t-0 md:border-b md:border-slate-200 md:p-4 md:text-left md:first:rounded-none md:last:rounded-none md:group-hover:bg-emerald-50/40 dark:border-gray-700 dark:bg-gray-900 md:dark:border-gray-800 dark:group-hover:bg-gray-800/80">
 								<span className="mr-4 font-semibold text-gray-700 md:hidden dark:text-white">
 									Sl.
 								</span>
 								{index + 1}
 							</td>
-							<td className="flex items-center justify-between border-b border-slate-200 p-2 text-right text-sm md:table-cell md:border-0 md:p-4 md:text-left dark:border-gray-700">
+							<td className="flex items-center justify-between border-x-2 border-b-2 border-slate-200 bg-white p-2 text-right text-sm transition first:rounded-t-lg first:border-t-2 last:rounded-b-lg group-hover:bg-emerald-50/40 md:table-cell md:border-x-0 md:border-t-0 md:border-b md:border-slate-200 md:p-4 md:text-left md:first:rounded-none md:last:rounded-none md:group-hover:bg-emerald-50/40 dark:border-gray-700 dark:bg-gray-900 md:dark:border-gray-800 dark:group-hover:bg-gray-800/80">
 								<span className="mr-4 font-semibold text-gray-700 md:hidden dark:text-white">
 									Name
 								</span>
 								{getHighlightedText(item.name, searchTerm)}
 							</td>
-							<td className="flex items-center justify-between border-b border-slate-200 p-2 text-right text-sm md:table-cell md:border-0 md:p-4 md:text-left dark:border-gray-700">
+							<td className="flex items-center justify-between border-x-2 border-b-2 border-slate-200 bg-white p-2 text-right text-sm transition first:rounded-t-lg first:border-t-2 last:rounded-b-lg group-hover:bg-emerald-50/40 md:table-cell md:border-x-0 md:border-t-0 md:border-b md:border-slate-200 md:p-4 md:text-left md:first:rounded-none md:last:rounded-none md:group-hover:bg-emerald-50/40 dark:border-gray-700 dark:bg-gray-900 md:dark:border-gray-800 dark:group-hover:bg-gray-800/80">
 								<span className="mr-4 font-semibold text-gray-700 md:hidden dark:text-white">
 									Number
 								</span>
 								{getHighlightedText(item.number, searchTerm)}
 							</td>
-							<td className="flex items-center justify-between border-b border-slate-200 p-2 text-right text-sm md:table-cell md:border-0 md:p-4 md:text-left dark:border-gray-700">
+							<td className="flex items-center justify-between border-x-2 border-b-2 border-slate-200 bg-white p-2 text-right text-sm transition first:rounded-t-lg first:border-t-2 last:rounded-b-lg group-hover:bg-emerald-50/40 md:table-cell md:border-x-0 md:border-t-0 md:border-b md:border-slate-200 md:p-4 md:text-left md:first:rounded-none md:last:rounded-none md:group-hover:bg-emerald-50/40 dark:border-gray-700 dark:bg-gray-900 md:dark:border-gray-800 dark:group-hover:bg-gray-800/80">
 								<span className="mr-4 font-semibold text-gray-700 md:hidden dark:text-white">
 									Status
 								</span>
@@ -130,13 +130,13 @@ export const UserTable = ({
 									</span>
 								)}
 							</td>
-							<td className="flex items-center justify-between border-b border-slate-200 p-2 text-right text-sm md:table-cell md:border-0 md:p-4 md:text-left dark:border-gray-700">
+							<td className="flex items-center justify-between border-x-2 border-b-2 border-slate-200 bg-white p-2 text-right text-sm transition first:rounded-t-lg first:border-t-2 last:rounded-b-lg group-hover:bg-emerald-50/40 md:table-cell md:border-x-0 md:border-t-0 md:border-b md:border-slate-200 md:p-4 md:text-left md:first:rounded-none md:last:rounded-none md:group-hover:bg-emerald-50/40 dark:border-gray-700 dark:bg-gray-900 md:dark:border-gray-800 dark:group-hover:bg-gray-800/80">
 								<span className="mr-4 font-semibold text-gray-700 md:hidden dark:text-white">
 									Created At
 								</span>
 								{formateDate(item.createdAt)}
 							</td>
-							<td className="flex items-center justify-between border-b border-slate-200 p-2 text-right text-sm md:table-cell md:border-0 md:p-4 md:text-left dark:border-gray-700">
+							<td className="flex items-center justify-between border-x-2 border-b-2 border-slate-200 bg-white p-2 text-right text-sm transition first:rounded-t-lg first:border-t-2 last:rounded-b-lg group-hover:bg-emerald-50/40 md:table-cell md:border-x-0 md:border-t-0 md:border-b md:border-slate-200 md:p-4 md:text-left md:first:rounded-none md:last:rounded-none md:group-hover:bg-emerald-50/40 dark:border-gray-700 dark:bg-gray-900 md:dark:border-gray-800 dark:group-hover:bg-gray-800/80">
 								<span className="mr-4 font-semibold text-gray-700 md:hidden dark:text-white">
 									Actions
 								</span>
