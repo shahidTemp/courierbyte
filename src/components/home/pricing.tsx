@@ -19,20 +19,9 @@ export default function Pricing() {
 		<section id="pricing" className="section-pad bg-secondary/5">
 			<div className="maxw px-4 sm:px-6 lg:px-8">
 				<div className="mx-auto max-w-2xl text-center">
-					<p className="text-xs font-bold uppercase tracking-[0.2em] text-secondary">
-						আপনার গতির সাথে বাড়ুন
-					</p>
 					<h2 className="mt-3 text-3xl font-extrabold tracking-tight text-slate-900 sm:text-4xl">
-						একটি ভুল অর্ডারের চেয়ে
-						<br />
-						একটি প্যাকেজের দাম কম
-					</h2>{" "}
-					<p className="mt-4 text-lg text-slate-600">
-						আগে ৫টি সার্চ ফ্রি। যখন ব্যবসা বাড়বে, তখন আপনার প্রয়োজনের প্ল্যানে যান।
-					</p>
-					<p className="mt-3 text-xs font-semibold text-slate-500">
-						আপনার প্রয়োজন অনুযায়ী প্যাকেজ বেছে নিন।
-					</p>
+						আপনার প্রয়োজন অনুযায়ী প্যাকেজ বেছে নিন
+					</h2>
 				</div>
 
 				{isLoading ? (
