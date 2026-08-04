@@ -33,9 +33,14 @@ export default function SignIn({ onSignUp }) {
 		setIsSubmitting(true);
 
 		try {
-			await loginUser({ data: { number: phone, password } });
+			const user = await loginUser({ data: { number: phone, password } });
 			await refreshUser();
-			await navigate({ to: "/panel" });
+			await navigate({
+				to:
+					user.role === "admin" || user.role === "super_admin"
+						? "/admin"
+						: "/panel",
+			});
 		} catch (error) {
 			setError(
 				error instanceof Error
