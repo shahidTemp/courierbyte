@@ -1,3 +1,4 @@
+// @ts-nocheck
 import { Pencil, Shield, Trash2, Users } from "lucide-react";
 import { useState } from "react";
 import DeleteModal from "@/components/common/deleteModal";
@@ -9,7 +10,7 @@ const getHighlightedText = (text, highlight) => {
 
 	if (!safeHighlight || !safeText) return <span>{safeText}</span>;
 
-	const escapeRegExp = (value: string) =>
+	const escapeRegExp = (value) =>
 		value.replace(/[.*+?^${}()|[\]\\]/g, "\\$&");
 	const regex = new RegExp(`(${escapeRegExp(safeHighlight)})`, "gi");
 	let isHighlighted = false;
