@@ -151,9 +151,10 @@ export const UserTable = ({
 												event.stopPropagation();
 												onEditItem(item._id);
 											}}
+											aria-label={`Edit ${item.name}`}
 											className="inline-flex items-center gap-1 rounded-full bg-blue-100 px-3 py-1.5 text-sm font-medium text-blue-800 transition hover:bg-blue-200 dark:bg-blue-900/30 dark:text-blue-400 dark:hover:bg-blue-900/50"
 										>
-											<Pencil className="size-3.5" />
+											<Pencil aria-hidden="true" className="size-3.5" />
 											<span className="hidden sm:inline">Edit</span>
 										</button>
 									)}

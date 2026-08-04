@@ -4,13 +4,16 @@ import { createFileRoute } from "@tanstack/react-router";
 import { useServerFn } from "@tanstack/react-start";
 import { Plus, Search } from "lucide-react";
 import { useState } from "react";
-import UserModal from "@/components/admin/user/userModal";
+import UserModal, {
+	type UserFormData,
+} from "@/components/admin/user/userModal";
 import { UserTable } from "@/components/admin/userTable";
 import { useAuth } from "@/context/userContext";
 import {
 	createAdminUser,
 	deleteUserById,
 	getUsers,
+	updateAdminUser,
 } from "@/server/functions/user.fn";
 
 const usersQuery = queryOptions({
@@ -27,12 +30,14 @@ function AdminAllPage() {
 	const { user } = useAuth();
 	const queryClient = useQueryClient();
 	const createUserFn = useServerFn(createAdminUser);
+	const updateUserFn = useServerFn(updateAdminUser);
 	const deleteUserFn = useServerFn(deleteUserById);
 	const { data: users = [] } = useQuery(usersQuery);
 	const [searchTerm, setSearchTerm] = useState("");
 	const [isUserModalOpen, setIsUserModalOpen] = useState(false);
-	const [isCreatingUser, setIsCreatingUser] = useState(false);
-	const [createUserError, setCreateUserError] = useState("");
+	const [selectedUser, setSelectedUser] = useState(null);
+	const [isSubmittingUser, setIsSubmittingUser] = useState(false);
+	const [userModalError, setUserModalError] = useState("");
 
 	const query = searchTerm.trim().toLowerCase();
 	const filteredUsers = query
@@ -45,26 +50,57 @@ function AdminAllPage() {
 			)
 		: users;
 
-	const handleCreateUser = async (data) => {
-		setIsCreatingUser(true);
-		setCreateUserError("");
+	const closeUserModal = () => {
+		setIsUserModalOpen(false);
+		setSelectedUser(null);
+		setUserModalError("");
+	};
+
+	const handleUserSubmit = async (data: UserFormData) => {
+		setIsSubmittingUser(true);
+		setUserModalError("");
 
 		try {
-			const createdUser = await createUserFn({ data });
-			queryClient.setQueryData(usersQuery.queryKey, (currentUsers = []) => [
-				createdUser,
-				...currentUsers,
-			]);
-			setIsUserModalOpen(false);
+			if (selectedUser) {
+				const updatedUser = await updateUserFn({
+					data: {
+						id: selectedUser._id,
+						name: data.name,
+						number: data.number,
+						...(data.password ? { password: data.password } : {}),
+					},
+				});
+				queryClient.setQueryData(usersQuery.queryKey, (currentUsers = []) =>
+					currentUsers.map((currentUser) =>
+						currentUser._id === updatedUser._id ? updatedUser : currentUser,
+					),
+				);
+			} else {
+				const createdUser = await createUserFn({ data });
+				queryClient.setQueryData(usersQuery.queryKey, (currentUsers = []) => [
+					createdUser,
+					...currentUsers,
+				]);
+			}
+			closeUserModal();
 		} catch (error) {
-			setCreateUserError(
+			setUserModalError(
 				error instanceof Error
 					? error.message
-					: "Failed to create user. Please try again.",
+					: "Failed to save user. Please try again.",
 			);
 		} finally {
-			setIsCreatingUser(false);
+			setIsSubmittingUser(false);
 		}
+	};
+
+	const handleEdit = (id) => {
+		const userToEdit = users.find((item) => item._id === id);
+		if (!userToEdit) return;
+
+		setUserModalError("");
+		setSelectedUser(userToEdit);
+		setIsUserModalOpen(true);
 	};
 
 	const handleDelete = async (id) => {
@@ -99,7 +135,8 @@ function AdminAllPage() {
 						<button
 							type="button"
 							onClick={() => {
-								setCreateUserError("");
+								setUserModalError("");
+								setSelectedUser(null);
 								setIsUserModalOpen(true);
 							}}
 							className="inline-flex items-center justify-center gap-2 rounded-xl bg-secondary px-4 py-3 text-sm font-bold text-white transition hover:bg-secondary-dark focus:outline-none focus:ring-4 focus:ring-secondary/20"
@@ -115,16 +152,17 @@ function AdminAllPage() {
 					searchTerm={searchTerm}
 					canDelete={user?.role === "super_admin"}
 					onDeleteItem={handleDelete}
-					onEditItem={() => undefined}
+					onEditItem={handleEdit}
 				/>
 			</div>
 
 			{isUserModalOpen && (
 				<UserModal
-					onCancel={() => setIsUserModalOpen(false)}
-					onSubmit={handleCreateUser}
-					isSubmitting={isCreatingUser}
-					error={createUserError}
+					onCancel={closeUserModal}
+					onSubmit={handleUserSubmit}
+					user={selectedUser}
+					isSubmitting={isSubmittingUser}
+					error={userModalError}
 				/>
 			)}
 		</main>
