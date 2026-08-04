@@ -17,7 +17,7 @@ const emptyForm = {
 	yearly_price: "",
 	duration_in_days: "",
 	api_call_limit: "",
-	features: [],
+	features: [""],
 	is_active: true,
 };
 
@@ -53,7 +53,7 @@ function AddPackage() {
 		if (form.features.length < 50) {
 			setForm((current) => ({
 				...current,
-				features: [...current.features, { id: crypto.randomUUID(), value: "" }],
+				features: [...current.features, ""],
 			}));
 		}
 	};
@@ -62,7 +62,7 @@ function AddPackage() {
 		setForm((current) => ({
 			...current,
 			features: current.features.map((feature, featureIndex) =>
-				featureIndex === index ? { ...feature, value } : feature,
+				featureIndex === index ? value : feature,
 			),
 		}));
 		setMessage({ type: "", text: "" });
@@ -84,9 +84,15 @@ function AddPackage() {
 
 	const handleSubmit = async (event) => {
 		event.preventDefault();
-		const features = form.features
-			.map((feature) => feature.value.trim())
-			.filter(Boolean);
+		const features = form.features.map((feature) => feature.trim());
+
+		if (features.some((feature) => !feature)) {
+			setMessage({
+				type: "error",
+				text: "Please fill in every feature field before submitting.",
+			});
+			return;
+		}
 
 		if (
 			features.length > 50 ||
@@ -241,11 +247,12 @@ function AddPackage() {
 
 						<div className="space-y-3">
 							{form.features.map((feature, index) => (
-								<div key={feature.id} className="flex gap-3">
+								// biome-ignore lint/suspicious/noArrayIndexKey: feature rows are controlled by their position
+								<div key={index} className="flex gap-3">
 									<input
 										id={`feature-${index}`}
 										type="text"
-										value={feature.value}
+										value={feature}
 										onChange={(event) =>
 											updateFeature(index, event.target.value)
 										}
