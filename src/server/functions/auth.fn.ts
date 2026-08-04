@@ -2,8 +2,8 @@
 import crypto from "node:crypto";
 import { createServerFn } from "@tanstack/react-start";
 import { z } from "zod";
-import { User } from "@/server/models/user.model";
 import { authMiddleware } from "@/server/middleware";
+import { User } from "@/server/models/user.model";
 import { useAppSession } from "@/utils/session";
 
 const createUserSchema = z.object({
@@ -103,7 +103,7 @@ export const updateUser = createServerFn({ method: "POST" })
 	.middleware([authMiddleware])
 	.validator(updateUserSchema)
 	.handler(async ({ data, context }) => {
-		const isOwner = context.actor.id === data.userId;
+		const isOwner = context.actor._id.toString() === data.userId;
 		const isSuperAdmin = context.actor.role === "super_admin";
 		if (!isOwner && !isSuperAdmin) throw new Error("Forbidden");
 
