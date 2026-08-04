@@ -21,6 +21,8 @@ import { useAuth } from "@/context/userContext";
 const MAIN_NAV = [
 	{ label: "Dashboard", to: "/admin", icon: LayoutDashboard },
 	{ label: "Users", to: "/admin/user/all", icon: Users },
+	{ label: "Admins", to: "/admin/admin/all", icon: UserRound },
+	{ label: "Packages", to: "/admin/package/all", icon: PackageSearch },
 	{ label: "Fraud Checker", to: "/admin/fraud-checker", icon: ShieldCheck },
 	{ label: "Subscription Plans", to: "/admin/subscription-plans", icon: Gem },
 	{ label: "Billing", to: "/admin/billing", icon: Receipt },

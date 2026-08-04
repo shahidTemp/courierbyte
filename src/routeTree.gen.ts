@@ -22,7 +22,8 @@ import { Route as PanelFeedbackRouteImport } from './routes/panel/feedback'
 import { Route as PanelFraudCheckerRouteImport } from './routes/panel/fraud-checker'
 import { Route as PanelProfileRouteImport } from './routes/panel/profile'
 import { Route as PanelSubscriptionPlansRouteImport } from './routes/panel/subscription-plans'
-import { Route as AdminPackageAddRouteImport } from './routes/admin/package.add'
+import { Route as AdminAdminAllRouteImport } from './routes/admin/admin.all'
+import { Route as AdminPackageAllRouteImport } from './routes/admin/package.all'
 import { Route as AdminUserAllRouteImport } from './routes/admin/user.all'
 
 const WebsiteRouteRoute = WebsiteRouteRouteImport.update({
@@ -89,9 +90,14 @@ const PanelSubscriptionPlansRoute = PanelSubscriptionPlansRouteImport.update({
   path: '/subscription-plans',
   getParentRoute: () => PanelRouteRoute,
 } as any)
-const AdminPackageAddRoute = AdminPackageAddRouteImport.update({
-  id: '/package/add',
-  path: '/package/add',
+const AdminAdminAllRoute = AdminAdminAllRouteImport.update({
+  id: '/admin/all',
+  path: '/admin/all',
+  getParentRoute: () => AdminRouteRoute,
+} as any)
+const AdminPackageAllRoute = AdminPackageAllRouteImport.update({
+  id: '/package/all',
+  path: '/package/all',
   getParentRoute: () => AdminRouteRoute,
 } as any)
 const AdminUserAllRoute = AdminUserAllRouteImport.update({
@@ -113,7 +119,8 @@ export interface FileRoutesByFullPath {
   '/panel/subscription-plans': typeof PanelSubscriptionPlansRoute
   '/admin/': typeof AdminIndexRoute
   '/panel/': typeof PanelIndexRoute
-  '/admin/package/add': typeof AdminPackageAddRoute
+  '/admin/admin/all': typeof AdminAdminAllRoute
+  '/admin/package/all': typeof AdminPackageAllRoute
   '/admin/user/all': typeof AdminUserAllRoute
 }
 export interface FileRoutesByTo {
@@ -127,7 +134,8 @@ export interface FileRoutesByTo {
   '/': typeof WebsiteIndexRoute
   '/admin': typeof AdminIndexRoute
   '/panel': typeof PanelIndexRoute
-  '/admin/package/add': typeof AdminPackageAddRoute
+  '/admin/admin/all': typeof AdminAdminAllRoute
+  '/admin/package/all': typeof AdminPackageAllRoute
   '/admin/user/all': typeof AdminUserAllRoute
 }
 export interface FileRoutesById {
@@ -145,7 +153,8 @@ export interface FileRoutesById {
   '/_website/': typeof WebsiteIndexRoute
   '/admin/': typeof AdminIndexRoute
   '/panel/': typeof PanelIndexRoute
-  '/admin/package/add': typeof AdminPackageAddRoute
+  '/admin/admin/all': typeof AdminAdminAllRoute
+  '/admin/package/all': typeof AdminPackageAllRoute
   '/admin/user/all': typeof AdminUserAllRoute
 }
 export interface FileRouteTypes {
@@ -163,7 +172,8 @@ export interface FileRouteTypes {
     | '/panel/subscription-plans'
     | '/admin/'
     | '/panel/'
-    | '/admin/package/add'
+    | '/admin/admin/all'
+    | '/admin/package/all'
     | '/admin/user/all'
   fileRoutesByTo: FileRoutesByTo
   to:
@@ -177,7 +187,8 @@ export interface FileRouteTypes {
     | '/'
     | '/admin'
     | '/panel'
-    | '/admin/package/add'
+    | '/admin/admin/all'
+    | '/admin/package/all'
     | '/admin/user/all'
   id:
     | '__root__'
@@ -194,7 +205,8 @@ export interface FileRouteTypes {
     | '/_website/'
     | '/admin/'
     | '/panel/'
-    | '/admin/package/add'
+    | '/admin/admin/all'
+    | '/admin/package/all'
     | '/admin/user/all'
   fileRoutesById: FileRoutesById
 }
@@ -297,11 +309,18 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof PanelSubscriptionPlansRouteImport
       parentRoute: typeof PanelRouteRoute
     }
-    '/admin/package/add': {
-      id: '/admin/package/add'
-      path: '/package/add'
-      fullPath: '/admin/package/add'
-      preLoaderRoute: typeof AdminPackageAddRouteImport
+    '/admin/admin/all': {
+      id: '/admin/admin/all'
+      path: '/admin/all'
+      fullPath: '/admin/admin/all'
+      preLoaderRoute: typeof AdminAdminAllRouteImport
+      parentRoute: typeof AdminRouteRoute
+    }
+    '/admin/package/all': {
+      id: '/admin/package/all'
+      path: '/package/all'
+      fullPath: '/admin/package/all'
+      preLoaderRoute: typeof AdminPackageAllRouteImport
       parentRoute: typeof AdminRouteRoute
     }
     '/admin/user/all': {
@@ -330,13 +349,15 @@ const WebsiteRouteRouteWithChildren = WebsiteRouteRoute._addFileChildren(
 
 interface AdminRouteRouteChildren {
   AdminIndexRoute: typeof AdminIndexRoute
-  AdminPackageAddRoute: typeof AdminPackageAddRoute
+  AdminAdminAllRoute: typeof AdminAdminAllRoute
+  AdminPackageAllRoute: typeof AdminPackageAllRoute
   AdminUserAllRoute: typeof AdminUserAllRoute
 }
 
 const AdminRouteRouteChildren: AdminRouteRouteChildren = {
   AdminIndexRoute: AdminIndexRoute,
-  AdminPackageAddRoute: AdminPackageAddRoute,
+  AdminAdminAllRoute: AdminAdminAllRoute,
+  AdminPackageAllRoute: AdminPackageAllRoute,
   AdminUserAllRoute: AdminUserAllRoute,
 }
 
