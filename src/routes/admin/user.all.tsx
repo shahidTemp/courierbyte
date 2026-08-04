@@ -2,11 +2,16 @@
 import { queryOptions, useQuery, useQueryClient } from "@tanstack/react-query";
 import { createFileRoute } from "@tanstack/react-router";
 import { useServerFn } from "@tanstack/react-start";
-import { Search } from "lucide-react";
-import { useMemo, useState } from "react";
+import { Plus, Search } from "lucide-react";
+import { useState } from "react";
+import UserModal from "@/components/admin/user/userModal";
 import { UserTable } from "@/components/admin/userTable";
 import { useAuth } from "@/context/userContext";
-import { deleteUserById, getUsers } from "@/server/functions/user.fn";
+import {
+	createAdminUser,
+	deleteUserById,
+	getUsers,
+} from "@/server/functions/user.fn";
 
 const usersQuery = queryOptions({
 	queryKey: ["users"],
@@ -21,29 +26,51 @@ export const Route = createFileRoute("/admin/user/all")({
 function AdminAllPage() {
 	const { user } = useAuth();
 	const queryClient = useQueryClient();
+	const createUserFn = useServerFn(createAdminUser);
 	const deleteUserFn = useServerFn(deleteUserById);
 	const { data: users = [] } = useQuery(usersQuery);
 	const [searchTerm, setSearchTerm] = useState("");
+	const [isUserModalOpen, setIsUserModalOpen] = useState(false);
+	const [isCreatingUser, setIsCreatingUser] = useState(false);
+	const [createUserError, setCreateUserError] = useState("");
 
-	const filteredUsers = useMemo(() => {
-		const query = searchTerm.trim().toLowerCase();
-		if (!query) return users;
+	const query = searchTerm.trim().toLowerCase();
+	const filteredUsers = query
+		? users.filter((item) =>
+				[item.name, item.number, item.role].some((value) =>
+					String(value ?? "")
+						.toLowerCase()
+						.includes(query),
+				),
+			)
+		: users;
 
-		return users.filter((item) =>
-			[item.name, item.number, item.role].some((value) =>
-				String(value ?? "")
-					.toLowerCase()
-					.includes(query),
-			),
-		);
-	}, [searchTerm, users]);
+	const handleCreateUser = async (data) => {
+		setIsCreatingUser(true);
+		setCreateUserError("");
+
+		try {
+			const createdUser = await createUserFn({ data });
+			queryClient.setQueryData(usersQuery.queryKey, (currentUsers = []) => [
+				createdUser,
+				...currentUsers,
+			]);
+			setIsUserModalOpen(false);
+		} catch (error) {
+			setCreateUserError(
+				error instanceof Error
+					? error.message
+					: "Failed to create user. Please try again.",
+			);
+		} finally {
+			setIsCreatingUser(false);
+		}
+	};
 
 	const handleDelete = async (id) => {
 		await deleteUserFn({ data: { id } });
-		queryClient.setQueryData(
-			usersQuery.queryKey,
-			(currentUsers = []) =>
-				currentUsers.filter((currentUser) => currentUser._id !== id),
+		queryClient.setQueryData(usersQuery.queryKey, (currentUsers = []) =>
+			currentUsers.filter((currentUser) => currentUser._id !== id),
 		);
 	};
 
@@ -55,18 +82,31 @@ function AdminAllPage() {
 						All users
 					</h1>
 
-					<div className="relative w-full sm:max-w-xs">
-						<Search
-							aria-hidden="true"
-							className="pointer-events-none absolute left-3 top-1/2 size-4 -translate-y-1/2 text-slate-400"
-						/>
-						<input
-							aria-label="Search users"
-							value={searchTerm}
-							onChange={(event) => setSearchTerm(event.target.value)}
-							placeholder="Search users..."
-							className="w-full rounded-xl border border-slate-200 bg-white py-3 pl-10 pr-4 text-sm text-slate-900 outline-none transition focus:border-secondary focus:ring-4 focus:ring-secondary/10"
-						/>
+					<div className="flex w-full flex-col gap-3 sm:w-auto sm:flex-row sm:items-center">
+						<div className="relative w-full sm:w-64">
+							<Search
+								aria-hidden="true"
+								className="pointer-events-none absolute left-3 top-1/2 size-4 -translate-y-1/2 text-slate-400"
+							/>
+							<input
+								aria-label="Search users"
+								value={searchTerm}
+								onChange={(event) => setSearchTerm(event.target.value)}
+								placeholder="Search users..."
+								className="w-full rounded-xl border border-slate-200 bg-white py-3 pl-10 pr-4 text-sm text-slate-900 outline-none transition focus:border-secondary focus:ring-4 focus:ring-secondary/10"
+							/>
+						</div>
+						<button
+							type="button"
+							onClick={() => {
+								setCreateUserError("");
+								setIsUserModalOpen(true);
+							}}
+							className="inline-flex items-center justify-center gap-2 rounded-xl bg-secondary px-4 py-3 text-sm font-bold text-white transition hover:bg-secondary-dark focus:outline-none focus:ring-4 focus:ring-secondary/20"
+						>
+							<Plus className="size-4" />
+							Add user
+						</button>
 					</div>
 				</div>
 
@@ -78,6 +118,15 @@ function AdminAllPage() {
 					onEditItem={() => undefined}
 				/>
 			</div>
+
+			{isUserModalOpen && (
+				<UserModal
+					onCancel={() => setIsUserModalOpen(false)}
+					onSubmit={handleCreateUser}
+					isSubmitting={isCreatingUser}
+					error={createUserError}
+				/>
+			)}
 		</main>
 	);
 }
