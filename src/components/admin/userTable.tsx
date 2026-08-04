@@ -78,17 +78,14 @@ export const UserTable = ({
 	return (
 		<div
 			id="admin-table"
-			className="m-0 overflow-x-auto rounded-2xl bg-white md:border md:border-gray-200 md:dark:border-gray-800 dark:bg-gray-900"
+			className="m-0 overflow-hidden rounded-2xl bg-white shadow-sm md:border md:border-slate-200 dark:bg-gray-900 md:dark:border-gray-800"
 		>
 			<table className="w-full border-separate border-spacing-0 md:border-collapse">
 				<thead className="hidden md:table-header-group">
-					<tr>
+					<tr className="bg-secondary text-left text-sm text-white">
 						{["Sl.", "Name", "Number", "Status", "Created At", "Actions"].map(
 							(heading) => (
-								<th
-									className="bg-secondary p-4 text-left text-white"
-									key={heading}
-								>
+								<th className="p-4 font-bold" key={heading}>
 									{heading}
 								</th>
 							),
@@ -98,28 +95,28 @@ export const UserTable = ({
 				<tbody className="block md:table-row-group">
 					{data.map((item, index) => (
 						<tr
-							className="mb-4 block overflow-hidden rounded-lg border-2 border-b-2 hover:bg-gray-50 dark:hover:bg-gray-500 even:bg-gray-50 dark:even:bg-gray-800 md:mb-0 md:table-row md:border-0 md:border-b dark:text-white"
+							className="mb-4 block overflow-hidden rounded-lg border-2 border-slate-200 bg-white transition hover:bg-emerald-50/40 even:bg-slate-50 md:mb-0 md:table-row md:border-0 md:border-b dark:border-gray-700 dark:bg-gray-900 dark:text-white dark:even:bg-gray-800 dark:hover:bg-gray-800/80"
 							key={item._id}
 						>
-							<td className="flex items-center justify-between border-b border-gray-200 p-2 text-right md:table-cell md:p-4 md:text-left">
+							<td className="flex items-center justify-between border-b border-slate-200 p-2 text-right text-sm md:table-cell md:border-0 md:p-4 md:text-left dark:border-gray-700">
 								<span className="mr-4 font-semibold text-gray-700 md:hidden dark:text-white">
 									Sl.
 								</span>
 								{index + 1}
 							</td>
-							<td className="flex items-center justify-between border-b border-gray-200 p-2 text-right md:table-cell md:p-4 md:text-left">
+							<td className="flex items-center justify-between border-b border-slate-200 p-2 text-right text-sm md:table-cell md:border-0 md:p-4 md:text-left dark:border-gray-700">
 								<span className="mr-4 font-semibold text-gray-700 md:hidden dark:text-white">
 									Name
 								</span>
 								{getHighlightedText(item.name, searchTerm)}
 							</td>
-							<td className="flex items-center justify-between border-b border-gray-200 p-2 text-right md:table-cell md:p-4 md:text-left">
+							<td className="flex items-center justify-between border-b border-slate-200 p-2 text-right text-sm md:table-cell md:border-0 md:p-4 md:text-left dark:border-gray-700">
 								<span className="mr-4 font-semibold text-gray-700 md:hidden dark:text-white">
 									Number
 								</span>
 								{getHighlightedText(item.number, searchTerm)}
 							</td>
-							<td className="flex items-center justify-between border-b border-gray-200 p-2 text-right md:table-cell md:p-4 md:text-left">
+							<td className="flex items-center justify-between border-b border-slate-200 p-2 text-right text-sm md:table-cell md:border-0 md:p-4 md:text-left dark:border-gray-700">
 								<span className="mr-4 font-semibold text-gray-700 md:hidden dark:text-white">
 									Status
 								</span>
@@ -133,13 +130,13 @@ export const UserTable = ({
 									</span>
 								)}
 							</td>
-							<td className="flex items-center justify-between border-b border-gray-200 p-2 text-right md:table-cell md:p-4 md:text-left">
+							<td className="flex items-center justify-between border-b border-slate-200 p-2 text-right text-sm md:table-cell md:border-0 md:p-4 md:text-left dark:border-gray-700">
 								<span className="mr-4 font-semibold text-gray-700 md:hidden dark:text-white">
 									Created At
 								</span>
 								{formateDate(item.createdAt)}
 							</td>
-							<td className="flex items-center justify-between border-b border-gray-200 p-2 text-right md:table-cell md:p-4 md:text-left">
+							<td className="flex items-center justify-between border-b border-slate-200 p-2 text-right text-sm md:table-cell md:border-0 md:p-4 md:text-left dark:border-gray-700">
 								<span className="mr-4 font-semibold text-gray-700 md:hidden dark:text-white">
 									Actions
 								</span>
@@ -152,7 +149,7 @@ export const UserTable = ({
 												onEditItem(item._id);
 											}}
 											aria-label={`Edit ${item.name}`}
-											className="inline-flex items-center gap-1 rounded-full bg-blue-100 px-3 py-1.5 text-sm font-medium text-blue-800 transition hover:bg-blue-200 dark:bg-blue-900/30 dark:text-blue-400 dark:hover:bg-blue-900/50"
+											className="inline-flex items-center gap-1 rounded-xl bg-blue-50 px-3 py-2 text-sm font-bold text-blue-700 transition hover:bg-blue-100 dark:bg-blue-900/30 dark:text-blue-400 dark:hover:bg-blue-900/50"
 										>
 											<Pencil aria-hidden="true" className="size-3.5" />
 											<span className="hidden sm:inline">Edit</span>
@@ -165,7 +162,7 @@ export const UserTable = ({
 												event.stopPropagation();
 												handleDeleteRequest(item._id);
 											}}
-											className="inline-flex items-center gap-1 rounded-full bg-red-100 px-3 py-1.5 text-sm font-medium text-red-800 transition hover:bg-red-200 dark:bg-red-900/30 dark:text-red-400 dark:hover:bg-red-900/50"
+											className="inline-flex items-center gap-1 rounded-xl bg-red-50 px-3 py-2 text-sm font-bold text-red-700 transition hover:bg-red-100 dark:bg-red-900/30 dark:text-red-400 dark:hover:bg-red-900/50"
 										>
 											<Trash2 className="size-3.5" />
 											<span className="hidden sm:inline">Delete</span>
