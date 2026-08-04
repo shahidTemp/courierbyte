@@ -3,7 +3,6 @@ import { createServerFn } from "@tanstack/react-start";
 import { z } from "zod";
 import { requireRole } from "@/server/middleware";
 import { PackageModel } from "@/server/models/package.model";
-import { useAppSession } from "@/utils/session";
 
 const createPackageSchema = z.object({
 	name: z.string().trim().min(1).max(100),
