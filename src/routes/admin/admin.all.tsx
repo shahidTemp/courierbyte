@@ -126,15 +126,9 @@ function AdminsPage() {
 			<div className="mx-auto max-w-7xl">
 				<div className="mb-7 flex flex-col gap-4 lg:flex-row lg:items-end lg:justify-between">
 					<div>
-						<p className="mb-1 text-xs font-bold uppercase tracking-[0.18em] text-secondary/60">
-							Access control
-						</p>
 						<h1 className="text-3xl font-extrabold tracking-tight text-secondary-dark">
-							Administrators
+							All Admins
 						</h1>
-						<p className="mt-1 text-sm text-slate-500">
-							Create and maintain the people who can operate the dashboard.
-						</p>
 					</div>
 					<div className="flex w-full flex-col gap-3 sm:flex-row lg:w-auto">
 						<div className="relative min-w-0 flex-1 sm:w-64">
