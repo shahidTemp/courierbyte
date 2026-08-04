@@ -67,7 +67,7 @@ function AddPackage() {
 		) {
 			setMessage({
 				type: "error",
-				text: "সর্বোচ্চ ৫০টি ফিচার দিন, প্রতিটি ২০০ অক্ষরের মধ্যে।",
+				text: "Add up to 50 features, with no more than 200 characters per feature.",
 			});
 			return;
 		}
@@ -89,14 +89,14 @@ function AddPackage() {
 				},
 			});
 			setForm(emptyForm);
-			setMessage({ type: "success", text: "প্যাকেজ সফলভাবে যোগ হয়েছে।" });
+			setMessage({ type: "success", text: "Package added successfully." });
 		} catch (error) {
 			setMessage({
 				type: "error",
 				text:
 					error instanceof Error
 						? error.message
-						: "প্যাকেজ যোগ করা যায়নি। পরে আবার চেষ্টা করুন।",
+						: "The package could not be added. Please try again.",
 			});
 		} finally {
 			setIsSubmitting(false);
@@ -104,20 +104,20 @@ function AddPackage() {
 	};
 
 	return (
-		<main className="min-h-screen px-4 py-8 sm:px-6 lg:px-10 lg:py-12">
+		<div className="min-h-screen px-4 py-8 sm:px-6 lg:px-10 lg:py-12">
 			<div className="mx-auto max-w-2xl">
 				<h1 className="text-3xl font-extrabold tracking-tight text-secondary-dark">
-					নতুন প্যাকেজ যোগ করুন
+					Add New Package
 				</h1>
 				<p className="mt-2 text-sm text-slate-500">
-					প্যাকেজের তথ্য পূরণ করে সাবমিট করুন।
+					Enter the package details and submit the form.
 				</p>
 
 				<form
 					onSubmit={handleSubmit}
 					className="mt-8 space-y-5 rounded-2xl border border-secondary/10 bg-white p-6 shadow-xl shadow-secondary/10 sm:p-8"
 				>
-					<Field label="প্যাকেজের নাম" htmlFor="name">
+					<Field label="Package Name" htmlFor="name">
 						<input
 							id="name"
 							name="name"
@@ -125,93 +125,91 @@ function AddPackage() {
 							value={form.name}
 							onChange={handleChange}
 							className={inputClass}
-							placeholder="যেমন: গ্রো"
+							placeholder="e.g. Grow"
 							required
 							maxLength={100}
 						/>
 					</Field>
 
-					<Field label="বিবরণ" htmlFor="description">
+					<Field label="Description" htmlFor="description">
 						<textarea
 							id="description"
 							name="description"
 							value={form.description}
 							onChange={handleChange}
 							className={`${inputClass} min-h-28 resize-y`}
-							placeholder="প্যাকেজের সংক্ষিপ্ত বিবরণ লিখুন।"
+							placeholder="Enter a short description of the package."
 							required
 							maxLength={2000}
 						/>
 					</Field>
 
 					<div className="grid gap-5 sm:grid-cols-2">
-						<Field label="মাসিক মূল্য" htmlFor="price">
+						<Field label="Monthly Price" htmlFor="price">
 							<input
 								id="price"
 								name="price"
-								type="number"
+								type="text"
 								value={form.price}
+								inputMode="numeric"
 								onChange={handleChange}
 								className={inputClass}
 								placeholder="0"
-								min="0"
 								required
 							/>
 						</Field>
 
-						<Field label="বার্ষিক মূল্য" htmlFor="yearly_price">
+						<Field label="Yearly Price" htmlFor="yearly_price">
 							<input
 								id="yearly_price"
 								name="yearly_price"
-								type="number"
+								type="text"
 								value={form.yearly_price}
+								inputMode="numeric"
 								onChange={handleChange}
 								className={inputClass}
 								placeholder="0"
-								min="0"
 								required
 							/>
 						</Field>
 
-						<Field label="মেয়াদ (দিন)" htmlFor="duration_in_days">
+						<Field label="Duration (Days)" htmlFor="duration_in_days">
 							<input
 								id="duration_in_days"
 								name="duration_in_days"
-								type="number"
+								type="text"
 								value={form.duration_in_days}
+								inputMode="numeric"
 								onChange={handleChange}
 								className={inputClass}
 								placeholder="30"
-								min="1"
-								step="1"
 								required
 							/>
 						</Field>
 
-						<Field label="API কল লিমিট" htmlFor="api_call_limit">
+						<Field label="API Call Limit" htmlFor="api_call_limit">
 							<input
 								id="api_call_limit"
 								name="api_call_limit"
-								type="number"
+								type="text"
 								value={form.api_call_limit}
+								inputMode="numeric"
 								onChange={handleChange}
 								className={inputClass}
 								placeholder="500"
-								min="0"
-								step="1"
 								required
 							/>
 						</Field>
 					</div>
 
-					<Field label="ফিচার" htmlFor="features">
+					<Field label="Features" htmlFor="features">
 						<textarea
 							id="features"
 							name="features"
 							value={form.features}
 							onChange={handleChange}
 							className={`${inputClass} min-h-28 resize-y`}
-							placeholder="প্রতি লাইনে একটি ফিচার লিখুন"
+							placeholder="Enter one feature per line."
 						/>
 					</Field>
 
@@ -223,7 +221,7 @@ function AddPackage() {
 							onChange={handleChange}
 							className="h-4 w-4 accent-secondary"
 						/>
-						প্যাকেজটি সক্রিয় রাখুন
+						Keep package active
 					</label>
 
 					{message.text ? (
@@ -245,18 +243,18 @@ function AddPackage() {
 							onClick={handleReset}
 							className="w-full rounded-xl border border-secondary/20 px-4 py-3 font-bold text-secondary transition hover:bg-secondary/10 focus:outline-none focus:ring-4 focus:ring-secondary/25 sm:w-1/3"
 						>
-							রিসেট করুন
+							Reset
 						</button>
 						<button
 							type="submit"
 							disabled={isSubmitting}
 							className="w-full rounded-xl bg-secondary px-4 py-3 font-bold text-white shadow-lg shadow-secondary/20 transition hover:bg-secondary-dark focus:outline-none focus:ring-4 focus:ring-secondary/25 disabled:cursor-not-allowed disabled:opacity-60 sm:flex-1"
 						>
-							{isSubmitting ? "যোগ হচ্ছে..." : "প্যাকেজ যোগ করুন"}
+							{isSubmitting ? "Adding..." : "Add Package"}
 						</button>
 					</div>
 				</form>
 			</div>
-		</main>
+		</div>
 	);
 }
