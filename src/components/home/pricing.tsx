@@ -2,6 +2,7 @@
 import { queryOptions, useQuery } from "@tanstack/react-query";
 import { Link } from "@tanstack/react-router";
 import { ArrowRight, Check, LoaderCircle } from "lucide-react";
+import { useState } from "react";
 import { getActivePackages } from "@/server/functions/package.fn";
 
 export const packagesQuery = queryOptions({
@@ -14,6 +15,9 @@ const formatPrice = (price: number) =>
 
 export default function Pricing() {
 	const { data: packages = [], isLoading, isError } = useQuery(packagesQuery);
+	const [billingCycle, setBillingCycle] = useState<"monthly" | "yearly">(
+		"monthly",
+	);
 
 	return (
 		<section id="pricing" className="section-pad bg-secondary/5">
@@ -22,6 +26,27 @@ export default function Pricing() {
 					<h2 className="mt-3 text-3xl font-extrabold tracking-tight text-slate-900 sm:text-4xl">
 						আপনার প্রয়োজন অনুযায়ী প্যাকেজ বেছে নিন
 					</h2>
+				</div>
+				<div className="mt-6 flex justify-center">
+					<fieldset className="inline-flex rounded-xl border border-secondary/20 bg-white p-1 shadow-sm">
+						<legend className="sr-only">Choose billing cycle</legend>
+						<button
+							type="button"
+							aria-pressed={billingCycle === "monthly"}
+							onClick={() => setBillingCycle("monthly")}
+							className={`rounded-lg px-5 py-2 text-sm font-bold transition-all ${billingCycle === "monthly" ? "bg-secondary text-white shadow-sm" : "text-slate-500 hover:bg-secondary/10 hover:text-secondary"}`}
+						>
+							মাসিক
+						</button>
+						<button
+							type="button"
+							aria-pressed={billingCycle === "yearly"}
+							onClick={() => setBillingCycle("yearly")}
+							className={`rounded-lg px-5 py-2 text-sm font-bold transition-all ${billingCycle === "yearly" ? "bg-secondary text-white shadow-sm" : "text-slate-500 hover:bg-secondary/10 hover:text-secondary"}`}
+						>
+							বার্ষিক
+						</button>
+					</fieldset>
 				</div>
 
 				{isLoading ? (
@@ -52,6 +77,9 @@ export default function Pricing() {
 				) : (
 					<div className="mx-auto mt-12 grid max-w-6xl gap-5 lg:grid-cols-3">
 						{packages.map((plan) => {
+							const selectedPrice =
+								billingCycle === "monthly" ? plan.price : plan.yearly_price;
+
 							return (
 								<div
 									key={plan._id}
@@ -62,7 +90,7 @@ export default function Pricing() {
 									</h3>
 									<div className="mt-4">
 										<span className="text-4xl font-extrabold tracking-tight text-slate-900">
-											{formatPrice(plan.price)}
+											{formatPrice(selectedPrice)}
 										</span>
 									</div>
 									<p className="mt-2 text-sm text-slate-500">
@@ -85,7 +113,7 @@ export default function Pricing() {
 										to="/login"
 										className="mt-8 flex items-center justify-center gap-2 rounded-xl border-2 border-secondary px-5 py-3.5 text-sm font-bold text-secondary transition-all hover:bg-secondary/10"
 									>
-										{plan.price === 0 ? "ফ্রিতে শুরু করুন" : "শুরু করুন"}{" "}
+										{selectedPrice === 0 ? "ফ্রিতে শুরু করুন" : "শুরু করুন"}{" "}
 										<ArrowRight className="h-4 w-4" />
 									</Link>
 								</div>
