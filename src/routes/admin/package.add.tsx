@@ -131,15 +131,11 @@ function AddPackage() {
 	};
 
 	return (
-		<div className="min-h-screen px-4 py-8 sm:px-6 lg:px-10 lg:py-12">
+		<div className="min-h-screen px-4 py-8">
 			<div className="mx-auto max-w-2xl">
 				<h1 className="text-3xl font-extrabold tracking-tight text-secondary-dark">
 					Add New Package
 				</h1>
-				<p className="mt-2 text-sm text-slate-500">
-					Enter the package details and submit the form.
-				</p>
-
 				<form
 					onSubmit={handleSubmit}
 					className="mt-8 space-y-5 rounded-2xl border border-secondary/10 bg-white p-6 shadow-xl shadow-secondary/10 sm:p-8"
