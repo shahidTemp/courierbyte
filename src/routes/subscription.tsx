@@ -16,7 +16,7 @@ function SubscriptionPage() {
 	return <SubscriptionCard />;
 }
 
-export default function SubscriptionCard({
+function SubscriptionCard({
 	packageName = "Professional",
 	packageAmount = "৬০০",
 	bkashNumber = "01911970156",
