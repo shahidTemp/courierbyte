@@ -24,14 +24,8 @@ const MAIN_NAV = [
 	{ label: "Admins", to: "/admin/admin/all", icon: UserRound },
 	{ label: "Packages", to: "/admin/package/all", icon: PackageSearch },
 	{ label: "Fraud Checker", to: "/admin/fraud-checker", icon: ShieldCheck },
-	{ label: "Subscription Plans", to: "/admin/subscription-plans", icon: Gem },
 	{ label: "Billing", to: "/admin/billing", icon: Receipt },
 	{ label: "Developer API", to: "/admin/developer-api", icon: Code2 },
-];
-
-const ACCOUNT_NAV = [
-	{ label: "Profile", to: "/admin/profile", icon: UserRound },
-	{ label: "Feedback", to: "/admin/feedback", icon: MessageSquare },
 ];
 
 const navLinkClasses =
@@ -96,15 +90,6 @@ function SidebarContent({ onNavigate }) {
 					<p className={sectionLabel}>Main</p>
 					<div className="space-y-1">
 						{MAIN_NAV.map((item) => (
-							<NavItemLink key={item.to} item={item} onNavigate={onNavigate} />
-						))}
-					</div>
-				</div>
-
-				<div>
-					<p className={sectionLabel}>Account</p>
-					<div className="space-y-1">
-						{ACCOUNT_NAV.map((item) => (
 							<NavItemLink key={item.to} item={item} onNavigate={onNavigate} />
 						))}
 					</div>

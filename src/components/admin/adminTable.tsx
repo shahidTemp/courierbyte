@@ -99,7 +99,7 @@ export default function AdminTable({
 			await onDeleteItem(deleteConfirm);
 			setDeleteConfirm(null);
 		} catch {
-			setDeleteError("Failed to delete administrator. Please try again.");
+			setDeleteError("Failed to delete admin. Please try again.");
 		} finally {
 			setIsDeleting(false);
 		}
@@ -110,12 +110,12 @@ export default function AdminTable({
 			<div className="flex min-h-[280px] flex-col items-center justify-center rounded-2xl border border-dashed border-secondary/20 bg-white px-6 text-center">
 				<ShieldCheck className="mb-4 size-12 text-secondary/35" />
 				<h2 className="text-xl font-extrabold text-secondary-dark">
-					No administrators found
+					No admins found
 				</h2>
 				<p className="mt-1 text-sm text-slate-500">
 					{searchTerm
 						? "Try a different search term."
-						: "Create your first administrator to get started."}
+						: "Create your first admin to get started."}
 				</p>
 			</div>
 		);
@@ -136,15 +136,8 @@ export default function AdminTable({
 							</span>
 							<StatusBadge isActive={admin.isActive} />
 						</div>
-						<MobileField label="Administrator">
-							<div className="flex items-center gap-3">
-								<span className="flex size-9 items-center justify-center rounded-xl bg-emerald-100 text-sm font-extrabold text-secondary">
-									{String(admin.name ?? "A")
-										.charAt(0)
-										.toUpperCase()}
-								</span>
-								<span className="font-bold">{admin.name}</span>
-							</div>
+						<MobileField label="admin">
+							<span className="font-bold">{admin.name}</span>
 						</MobileField>
 						<MobileField label="Number">{admin.number}</MobileField>
 						<MobileField label="Created">
@@ -166,21 +159,16 @@ export default function AdminTable({
 				<table className="w-full border-collapse">
 					<thead>
 						<tr className="bg-secondary text-left text-sm text-white">
-							{[
-								"Sl.",
-								"Administrator",
-								"Number",
-								"Status",
-								"Created",
-								"Action",
-							].map((heading, index) => (
-								<th
-									className={`p-5 font-bold ${index === 0 ? "rounded-tl-2xl" : ""} ${index === 5 ? "rounded-tr-2xl" : ""}`}
-									key={heading}
-								>
-									{heading}
-								</th>
-							))}
+							{["Sl.", "admin", "Number", "Status", "Created", "Action"].map(
+								(heading, index) => (
+									<th
+										className={`p-5 font-bold ${index === 0 ? "rounded-tl-2xl" : ""} ${index === 5 ? "rounded-tr-2xl" : ""}`}
+										key={heading}
+									>
+										{heading}
+									</th>
+								),
+							)}
 						</tr>
 					</thead>
 					<tbody>
@@ -193,16 +181,9 @@ export default function AdminTable({
 									{index + 1}
 								</td>
 								<td className="border-b border-slate-200 p-5 dark:border-gray-700">
-									<div className="flex items-center gap-3">
-										<span className="flex size-9 items-center justify-center rounded-xl bg-emerald-100 text-sm font-extrabold text-secondary">
-											{String(admin.name ?? "A")
-												.charAt(0)
-												.toUpperCase()}
-										</span>
-										<span className="font-bold text-secondary-dark dark:text-white">
-											{admin.name}
-										</span>
-									</div>
+									<span className="font-bold text-secondary-dark dark:text-white">
+										{admin.name}
+									</span>
 								</td>
 								<td className="border-b border-slate-200 p-5 text-sm text-slate-600 dark:border-gray-700 dark:text-slate-300">
 									{admin.number}
@@ -237,7 +218,7 @@ export default function AdminTable({
 
 			{deleteConfirm && (
 				<DeleteModal
-					itemName="administrator"
+					itemName="Admin"
 					onCancel={() => setDeleteConfirm(null)}
 					onConfirm={handleConfirmDelete}
 					isConfirming={isDeleting}
