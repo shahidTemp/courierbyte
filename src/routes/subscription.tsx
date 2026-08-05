@@ -1,4 +1,20 @@
-import React, { useState } from "react";
+import { createFileRoute, Navigate } from "@tanstack/react-router";
+import { useState } from "react";
+import { Loader } from "@/components/common/loader";
+import { useAuth } from "@/context/userContext";
+
+export const Route = createFileRoute("/subscription")({
+	component: SubscriptionPage,
+});
+
+function SubscriptionPage() {
+	const { isLoading, isAuthenticated } = useAuth();
+
+	if (isLoading) return <Loader />;
+	if (!isAuthenticated) return <Navigate to="/login" />;
+
+	return <SubscriptionCard />;
+}
 
 export default function SubscriptionCard({
 	packageName = "Professional",
@@ -84,6 +100,7 @@ export default function SubscriptionCard({
 						className="inline-flex items-center gap-2 rounded-full bg-green-500 px-5 py-2.5 text-sm font-bold text-white transition hover:bg-green-600"
 					>
 						<svg
+							aria-hidden="true"
 							xmlns="http://www.w3.org/2000/svg"
 							width="15"
 							height="15"
@@ -188,7 +205,10 @@ export default function SubscriptionCard({
 						<input type="hidden" name="modal" value="false" />
 
 						<div>
-							<label className="mb-1.5 block text-sm font-semibold text-slate-700">
+							<label
+								htmlFor="transactionId"
+								className="mb-1.5 block text-sm font-semibold text-slate-700"
+							>
 								Transaction ID
 							</label>
 							<input
@@ -205,7 +225,10 @@ export default function SubscriptionCard({
 
 						<div className="grid grid-cols-1 gap-3 sm:grid-cols-2">
 							<div>
-								<label className="mb-1.5 block text-sm font-semibold text-slate-700">
+								<label
+									htmlFor="amount"
+									className="mb-1.5 block text-sm font-semibold text-slate-700"
+								>
 									Amount (৳)
 								</label>
 								<input
@@ -220,7 +243,10 @@ export default function SubscriptionCard({
 								/>
 							</div>
 							<div>
-								<label className="mb-1.5 block text-sm font-semibold text-slate-700">
+								<label
+									htmlFor="senderNumber"
+									className="mb-1.5 block text-sm font-semibold text-slate-700"
+								>
 									Sender Number
 								</label>
 								<input

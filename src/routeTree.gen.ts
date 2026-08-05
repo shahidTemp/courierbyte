@@ -12,6 +12,7 @@ import { Route as rootRouteImport } from './routes/__root'
 import { Route as WebsiteRouteRouteImport } from './routes/_website/route'
 import { Route as AdminRouteRouteImport } from './routes/admin/route'
 import { Route as PanelRouteRouteImport } from './routes/panel/route'
+import { Route as SubscriptionRouteImport } from './routes/subscription'
 import { Route as WebsiteIndexRouteImport } from './routes/_website/index'
 import { Route as WebsiteLoginRouteImport } from './routes/_website/login'
 import { Route as AdminIndexRouteImport } from './routes/admin/index'
@@ -38,6 +39,11 @@ const AdminRouteRoute = AdminRouteRouteImport.update({
 const PanelRouteRoute = PanelRouteRouteImport.update({
   id: '/panel',
   path: '/panel',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const SubscriptionRoute = SubscriptionRouteImport.update({
+  id: '/subscription',
+  path: '/subscription',
   getParentRoute: () => rootRouteImport,
 } as any)
 const WebsiteIndexRoute = WebsiteIndexRouteImport.update({
@@ -110,6 +116,7 @@ export interface FileRoutesByFullPath {
   '/': typeof WebsiteIndexRoute
   '/admin': typeof AdminRouteRouteWithChildren
   '/panel': typeof PanelRouteRouteWithChildren
+  '/subscription': typeof SubscriptionRoute
   '/login': typeof WebsiteLoginRoute
   '/panel/billing': typeof PanelBillingRoute
   '/panel/developer-api': typeof PanelDeveloperApiRoute
@@ -124,6 +131,7 @@ export interface FileRoutesByFullPath {
   '/admin/user/all': typeof AdminUserAllRoute
 }
 export interface FileRoutesByTo {
+  '/subscription': typeof SubscriptionRoute
   '/login': typeof WebsiteLoginRoute
   '/panel/billing': typeof PanelBillingRoute
   '/panel/developer-api': typeof PanelDeveloperApiRoute
@@ -143,6 +151,7 @@ export interface FileRoutesById {
   '/_website': typeof WebsiteRouteRouteWithChildren
   '/admin': typeof AdminRouteRouteWithChildren
   '/panel': typeof PanelRouteRouteWithChildren
+  '/subscription': typeof SubscriptionRoute
   '/_website/login': typeof WebsiteLoginRoute
   '/panel/billing': typeof PanelBillingRoute
   '/panel/developer-api': typeof PanelDeveloperApiRoute
@@ -163,6 +172,7 @@ export interface FileRouteTypes {
     | '/'
     | '/admin'
     | '/panel'
+    | '/subscription'
     | '/login'
     | '/panel/billing'
     | '/panel/developer-api'
@@ -177,6 +187,7 @@ export interface FileRouteTypes {
     | '/admin/user/all'
   fileRoutesByTo: FileRoutesByTo
   to:
+    | '/subscription'
     | '/login'
     | '/panel/billing'
     | '/panel/developer-api'
@@ -195,6 +206,7 @@ export interface FileRouteTypes {
     | '/_website'
     | '/admin'
     | '/panel'
+    | '/subscription'
     | '/_website/login'
     | '/panel/billing'
     | '/panel/developer-api'
@@ -214,6 +226,7 @@ export interface RootRouteChildren {
   WebsiteRouteRoute: typeof WebsiteRouteRouteWithChildren
   AdminRouteRoute: typeof AdminRouteRouteWithChildren
   PanelRouteRoute: typeof PanelRouteRouteWithChildren
+  SubscriptionRoute: typeof SubscriptionRoute
 }
 
 declare module '@tanstack/react-router' {
@@ -237,6 +250,13 @@ declare module '@tanstack/react-router' {
       path: '/panel'
       fullPath: '/panel'
       preLoaderRoute: typeof PanelRouteRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/subscription': {
+      id: '/subscription'
+      path: '/subscription'
+      fullPath: '/subscription'
+      preLoaderRoute: typeof SubscriptionRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/_website/': {
@@ -393,6 +413,7 @@ const rootRouteChildren: RootRouteChildren = {
   WebsiteRouteRoute: WebsiteRouteRouteWithChildren,
   AdminRouteRoute: AdminRouteRouteWithChildren,
   PanelRouteRoute: PanelRouteRouteWithChildren,
+  SubscriptionRoute: SubscriptionRoute,
 }
 export const routeTree = rootRouteImport
   ._addFileChildren(rootRouteChildren)

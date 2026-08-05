@@ -1,8 +1,9 @@
 // @ts-nocheck
 import { queryOptions, useQuery } from "@tanstack/react-query";
-import { Link } from "@tanstack/react-router";
+import { useNavigate } from "@tanstack/react-router";
 import { ArrowRight, Check, LoaderCircle } from "lucide-react";
 import { useState } from "react";
+import { useAuth } from "@/context/userContext";
 import { getActivePackages } from "@/server/functions/package.fn";
 
 export const packagesQuery = queryOptions({
@@ -14,10 +15,18 @@ const formatPrice = (price: number) =>
 	`৳${Number(price).toLocaleString("bn-BD")}`;
 
 export default function Pricing() {
+	const navigate = useNavigate();
+	const { isAuthenticated, isLoading: isAuthLoading } = useAuth();
 	const { data: packages = [], isLoading, isError } = useQuery(packagesQuery);
 	const [billingCycle, setBillingCycle] = useState<"monthly" | "yearly">(
 		"monthly",
 	);
+
+	const handleStart = () => {
+		if (isAuthLoading) return;
+
+		void navigate({ to: isAuthenticated ? "/subscription" : "/login" });
+	};
 
 	return (
 		<section id="pricing" className="section-pad bg-secondary/5">
@@ -109,13 +118,15 @@ export default function Pricing() {
 											</li>
 										))}
 									</ul>
-									<Link
-										to="/login"
-										className="mt-8 flex items-center justify-center gap-2 rounded-xl border-2 border-secondary px-5 py-3.5 text-sm font-bold text-secondary transition-all hover:bg-secondary/10"
+									<button
+										type="button"
+										onClick={handleStart}
+										disabled={isAuthLoading}
+										className="mt-8 flex items-center justify-center gap-2 rounded-xl border-2 border-secondary px-5 py-3.5 text-sm font-bold text-secondary transition-all hover:bg-secondary/10 disabled:cursor-wait disabled:opacity-60"
 									>
 										{selectedPrice === 0 ? "ফ্রিতে শুরু করুন" : "শুরু করুন"}{" "}
 										<ArrowRight className="h-4 w-4" />
-									</Link>
+									</button>
 								</div>
 							);
 						})}
