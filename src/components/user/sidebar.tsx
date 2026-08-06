@@ -17,15 +17,12 @@ import { useEffect, useRef, useState } from "react";
 import { useAuth } from "@/context/userContext";
 
 // These `to` paths map to the panel routes defined under src/routes/panel/.
-const MAIN_NAV = [
+const NAV_ITEMS = [
 	{ label: "Dashboard", to: "/panel", icon: LayoutDashboard },
 	{ label: "Fraud Checker", to: "/panel/fraud-checker", icon: ShieldCheck },
 	{ label: "Subscription Plans", to: "/panel/subscription-plans", icon: Gem },
 	{ label: "Billing", to: "/panel/billing", icon: Receipt },
 	{ label: "Developer API", to: "/panel/developer-api", icon: Code2 },
-];
-
-const ACCOUNT_NAV = [
 	{ label: "Profile", to: "/panel/profile", icon: UserRound },
 	{ label: "Feedback", to: "/panel/feedback", icon: MessageSquare },
 ];
@@ -50,9 +47,6 @@ function NavItemLink({ item, onNavigate }) {
 		</Link>
 	);
 }
-
-const sectionLabel =
-	"mb-2 px-3.5 text-[11px] font-bold uppercase tracking-[0.14em] text-secondary/50";
 
 function Brand({ onClick }) {
 	return (
@@ -88,22 +82,10 @@ function SidebarContent({ onNavigate }) {
 				aria-label="Main navigation"
 				className="flex-1 space-y-6 overflow-y-auto px-3"
 			>
-				<div>
-					<p className={sectionLabel}>Main</p>
-					<div className="space-y-1">
-						{MAIN_NAV.map((item) => (
-							<NavItemLink key={item.to} item={item} onNavigate={onNavigate} />
-						))}
-					</div>
-				</div>
-
-				<div>
-					<p className={sectionLabel}>Account</p>
-					<div className="space-y-1">
-						{ACCOUNT_NAV.map((item) => (
-							<NavItemLink key={item.to} item={item} onNavigate={onNavigate} />
-						))}
-					</div>
+				<div className="space-y-1">
+					{NAV_ITEMS.map((item) => (
+						<NavItemLink key={item.to} item={item} onNavigate={onNavigate} />
+					))}
 				</div>
 			</nav>
 

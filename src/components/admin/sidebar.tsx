@@ -2,6 +2,7 @@
 import { Link, useNavigate } from "@tanstack/react-router";
 import {
 	Code2,
+	CreditCard,
 	Gem,
 	LayoutDashboard,
 	LogOut,
@@ -23,6 +24,7 @@ const MAIN_NAV = [
 	{ label: "Users", to: "/admin/user/all", icon: Users },
 	{ label: "Admins", to: "/admin/admin/all", icon: UserRound },
 	{ label: "Packages", to: "/admin/package/all", icon: PackageSearch },
+	{ label: "Subscriptions", to: "/admin/subscription/all", icon: CreditCard },
 	{ label: "Fraud Checker", to: "/admin/fraud-checker", icon: ShieldCheck },
 	{ label: "Billing", to: "/admin/billing", icon: Receipt },
 	{ label: "Developer API", to: "/admin/developer-api", icon: Code2 },

@@ -1,35 +1,71 @@
-import { createFileRoute, Navigate } from "@tanstack/react-router";
+import { useQuery } from "@tanstack/react-query";
+import { createFileRoute, Navigate, useNavigate } from "@tanstack/react-router";
+import { useServerFn } from "@tanstack/react-start";
 import { useState } from "react";
+import { z } from "zod";
 import { Loader } from "@/components/common/loader";
+import { packagesQuery } from "@/components/plans/packageGrid";
 import { useAuth } from "@/context/userContext";
+import { createSubscription } from "@/server/functions/subscription.fn";
+
+const subscriptionSearchSchema = z.object({
+	plan: z.string().optional(),
+	cycle: z.enum(["monthly", "yearly"]).optional(),
+});
 
 export const Route = createFileRoute("/subscription")({
+	validateSearch: subscriptionSearchSchema,
 	component: SubscriptionPage,
 });
 
 function SubscriptionPage() {
 	const { isLoading, isAuthenticated } = useAuth();
+	const { plan: planId, cycle = "monthly" } = Route.useSearch();
+	const { data: packages = [], isLoading: isPackagesLoading } =
+		useQuery(packagesQuery);
 
-	if (isLoading) return <Loader />;
+	if (isLoading || isPackagesLoading) return <Loader />;
 	if (!isAuthenticated) return <Navigate to="/login" />;
 
-	return <SubscriptionCard />;
+	const selected = packages.find((p) => p._id === planId);
+	if (!planId || !selected) return <Navigate to="/panel/subscription-plans" />;
+
+	const formatAmount = (n: number) => Number(n).toLocaleString("bn-BD");
+	const amount = cycle === "yearly" ? selected.yearly_price : selected.price;
+
+	return (
+		<div className="maxw !mt-2">
+			<SubscriptionCard
+				packageName={selected.name}
+				packageAmount={formatAmount(amount)}
+				amount={amount}
+				planId={selected._id}
+				planType={cycle}
+			/>
+		</div>
+	);
 }
 
 function SubscriptionCard({
 	packageName = "Professional",
 	packageAmount = "৬০০",
-	bkashNumber = "01911970156",
-	actionUrl = "https://zachaikori.com/user/subscription-request",
-	csrfToken = "fnDzGMeT5wFaaQAxmHTieyu0MC3T5R4fidfFuMkY",
-	testValue = "eyJpdiI6InJlejBYM2JGMU11eVgwQWhDeWU3WWc9PSIsInZhbHVlIjoid1BaeCtRSDZHVzBYU3cxZFYrclVBZz09IiwibWFjIjoiYWNlNGNkMGY0N2ZjZDQ4NzUzNGM4MDBhMjlmNTgwM2MzMDUzOWM4Mjc3ZDlhZmM0ODMxMjg2MzZiNDE5YTkwNyIsInRhZyI6IiJ9",
+	amount = 600,
+	planId = "",
+	planType = "monthly" as "monthly" | "yearly",
+	bkashNumber = "01891614300",
 }) {
 	const [copied, setCopied] = useState(false);
+	const [isSubmitting, setIsSubmitting] = useState(false);
+	const [message, setMessage] = useState<{
+		type: "success" | "error";
+		text: string;
+	} | null>(null);
 	const [formData, setFormData] = useState({
 		transactionId: "",
-		amount: "",
 		senderNumber: "",
 	});
+	const submitSubscriptionFn = useServerFn(createSubscription);
+	const navigate = useNavigate();
 
 	const handleCopy = () => {
 		navigator.clipboard.writeText(bkashNumber);
@@ -37,9 +73,39 @@ function SubscriptionCard({
 		setTimeout(() => setCopied(false), 2000);
 	};
 
-	const handleChange = (e) => {
+	const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
 		const { name, value } = e.target;
 		setFormData((prev) => ({ ...prev, [name]: value }));
+	};
+
+	const handleSubmit = async (e: React.FormEvent) => {
+		e.preventDefault();
+		setIsSubmitting(true);
+		setMessage(null);
+		try {
+			await submitSubscriptionFn({
+				data: {
+					packageId: planId,
+					planType,
+					transactionId: formData.transactionId.trim(),
+					senderNumber: formData.senderNumber.trim(),
+					amount,
+				},
+			});
+			setMessage({
+				type: "success",
+				text: "সাবস্ক্রিপশন রিকোয়েস্ট জমা হয়েছে। অ্যাডমিন যাচাইয়ের পর এটি সক্রিয় হবে।",
+			});
+			setFormData({ transactionId: "", senderNumber: "" });
+			navigate({ to: "/panel/billing" });
+		} catch (err) {
+			setMessage({
+				type: "error",
+				text: err instanceof Error ? err.message : "কিছু ভুল হয়েছে, আবার চেষ্টা করুন",
+			});
+		} finally {
+			setIsSubmitting(false);
+		}
 	};
 
 	const whatsappUrl = `https://wa.me/+88${bkashNumber}?text=${encodeURIComponent(
@@ -119,7 +185,7 @@ function SubscriptionCard({
 				<section className="md:col-span-3 px-4 py-6 sm:px-7">
 					<div className="mb-4 border-b border-slate-200 pb-4">
 						<span className="mb-2 inline-flex rounded-full border border-pink-600 bg-pink-50 px-3 py-1 text-xs font-bold text-pink-600">
-							<span className="package-name">{packageName}</span>&nbsp;প্যাকেজ
+							<span className="package-name">{packageName}</span>
 						</span>
 						<h2 className="text-xl font-extrabold text-slate-900">
 							bKash এ পেমেন্ট করুন
@@ -186,23 +252,39 @@ function SubscriptionCard({
 
 					<form
 						id="transactionForm"
-						action={actionUrl}
-						method="POST"
+						onSubmit={handleSubmit}
 						className="space-y-3"
 					>
-						<input
-							type="hidden"
-							name="_token"
-							value={csrfToken}
-							autoComplete="off"
-						/>
-						<input
-							type="hidden"
-							name="test_value"
-							id="test_value"
-							value={testValue}
-						/>
-						<input type="hidden" name="modal" value="false" />
+						{message && (
+							<div
+								className={`rounded-xl border px-4 py-3 text-sm font-semibold ${
+									message.type === "success"
+										? "border-green-300 bg-green-50 text-green-700"
+										: "border-red-300 bg-red-50 text-red-700"
+								}`}
+							>
+								{message.text}
+							</div>
+						)}
+
+						<div>
+							<label
+								htmlFor="senderNumber"
+								className="mb-1.5 block text-sm font-semibold text-slate-700"
+							>
+								Sender Number
+							</label>
+							<input
+								type="text"
+								id="senderNumber"
+								name="senderNumber"
+								value={formData.senderNumber}
+								onChange={handleChange}
+								placeholder="01XXXXXXXXX"
+								required
+								className="w-full rounded-xl border border-slate-300 px-4 py-2.5 text-sm outline-none transition focus:border-pink-500 focus:ring-2 focus:ring-pink-100"
+							/>
+						</div>
 
 						<div>
 							<label
@@ -214,7 +296,7 @@ function SubscriptionCard({
 							<input
 								type="text"
 								id="transactionId"
-								name="transaction_id"
+								name="transactionId"
 								value={formData.transactionId}
 								onChange={handleChange}
 								placeholder="যেমন: 8FG3K2H1P9"
@@ -223,50 +305,12 @@ function SubscriptionCard({
 							/>
 						</div>
 
-						<div className="grid grid-cols-1 gap-3 sm:grid-cols-2">
-							<div>
-								<label
-									htmlFor="amount"
-									className="mb-1.5 block text-sm font-semibold text-slate-700"
-								>
-									Amount (৳)
-								</label>
-								<input
-									type="number"
-									id="amount"
-									name="amount"
-									value={formData.amount}
-									onChange={handleChange}
-									placeholder="যেমন: 500"
-									required
-									className="w-full rounded-xl border border-slate-300 px-4 py-2.5 text-sm outline-none transition focus:border-pink-500 focus:ring-2 focus:ring-pink-100"
-								/>
-							</div>
-							<div>
-								<label
-									htmlFor="senderNumber"
-									className="mb-1.5 block text-sm font-semibold text-slate-700"
-								>
-									Sender Number
-								</label>
-								<input
-									type="text"
-									id="senderNumber"
-									name="sender_number"
-									value={formData.senderNumber}
-									onChange={handleChange}
-									placeholder="01XXXXXXXXX"
-									required
-									className="w-full rounded-xl border border-slate-300 px-4 py-2.5 text-sm outline-none transition focus:border-pink-500 focus:ring-2 focus:ring-pink-100"
-								/>
-							</div>
-						</div>
-
 						<button
 							type="submit"
-							className="mt-2 w-full rounded-xl bg-gradient-to-r from-pink-600 to-pink-700 px-4 py-3 text-sm font-bold text-white transition hover:from-pink-700 hover:to-pink-800"
+							disabled={isSubmitting}
+							className="mt-2 w-full rounded-xl bg-gradient-to-r from-pink-600 to-pink-700 px-4 py-3 text-sm font-bold text-white transition hover:from-pink-700 hover:to-pink-800 disabled:cursor-not-allowed disabled:opacity-60"
 						>
-							পেমেন্ট সাবমিট করুন
+							{isSubmitting ? "সাবমিট হচ্ছে..." : "পেমেন্ট সাবমিট করুন"}
 						</button>
 					</form>
 				</section>
