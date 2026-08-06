@@ -51,13 +51,13 @@ function CourierRow({ courier }: { courier: CourierStats }) {
 					/>
 				</div>
 			</td>
-			<td className="px-3 py-3 text-right text-base font-semibold text-slate-700">
+			<td className="px-3 py-3 text-right text-lg font-bold text-slate-700">
 				{courier.total_parcel}
 			</td>
-			<td className="px-3 py-3 text-right text-base font-semibold text-emerald-600">
+			<td className="px-3 py-3 text-right text-lg font-bold text-emerald-600">
 				{courier.success_parcel}
 			</td>
-			<td className="px-3 py-3 text-right text-base font-semibold text-rose-500">
+			<td className="px-3 py-3 text-right text-lg font-bold text-rose-500">
 				{courier.cancelled_parcel}
 			</td>
 			<td className="px-3 py-3">
