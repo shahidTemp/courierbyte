@@ -2,6 +2,7 @@ import crypto from "node:crypto";
 import { z } from "zod";
 import { checkCourier } from "@/server/functions/service.fn";
 import { expireSubscriptions } from "@/server/lib/subscription";
+import { SearchUsage } from "@/server/models/searchUsage.model";
 import { userSubscription } from "@/server/models/subscription.model";
 import { User } from "@/server/models/user.model";
 
@@ -190,5 +191,17 @@ export async function executeFraudCheck(userId: string, phone: unknown) {
 			503,
 		);
 	}
+
+	try {
+		await SearchUsage.create({
+			userId: user._id,
+			subscriptionId: reservedSubscription._id,
+		});
+	} catch (error) {
+		// The quota has already been settled. Keep the successful provider result
+		// successful, but surface the logging failure for server-side monitoring.
+		console.error("Search usage event could not be recorded:", error);
+	}
+
 	return result;
 }
