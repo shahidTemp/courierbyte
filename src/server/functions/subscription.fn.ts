@@ -40,6 +40,7 @@ export const updateSubscriptionStatus = createServerFn({ method: "POST" })
 
 		const subscription = await userSubscription
 			.findByIdAndUpdate(data.id, update, { new: true, runValidators: true })
+			.populate("userId", "name number")
 			.lean();
 
 		if (!subscription) throw new Error("Subscription not found");

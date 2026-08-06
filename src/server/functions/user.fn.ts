@@ -2,6 +2,7 @@ import crypto from "node:crypto";
 import { createServerFn } from "@tanstack/react-start";
 import { z } from "zod";
 import { requireRole } from "@/server/middleware";
+import { userSubscription } from "@/server/models/subscription.model";
 import { User } from "@/server/models/user.model";
 
 export const getUsers = createServerFn({ method: "GET" })
@@ -102,11 +103,15 @@ export const deleteUserById = createServerFn({ method: "POST" })
 	.middleware([requireRole("super_admin")])
 	.validator(deleteUserSchema)
 	.handler(async ({ data }) => {
-		const deletedUser = await User.findByIdAndDelete(data.id);
-
-		if (!deletedUser) {
+		const existingUser = await User.findById(data.id);
+		if (!existingUser) {
 			throw new Error("User not found");
 		}
+
+		// Cascade: remove the user's subscriptions first, so no orphan
+		// documents with a dangling userId are ever left behind.
+		await userSubscription.deleteMany({ userId: data.id });
+		await User.findByIdAndDelete(data.id);
 
 		return { success: true, id: data.id };
 	});

@@ -108,6 +108,9 @@ function AdminAllPage() {
 		queryClient.setQueryData(usersQuery.queryKey, (currentUsers = []) =>
 			currentUsers.filter((currentUser) => currentUser._id !== id),
 		);
+		// The user's subscriptions were deleted on the server too — drop
+		// the stale copy so All Subscriptions can never show them again.
+		queryClient.invalidateQueries({ queryKey: ["subscriptions"] });
 	};
 
 	return (
