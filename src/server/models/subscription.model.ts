@@ -16,7 +16,11 @@ const userSubscriptionSchema = new Schema(
 		},
 		packageSnapshot: {
 			name: { type: String, required: [true, "Package name is required"] },
-			price: { type: Number, required: [true, "Package price is required"], min: 0 },
+			price: {
+				type: Number,
+				required: [true, "Package price is required"],
+				min: 0,
+			},
 			api_call_limit: {
 				type: Number,
 				required: [true, "Package API call limit is required"],
@@ -42,6 +46,17 @@ const userSubscriptionSchema = new Schema(
 			type: Number,
 			default: 0,
 			min: 0,
+		},
+		// Requests reserved in-flight. These count against the package limit
+		// until the provider request succeeds or fails.
+		api_calls_pending: {
+			type: [
+				{
+					id: { type: String, required: true },
+					createdAt: { type: Date, required: true },
+				},
+			],
+			default: [],
 		},
 		end_date: {
 			type: Date,

@@ -1,14 +1,10 @@
 import { createFileRoute } from "@tanstack/react-router";
-import { z } from "zod";
-import { checkCourier } from "@/server/functions/service.fn";
-import { userSubscription } from "@/server/models/subscription.model";
+import {
+	executeFraudCheck,
+	FraudError,
+	phoneSchema,
+} from "@/server/functions/fraud.fn";
 import { User } from "@/server/models/user.model";
-
-const phoneSchema = z.object({
-	phone: z
-		.string()
-		.regex(/^01[3-9]\d{8}$/, "A valid 11-digit phone number is required"),
-});
 
 const json = (body: unknown, status = 200) =>
 	Response.json(body, {
@@ -36,7 +32,7 @@ export const Route = createFileRoute("/api/v1/courier-check")({
 				const user = await User.findOne({
 					apiKey,
 					isActive: true,
-				}).select("+apiKey");
+				}).select("+apiKey _id");
 
 				if (!user) {
 					return json(
@@ -66,49 +62,17 @@ export const Route = createFileRoute("/api/v1/courier-check")({
 					);
 				}
 
-				const activeSubscription = await userSubscription
-					.findOne({
-						userId: user._id,
-						status: "active",
-						end_date: { $gt: new Date() },
-					})
-					.lean();
-
-				if (!activeSubscription) {
-					return json(
-						{ success: false, error: "No active subscription was found" },
-						403,
-					);
-				}
-
-				const reservedSubscription = await userSubscription
-					.findOneAndUpdate(
-						{
-							_id: activeSubscription._id,
-							$expr: {
-								$lt: ["$api_calls_used", "$packageSnapshot.api_call_limit"],
-							},
-						},
-						{ $inc: { api_calls_used: 1 } },
-						{ new: true },
-					)
-					.lean();
-
-				if (!reservedSubscription) {
-					return json(
-						{ success: false, error: "API call limit has been reached" },
-						429,
-					);
-				}
-
 				try {
-					const result = await checkCourier(parsed.data.phone);
-					return json({ success: true, data: result });
-				} catch {
-					await userSubscription.updateOne(
-						{ _id: reservedSubscription._id, api_calls_used: { $gt: 0 } },
-						{ $inc: { api_calls_used: -1 } },
+					const result = await executeFraudCheck(
+						String(user._id),
+						parsed.data.phone,
 					);
+					return json({ success: true, data: result });
+				} catch (error) {
+					if (error instanceof FraudError) {
+						return json({ success: false, error: error.message }, error.status);
+					}
+
 					return json(
 						{
 							success: false,

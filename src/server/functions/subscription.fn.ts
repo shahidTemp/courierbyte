@@ -1,5 +1,6 @@
 import { createServerFn } from "@tanstack/react-start";
 import { z } from "zod";
+import { expireSubscriptions } from "@/server/lib/subscription";
 import { authMiddleware, requireRole } from "@/server/middleware";
 import { PackageModel } from "@/server/models/package.model";
 import { userSubscription } from "@/server/models/subscription.model";
@@ -15,6 +16,7 @@ const createSubscriptionSchema = z.object({
 export const getAllSubscriptions = createServerFn({ method: "GET" })
 	.middleware([requireRole(["admin", "super_admin"])])
 	.handler(async () => {
+		await expireSubscriptions();
 		const subscriptions = await userSubscription
 			.find()
 			.populate("userId", "name number")
@@ -33,35 +35,57 @@ export const updateSubscriptionStatus = createServerFn({ method: "POST" })
 	.middleware([requireRole(["admin", "super_admin"])])
 	.validator(updateStatusSchema)
 	.handler(async ({ data, context }) => {
-		const update = {
+		await expireSubscriptions();
+		const subscription = await userSubscription.findById(data.id).lean();
+		if (!subscription) throw new Error("Subscription not found");
+
+		const isActivating =
+			data.status === "active" && subscription.status !== "active";
+		const update: {
+			status: typeof data.status;
+			verifiedBy?: unknown;
+			end_date?: Date;
+		} = {
 			status: data.status,
-			...(data.status === "active" ? { verifiedBy: context.actor._id } : {}),
 		};
 
-		const subscription = await userSubscription
+		if (isActivating) {
+			const packageItem = await PackageModel.findById(subscription.packageId)
+				.select("duration_in_days")
+				.lean();
+			if (!packageItem) throw new Error("Package not found");
+
+			update.verifiedBy = context.actor._id;
+			update.end_date = new Date(
+				Date.now() + packageItem.duration_in_days * 24 * 60 * 60 * 1000,
+			);
+		}
+
+		const updatedSubscription = await userSubscription
 			.findByIdAndUpdate(data.id, update, { new: true, runValidators: true })
 			.populate("userId", "name number")
 			.lean();
 
-		if (!subscription) throw new Error("Subscription not found");
+		if (!updatedSubscription) throw new Error("Subscription not found");
 
-		if (data.status === "active") {
+		if (isActivating) {
 			await userSubscription.updateMany(
 				{
-					_id: { $ne: subscription._id },
-					userId: subscription.userId,
+					_id: { $ne: updatedSubscription._id },
+					userId: updatedSubscription.userId,
 					status: { $in: ["pending", "active"] },
 				},
 				{ $set: { status: "cancelled" } },
 			);
 		}
 
-		return JSON.parse(JSON.stringify(subscription));
+		return JSON.parse(JSON.stringify(updatedSubscription));
 	});
 
 export const getMySubscriptions = createServerFn({ method: "GET" })
 	.middleware([authMiddleware])
 	.handler(async ({ context }) => {
+		await expireSubscriptions();
 		const subscriptions = await userSubscription
 			.find({ userId: context.actor._id })
 			.sort({ createdAt: -1 })
@@ -98,9 +122,7 @@ export const createSubscription = createServerFn({ method: "POST" })
 		}
 
 		const expectedAmount =
-			data.planType === "yearly"
-				? packageItem.yearly_price
-				: packageItem.price;
+			data.planType === "yearly" ? packageItem.yearly_price : packageItem.price;
 		if (data.amount !== expectedAmount) {
 			throw new Error("পেমেন্টের পরিমাণ প্যাকেজ মূল্যের সাথে মেলে না");
 		}
