@@ -42,12 +42,12 @@ function CourierRow({ courier }: { courier: CourierStats }) {
 	return (
 		<tr className="border-t border-slate-100">
 			<td className="px-3 py-3">
-				<div className="flex min-w-32 items-center">
+				<div className="flex min-w-36 items-center">
 					<img
 						src={courier.logo}
 						alt={courier.name}
 						loading="lazy"
-						className="size-16 shrink-0 rounded-2xl bg-slate-100 object-contain p-2"
+						className="h-16 w-28 shrink-0 rounded-2xl bg-slate-100 object-contain p-2"
 					/>
 				</div>
 			</td>
