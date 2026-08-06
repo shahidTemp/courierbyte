@@ -9,7 +9,7 @@ import {
 import { useAuth } from "@/context/userContext";
 
 // Activation support WhatsApp number (local BD format)
-const WHATSAPP_NUMBER = "01993847746";
+const WHATSAPP_NUMBER = "01891614300";
 // wa.me links use the international format: 880 + number without the leading 0
 const WHATSAPP_LINK = `https://wa.me/880${WHATSAPP_NUMBER.slice(1)}`;
 
@@ -40,13 +40,9 @@ export const AccountInactive = () => {
 					</span>
 
 					<h1 className="mt-6 text-2xl font-extrabold tracking-tight text-secondary-dark">
-						আপনার অ্যাকাউন্ট সক্রিয় হয়নি
+						আপনার অ্যাকাউন্ট এক্টিভ হয়নি। অ্যাকাউন্টটি এক্টিভ করতে নিচের WhatsApp বাটনে ক্লিক
+						করে আমাদের সাথে যোগাযোগ করুন।
 					</h1>
-
-					<p className="mt-3 text-sm leading-relaxed text-secondary/70">
-						আপনার অ্যাকাউন্টটি এখনো অনুমোদন করা হয়নি। অ্যাকাউন্টটি সক্রিয় করতে নিচের
-						WhatsApp বাটনে ক্লিক করে আমাদের সাথে যোগাযোগ করুন।
-					</p>
 
 					<a
 						href={WHATSAPP_LINK}
@@ -55,9 +51,9 @@ export const AccountInactive = () => {
 						className="mt-8 inline-flex w-full items-center justify-center gap-2.5 rounded-full bg-[#25D366] px-6 py-3.5 text-base font-bold text-white shadow-lg shadow-[#25D366]/30 transition-all duration-300 hover:-translate-y-0.5 hover:bg-[#1fb959] hover:shadow-xl hover:shadow-[#25D366]/40 active:scale-95"
 					>
 						<MessageCircle className="h-5 w-5 shrink-0" />
-						<span>WhatsApp এ যোগাযোগ করুন</span>
+						<span>WhatsApp </span>
 						<span className="font-semibold text-white/85">
-							({WHATSAPP_NUMBER})
+							{WHATSAPP_NUMBER}
 						</span>
 					</a>
 

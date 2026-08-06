@@ -12,7 +12,6 @@ import {
 	Gem,
 	Search,
 	ShieldCheck,
-	Sparkles,
 	Zap,
 } from "lucide-react";
 import { Loader } from "@/components/common/loader";
@@ -144,10 +143,6 @@ function RouteComponent() {
 					/>
 					<div className="relative flex flex-col gap-7 lg:flex-row lg:items-end lg:justify-between">
 						<div>
-							<div className="mb-4 inline-flex items-center gap-2 rounded-full border border-white/15 bg-white/10 px-3 py-1.5 text-xs font-bold text-emerald-50 backdrop-blur">
-								<Sparkles className="size-3.5" aria-hidden="true" />
-								আপনার ওভারভিউ
-							</div>
 							<h1 className="text-3xl font-extrabold tracking-tight sm:text-4xl">
 								স্বাগতম, {user?.name ?? "ব্যবহারকারী"}!
 							</h1>
@@ -160,7 +155,7 @@ function RouteComponent() {
 							className="inline-flex items-center justify-center gap-2 rounded-xl bg-white px-5 py-3 text-sm font-extrabold text-secondary-dark shadow-lg shadow-black/10 transition hover:-translate-y-0.5 hover:bg-emerald-50 focus:outline-none focus:ring-4 focus:ring-white/30"
 						>
 							<Search className="size-4" aria-hidden="true" />
-							নতুন সার্চ করুন
+							সার্চ করুন
 							<ArrowRight className="size-4" aria-hidden="true" />
 						</Link>
 					</div>

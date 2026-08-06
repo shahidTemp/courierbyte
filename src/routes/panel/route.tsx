@@ -15,8 +15,7 @@ function UserLayout() {
 	if (isLoading) return <Loader />;
 
 	if (!isAuthenticated) return <Navigate to="/login" />;
-	if (user?.role !== "user") return <Navigate to="/" />;
-	// Inactive users see a contact screen instead of the panel (no sidebar)
+	if (user?.role !== "user") return <Navigate to="/admin" />;
 	if (!user?.isActive) return <AccountInactive />;
 
 	return (

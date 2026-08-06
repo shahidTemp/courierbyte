@@ -47,7 +47,7 @@ function CourierRow({ courier }: { courier: CourierStats }) {
 						src={courier.logo}
 						alt={courier.name}
 						loading="lazy"
-						className="h-16 w-28 shrink-0 rounded-2xl bg-slate-100 object-contain p-2"
+						className="h-16 w-28 shrink-0 object-contain p-2"
 					/>
 				</div>
 			</td>
