@@ -3,11 +3,10 @@ import { Link, useNavigate } from "@tanstack/react-router";
 import {
 	Code2,
 	CreditCard,
-	Gem,
+	KeyRound,
 	LayoutDashboard,
 	LogOut,
 	Menu,
-	MessageSquare,
 	PackageSearch,
 	Receipt,
 	ShieldCheck,
@@ -25,6 +24,7 @@ const MAIN_NAV = [
 	{ label: "Admins", to: "/admin/admin/all", icon: UserRound },
 	{ label: "Packages", to: "/admin/package/all", icon: PackageSearch },
 	{ label: "Subscriptions", to: "/admin/subscription/all", icon: CreditCard },
+	{ label: "Keys", to: "/admin/keys/all", icon: KeyRound },
 	{ label: "Fraud Checker", to: "/admin/fraud-checker", icon: ShieldCheck },
 	{ label: "Billing", to: "/admin/billing", icon: Receipt },
 	{ label: "Developer API", to: "/admin/developer-api", icon: Code2 },
@@ -73,8 +73,13 @@ function Brand({ onClick }) {
 }
 
 function SidebarContent({ onNavigate }) {
-	const { logout } = useAuth();
+	const { user, logout } = useAuth();
 	const navigate = useNavigate();
+	// Keys expose the raw courier API credentials — super admin only.
+	const navItems =
+		user?.role === "super_admin"
+			? MAIN_NAV
+			: MAIN_NAV.filter((item) => item.to !== "/admin/keys/all");
 
 	const handleLogout = async () => {
 		onNavigate?.();
@@ -91,7 +96,7 @@ function SidebarContent({ onNavigate }) {
 				<div>
 					<p className={sectionLabel}>Main</p>
 					<div className="space-y-1">
-						{MAIN_NAV.map((item) => (
+						{navItems.map((item) => (
 							<NavItemLink key={item.to} item={item} onNavigate={onNavigate} />
 						))}
 					</div>

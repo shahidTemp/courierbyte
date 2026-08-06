@@ -24,6 +24,7 @@ import { Route as PanelFraudCheckerRouteImport } from './routes/panel/fraud-chec
 import { Route as PanelProfileRouteImport } from './routes/panel/profile'
 import { Route as PanelSubscriptionPlansRouteImport } from './routes/panel/subscription-plans'
 import { Route as AdminAdminAllRouteImport } from './routes/admin/admin.all'
+import { Route as AdminKeysAllRouteImport } from './routes/admin/keys.all'
 import { Route as AdminPackageAllRouteImport } from './routes/admin/package.all'
 import { Route as AdminSubscriptionAllRouteImport } from './routes/admin/subscription.all'
 import { Route as AdminUserAllRouteImport } from './routes/admin/user.all'
@@ -102,6 +103,11 @@ const AdminAdminAllRoute = AdminAdminAllRouteImport.update({
   path: '/admin/all',
   getParentRoute: () => AdminRouteRoute,
 } as any)
+const AdminKeysAllRoute = AdminKeysAllRouteImport.update({
+  id: '/keys/all',
+  path: '/keys/all',
+  getParentRoute: () => AdminRouteRoute,
+} as any)
 const AdminPackageAllRoute = AdminPackageAllRouteImport.update({
   id: '/package/all',
   path: '/package/all',
@@ -133,6 +139,7 @@ export interface FileRoutesByFullPath {
   '/admin/': typeof AdminIndexRoute
   '/panel/': typeof PanelIndexRoute
   '/admin/admin/all': typeof AdminAdminAllRoute
+  '/admin/keys/all': typeof AdminKeysAllRoute
   '/admin/package/all': typeof AdminPackageAllRoute
   '/admin/subscription/all': typeof AdminSubscriptionAllRoute
   '/admin/user/all': typeof AdminUserAllRoute
@@ -150,6 +157,7 @@ export interface FileRoutesByTo {
   '/admin': typeof AdminIndexRoute
   '/panel': typeof PanelIndexRoute
   '/admin/admin/all': typeof AdminAdminAllRoute
+  '/admin/keys/all': typeof AdminKeysAllRoute
   '/admin/package/all': typeof AdminPackageAllRoute
   '/admin/subscription/all': typeof AdminSubscriptionAllRoute
   '/admin/user/all': typeof AdminUserAllRoute
@@ -171,6 +179,7 @@ export interface FileRoutesById {
   '/admin/': typeof AdminIndexRoute
   '/panel/': typeof PanelIndexRoute
   '/admin/admin/all': typeof AdminAdminAllRoute
+  '/admin/keys/all': typeof AdminKeysAllRoute
   '/admin/package/all': typeof AdminPackageAllRoute
   '/admin/subscription/all': typeof AdminSubscriptionAllRoute
   '/admin/user/all': typeof AdminUserAllRoute
@@ -192,6 +201,7 @@ export interface FileRouteTypes {
     | '/admin/'
     | '/panel/'
     | '/admin/admin/all'
+    | '/admin/keys/all'
     | '/admin/package/all'
     | '/admin/subscription/all'
     | '/admin/user/all'
@@ -209,6 +219,7 @@ export interface FileRouteTypes {
     | '/admin'
     | '/panel'
     | '/admin/admin/all'
+    | '/admin/keys/all'
     | '/admin/package/all'
     | '/admin/subscription/all'
     | '/admin/user/all'
@@ -229,6 +240,7 @@ export interface FileRouteTypes {
     | '/admin/'
     | '/panel/'
     | '/admin/admin/all'
+    | '/admin/keys/all'
     | '/admin/package/all'
     | '/admin/subscription/all'
     | '/admin/user/all'
@@ -348,6 +360,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AdminAdminAllRouteImport
       parentRoute: typeof AdminRouteRoute
     }
+    '/admin/keys/all': {
+      id: '/admin/keys/all'
+      path: '/keys/all'
+      fullPath: '/admin/keys/all'
+      preLoaderRoute: typeof AdminKeysAllRouteImport
+      parentRoute: typeof AdminRouteRoute
+    }
     '/admin/package/all': {
       id: '/admin/package/all'
       path: '/package/all'
@@ -389,6 +408,7 @@ const WebsiteRouteRouteWithChildren = WebsiteRouteRoute._addFileChildren(
 interface AdminRouteRouteChildren {
   AdminIndexRoute: typeof AdminIndexRoute
   AdminAdminAllRoute: typeof AdminAdminAllRoute
+  AdminKeysAllRoute: typeof AdminKeysAllRoute
   AdminPackageAllRoute: typeof AdminPackageAllRoute
   AdminSubscriptionAllRoute: typeof AdminSubscriptionAllRoute
   AdminUserAllRoute: typeof AdminUserAllRoute
@@ -397,6 +417,7 @@ interface AdminRouteRouteChildren {
 const AdminRouteRouteChildren: AdminRouteRouteChildren = {
   AdminIndexRoute: AdminIndexRoute,
   AdminAdminAllRoute: AdminAdminAllRoute,
+  AdminKeysAllRoute: AdminKeysAllRoute,
   AdminPackageAllRoute: AdminPackageAllRoute,
   AdminSubscriptionAllRoute: AdminSubscriptionAllRoute,
   AdminUserAllRoute: AdminUserAllRoute,
