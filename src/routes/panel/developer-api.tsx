@@ -12,7 +12,8 @@ import {
 	ShieldCheck,
 	Terminal,
 } from "lucide-react";
-import { useState } from "react";
+import { useEffect, useState } from "react";
+import { getMyApiKey } from "@/server/functions/auth.fn";
 
 export const Route = createFileRoute("/panel/developer-api")({
 	component: RouteComponent,
@@ -229,8 +230,17 @@ function SectionHeading({ eyebrow, title, children }) {
 function RouteComponent() {
 	const [activeExample, setActiveExample] = useState("curl");
 	const [copiedId, setCopiedId] = useState("");
+	const [apiKey, setApiKey] = useState("");
+	const [apiKeyError, setApiKeyError] = useState(false);
+	const [copiedApiKey, setCopiedApiKey] = useState(false);
 	const selectedExample =
 		examples.find((example) => example.id === activeExample) ?? examples[0];
+
+	useEffect(() => {
+		getMyApiKey()
+			.then(({ apiKey: key }) => setApiKey(key))
+			.catch(() => setApiKeyError(true));
+	}, []);
 
 	const copyCode = async (id, code) => {
 		try {
@@ -239,6 +249,18 @@ function RouteComponent() {
 			window.setTimeout(() => setCopiedId(""), 1800);
 		} catch {
 			setCopiedId("");
+		}
+	};
+
+	const copyApiKey = async () => {
+		if (!apiKey) return;
+
+		try {
+			await navigator.clipboard.writeText(apiKey);
+			setCopiedApiKey(true);
+			window.setTimeout(() => setCopiedApiKey(false), 1800);
+		} catch {
+			setCopiedApiKey(false);
 		}
 	};
 
@@ -346,15 +368,33 @@ function RouteComponent() {
 								<KeyRound className="size-4 text-secondary" /> Authentication
 							</h3>
 							<p className="mt-2 text-sm leading-6 text-slate-500">
-								Replace{" "}
-								<code className="rounded bg-slate-100 px-1.5 py-0.5 font-bold text-slate-700">
-									YOUR_API_KEY
-								</code>{" "}
-								with the API key from your CourierByte account.
+								Use this key in the Authorization header when calling the API.
 							</p>
-							<code className="mt-4 block overflow-x-auto rounded-xl bg-slate-950 px-4 py-3 text-sm text-emerald-300">
-								Authorization: Bearer YOUR_API_KEY
-							</code>
+							<div className="mt-4 flex items-center gap-2 rounded-xl bg-slate-950 p-2">
+								<code className="min-w-0 flex-1 overflow-x-auto px-2 text-sm text-emerald-300">
+									{apiKey ||
+										(apiKeyError
+											? "Unable to load your API key"
+											: "Loading your API key...")}
+								</code>
+								<button
+									type="button"
+									onClick={copyApiKey}
+									disabled={!apiKey}
+									className="inline-flex shrink-0 items-center gap-1.5 rounded-lg border border-white/10 px-2.5 py-1.5 text-xs font-bold text-slate-300 transition hover:border-emerald-400/40 hover:bg-white/5 hover:text-white focus:outline-none focus:ring-2 focus:ring-emerald-400/50 disabled:cursor-not-allowed disabled:opacity-50"
+									aria-label={copiedApiKey ? "API key copied" : "Copy API key"}
+								>
+									{copiedApiKey ? (
+										<Check
+											aria-hidden="true"
+											className="size-3.5 text-emerald-400"
+										/>
+									) : (
+										<Copy aria-hidden="true" className="size-3.5" />
+									)}
+									{copiedApiKey ? "Copied" : "Copy"}
+								</button>
+							</div>
 						</div>
 						<div className="rounded-2xl border border-slate-200 p-5">
 							<h3 className="flex items-center gap-2 font-extrabold text-slate-900">

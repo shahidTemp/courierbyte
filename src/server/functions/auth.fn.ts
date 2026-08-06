@@ -1,6 +1,7 @@
 // @ts-nocheck
 import crypto from "node:crypto";
 import { createServerFn } from "@tanstack/react-start";
+import { setResponseHeader } from "@tanstack/react-start/server";
 import { z } from "zod";
 import { authMiddleware } from "@/server/middleware";
 import { User } from "@/server/models/user.model";
@@ -73,6 +74,18 @@ export const loginUser = createServerFn({ method: "POST" })
 			...safeUser
 		} = user.toObject();
 		return JSON.parse(JSON.stringify(safeUser));
+	});
+
+export const getMyApiKey = createServerFn({ method: "GET" })
+	.middleware([authMiddleware])
+	.handler(async ({ context }) => {
+		setResponseHeader("Cache-Control", "no-store");
+		const user = await User.findById(context.actor._id)
+			.select("+apiKey")
+			.lean();
+		if (!user) throw new Error("User not found");
+
+		return { apiKey: user.apiKey };
 	});
 
 export const logoutUser = createServerFn({ method: "POST" }).handler(
