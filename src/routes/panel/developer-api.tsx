@@ -182,8 +182,8 @@ const errorRows = [
 
 function CodeBlock({ code, language, copied, onCopy }) {
 	return (
-		<div className="overflow-hidden rounded-2xl border border-slate-800 bg-slate-950 shadow-xl shadow-slate-950/10">
-			<div className="flex items-center justify-between border-b border-white/10 bg-slate-900 px-4 py-3">
+		<div className="min-w-0 overflow-hidden rounded-2xl border border-slate-800 bg-slate-950 shadow-xl shadow-slate-950/10">
+			<div className="flex items-center justify-between border-b border-white/10 bg-slate-900 px-3 py-2.5 sm:px-4 sm:py-3">
 				<div className="flex items-center gap-2 text-xs font-bold text-slate-400">
 					<Terminal aria-hidden="true" className="size-4 text-emerald-400" />
 					{language}
@@ -202,7 +202,7 @@ function CodeBlock({ code, language, copied, onCopy }) {
 					{copied ? "Copied" : "Copy"}
 				</button>
 			</div>
-			<pre className="max-h-[34rem] overflow-auto p-5 text-[13px] leading-6 text-slate-200 sm:p-6 sm:text-sm">
+			<pre className="max-h-64 overflow-auto p-4 text-xs leading-6 text-slate-200 sm:max-h-[34rem] sm:p-6 sm:text-sm">
 				<code>{code}</code>
 			</pre>
 		</div>
@@ -215,7 +215,7 @@ function SectionHeading({ eyebrow, title, children }) {
 			<p className="text-xs font-extrabold uppercase tracking-[0.18em] text-secondary">
 				{eyebrow}
 			</p>
-			<h2 className="mt-2 text-2xl font-extrabold tracking-tight text-slate-900 sm:text-3xl">
+			<h2 className="mt-2 text-xl font-extrabold tracking-tight text-slate-900 sm:text-3xl">
 				{title}
 			</h2>
 			{children && (
@@ -235,6 +235,10 @@ function RouteComponent() {
 	const [copiedApiKey, setCopiedApiKey] = useState(false);
 	const selectedExample =
 		examples.find((example) => example.id === activeExample) ?? examples[0];
+	const displayCode = selectedExample.code.replaceAll(
+		"YOUR_API_KEY",
+		apiKey || "YOUR_API_KEY",
+	);
 
 	useEffect(() => {
 		getMyApiKey()
@@ -265,8 +269,8 @@ function RouteComponent() {
 	};
 
 	return (
-		<main className="min-h-screen bg-slate-50/70 p-4 sm:p-6 lg:p-8">
-			<div className="mx-auto max-w-6xl space-y-8">
+		<main className="min-h-screen min-w-0 bg-slate-50/70 p-3 sm:p-6 lg:p-8">
+			<div className="mx-auto max-w-6xl min-w-0 space-y-6 sm:space-y-8">
 				<section className="relative overflow-hidden rounded-3xl border border-secondary/15 bg-white shadow-sm">
 					<div
 						aria-hidden="true"
@@ -276,15 +280,15 @@ function RouteComponent() {
 						aria-hidden="true"
 						className="pointer-events-none absolute -bottom-32 left-1/3 size-72 rounded-full bg-emerald-100/60 blur-3xl"
 					/>
-					<div className="relative p-6 sm:p-8 lg:p-10">
-						<div className="flex flex-wrap items-start justify-between gap-5">
-							<div className="flex items-start gap-4">
-								<span className="flex size-14 shrink-0 items-center justify-center rounded-2xl bg-gradient-to-br from-secondary to-secondary-dark text-white shadow-lg shadow-secondary/25">
-									<Code2 aria-hidden="true" className="size-7" />
+					<div className="relative p-4 sm:p-8 lg:p-10">
+						<div className="flex flex-col gap-4 sm:flex-row sm:items-start sm:justify-between sm:gap-5">
+							<div className="flex min-w-0 items-start gap-3 sm:gap-4">
+								<span className="flex size-12 shrink-0 items-center justify-center rounded-2xl bg-gradient-to-br from-secondary to-secondary-dark text-white shadow-lg shadow-secondary/25 sm:size-14">
+									<Code2 aria-hidden="true" className="size-6 sm:size-7" />
 								</span>
-								<div>
+								<div className="min-w-0">
 									<div className="flex flex-wrap items-center gap-2">
-										<h1 className="text-2xl font-extrabold tracking-tight text-slate-900 sm:text-3xl">
+										<h1 className="text-xl font-extrabold tracking-tight text-slate-900 sm:text-3xl">
 											Developer API
 										</h1>
 										<span className="rounded-full border border-emerald-200 bg-emerald-50 px-2.5 py-1 text-xs font-extrabold text-emerald-700">
@@ -298,13 +302,13 @@ function RouteComponent() {
 							</div>
 							<a
 								href="#code-examples"
-								className="inline-flex items-center gap-2 rounded-xl bg-secondary px-4 py-2.5 text-sm font-bold text-white shadow-lg shadow-secondary/20 transition hover:-translate-y-0.5 hover:bg-secondary-dark focus:outline-none focus:ring-4 focus:ring-secondary/20"
+								className="inline-flex w-full items-center justify-center gap-2 rounded-xl bg-secondary px-4 py-2.5 text-sm font-bold text-white shadow-lg shadow-secondary/20 transition hover:-translate-y-0.5 hover:bg-secondary-dark focus:outline-none focus:ring-4 focus:ring-secondary/20 sm:w-auto"
 							>
 								<Terminal aria-hidden="true" className="size-4" />
 								View examples
 							</a>
 						</div>
-						<p className="mt-6 max-w-3xl text-base leading-7 text-slate-600">
+						<p className="mt-4 max-w-3xl text-sm leading-6 text-slate-600 sm:mt-6 sm:text-base sm:leading-7">
 							Check a customer&apos;s courier history from your own website or
 							application. Send an 11-digit Bangladeshi mobile number and
 							receive a clear courier report.
@@ -344,34 +348,35 @@ function RouteComponent() {
 					</div>
 				</section>
 
-				<section className="rounded-3xl border border-slate-200 bg-white p-6 shadow-sm sm:p-8">
+				<section className="rounded-3xl border border-slate-200 bg-white p-4 shadow-sm sm:p-8">
 					<SectionHeading eyebrow="Endpoint" title="Courier check">
 						This endpoint uses your API key to check one customer phone number
 						at a time.
 					</SectionHeading>
 					<div className="flex flex-col gap-3 rounded-2xl border border-slate-200 bg-slate-50 p-3 sm:flex-row sm:items-center sm:justify-between sm:p-4">
-						<div className="flex min-w-0 items-center gap-3">
-							<span className="rounded-lg bg-emerald-100 px-2.5 py-1 text-xs font-extrabold text-emerald-700">
+						{" "}
+						<div className="flex min-w-0 items-start gap-2 sm:items-center sm:gap-3">
+							<span className="shrink-0 rounded-lg bg-emerald-100 px-2.5 py-1 text-xs font-extrabold text-emerald-700">
 								POST
 							</span>
-							<code className="truncate text-sm font-bold text-slate-700">
+							<code className="min-w-0 break-all text-xs font-bold text-slate-700 sm:text-sm">
 								/api/v1/courier-check
 							</code>
 						</div>
-						<span className="text-xs font-semibold text-slate-400">
+						<span className="text-xs font-semibold text-slate-400 sm:text-right">
 							Content-Type: application/json
 						</span>
-					</div>
+					</div>{" "}
 					<div className="mt-5 grid gap-4 lg:grid-cols-2">
-						<div className="rounded-2xl border border-slate-200 p-5">
+						<div className="rounded-2xl border border-slate-200 p-4 sm:p-5">
 							<h3 className="flex items-center gap-2 font-extrabold text-slate-900">
 								<KeyRound className="size-4 text-secondary" /> Authentication
 							</h3>
 							<p className="mt-2 text-sm leading-6 text-slate-500">
 								Use this key in the Authorization header when calling the API.
 							</p>
-							<div className="mt-4 flex items-center gap-2 rounded-xl bg-slate-950 p-2">
-								<code className="min-w-0 flex-1 overflow-x-auto px-2 text-sm text-emerald-300">
+							<div className="mt-4 flex flex-col items-stretch gap-2 rounded-xl bg-slate-950 p-2 sm:flex-row sm:items-center">
+								<code className="min-w-0 flex-1 break-all px-2 text-xs leading-5 text-emerald-300 sm:text-sm">
 									{apiKey ||
 										(apiKeyError
 											? "Unable to load your API key"
@@ -381,7 +386,7 @@ function RouteComponent() {
 									type="button"
 									onClick={copyApiKey}
 									disabled={!apiKey}
-									className="inline-flex shrink-0 items-center gap-1.5 rounded-lg border border-white/10 px-2.5 py-1.5 text-xs font-bold text-slate-300 transition hover:border-emerald-400/40 hover:bg-white/5 hover:text-white focus:outline-none focus:ring-2 focus:ring-emerald-400/50 disabled:cursor-not-allowed disabled:opacity-50"
+									className="inline-flex w-full shrink-0 items-center justify-center gap-1.5 rounded-lg border border-white/10 px-2.5 py-1.5 text-xs font-bold text-slate-300 transition hover:border-emerald-400/40 hover:bg-white/5 hover:text-white focus:outline-none focus:ring-2 focus:ring-emerald-400/50 disabled:cursor-not-allowed disabled:opacity-50 sm:w-auto"
 									aria-label={copiedApiKey ? "API key copied" : "Copy API key"}
 								>
 									{copiedApiKey ? (
@@ -394,9 +399,9 @@ function RouteComponent() {
 									)}
 									{copiedApiKey ? "Copied" : "Copy"}
 								</button>
-							</div>
+							</div>{" "}
 						</div>
-						<div className="rounded-2xl border border-slate-200 p-5">
+						<div className="rounded-2xl border border-slate-200 p-4 sm:p-5">
 							<h3 className="flex items-center gap-2 font-extrabold text-slate-900">
 								<Terminal className="size-4 text-secondary" /> Request body
 							</h3>
@@ -404,14 +409,14 @@ function RouteComponent() {
 								The phone must contain exactly 11 digits and use a Bangladeshi
 								mobile prefix.
 							</p>
-							<code className="mt-4 block overflow-x-auto rounded-xl bg-slate-950 px-4 py-3 text-sm text-emerald-300">{`{ "phone": "01712345678" }`}</code>
+							<code className="mt-4 block overflow-x-auto break-all rounded-xl bg-slate-950 px-3 py-3 text-xs leading-5 text-emerald-300 sm:px-4 sm:text-sm">{`{ "phone": "01712345678" }`}</code>
 						</div>
 					</div>
 				</section>
 
 				<section
 					id="code-examples"
-					className="scroll-mt-6 rounded-3xl border border-slate-200 bg-white p-6 shadow-sm sm:p-8"
+					className="scroll-mt-6 rounded-3xl border border-slate-200 bg-white p-4 shadow-sm sm:p-8"
 				>
 					<SectionHeading eyebrow="Copy and use" title="Code Examples">
 						Choose your language, copy the complete example, and replace the API
@@ -420,7 +425,7 @@ function RouteComponent() {
 					<div
 						role="tablist"
 						aria-label="API code examples"
-						className="mb-4 flex gap-2 overflow-x-auto border-b border-slate-200 pb-3"
+						className="-mx-1 mb-4 flex gap-2 overflow-x-auto border-b border-slate-200 px-1 pb-3 [scrollbar-width:none] [&::-webkit-scrollbar]:hidden"
 					>
 						{examples.map((example) => {
 							const isActive = activeExample === example.id;
@@ -446,10 +451,10 @@ function RouteComponent() {
 						aria-labelledby={`tab-${selectedExample.id}`}
 					>
 						<CodeBlock
-							code={selectedExample.code}
+							code={displayCode}
 							language={selectedExample.language}
 							copied={copiedId === selectedExample.id}
-							onCopy={() => copyCode(selectedExample.id, selectedExample.code)}
+							onCopy={() => copyCode(selectedExample.id, displayCode)}
 						/>
 					</div>
 					<p className="mt-4 flex items-start gap-2 text-xs leading-5 text-slate-400">
@@ -464,7 +469,7 @@ function RouteComponent() {
 				</section>
 
 				<section className="grid gap-6 lg:grid-cols-2">
-					<div className="rounded-3xl border border-emerald-200 bg-white p-6 shadow-sm sm:p-8">
+					<div className="rounded-3xl border border-emerald-200 bg-white p-4 shadow-sm sm:p-8">
 						<div className="mb-5 flex items-center gap-3">
 							<span className="flex size-10 items-center justify-center rounded-xl bg-emerald-100 text-emerald-700">
 								<CheckCircle2 className="size-5" />
@@ -490,7 +495,7 @@ function RouteComponent() {
 							courier response.
 						</p>
 					</div>
-					<div className="rounded-3xl border border-rose-200 bg-white p-6 shadow-sm sm:p-8">
+					<div className="rounded-3xl border border-rose-200 bg-white p-4 shadow-sm sm:p-8">
 						<div className="mb-5 flex items-center gap-3">
 							<span className="flex size-10 items-center justify-center rounded-xl bg-rose-100 text-rose-700">
 								<Clipboard className="size-5" />
@@ -513,7 +518,7 @@ function RouteComponent() {
 					</div>
 				</section>
 
-				<section className="rounded-3xl border border-slate-200 bg-white p-6 shadow-sm sm:p-8">
+				<section className="rounded-3xl border border-slate-200 bg-white p-4 shadow-sm sm:p-8">
 					<SectionHeading eyebrow="Reference" title="HTTP errors" />
 					<div className="overflow-hidden rounded-2xl border border-slate-200">
 						<div className="hidden grid-cols-[100px_1fr_1fr] gap-4 bg-slate-50 px-4 py-3 text-xs font-extrabold uppercase tracking-wide text-slate-500 sm:grid">
@@ -524,13 +529,22 @@ function RouteComponent() {
 						{errorRows.map((row) => (
 							<div
 								key={row.status}
-								className="grid gap-1 border-t border-slate-200 px-4 py-3.5 sm:grid-cols-[100px_1fr_1fr] sm:gap-4"
+								className="grid gap-1.5 border-t border-slate-200 px-4 py-3.5 sm:grid-cols-[100px_1fr_1fr] sm:gap-4"
 							>
+								<span className="text-[11px] font-extrabold uppercase tracking-wide text-slate-400 sm:hidden">
+									Status
+								</span>
 								<span className="font-mono text-sm font-extrabold text-rose-600">
 									{row.status}
 								</span>
+								<span className="text-[11px] font-extrabold uppercase tracking-wide text-slate-400 sm:hidden">
+									Meaning
+								</span>
 								<span className="text-sm font-bold text-slate-800">
 									{row.label}
+								</span>
+								<span className="text-[11px] font-extrabold uppercase tracking-wide text-slate-400 sm:hidden">
+									When it happens
 								</span>
 								<span className="text-sm text-slate-500">{row.message}</span>
 							</div>
@@ -538,7 +552,7 @@ function RouteComponent() {
 					</div>
 				</section>
 
-				<section className="rounded-2xl border border-amber-200 bg-amber-50 p-5 text-sm leading-6 text-amber-900">
+				<section className="rounded-2xl border border-amber-200 bg-amber-50 p-4 text-sm leading-6 text-amber-900 sm:p-5">
 					<strong>Keep your API key private.</strong> Store it in a server-side
 					environment variable. Do not commit it to Git or expose it in browser
 					code unless your integration specifically requires that risk.
