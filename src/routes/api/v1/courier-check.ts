@@ -1,9 +1,5 @@
 import { createFileRoute } from "@tanstack/react-router";
-import {
-	executeFraudCheck,
-	FraudError,
-	phoneSchema,
-} from "@/server/functions/fraud.fn";
+import { executeFraudCheck, FraudError, phoneSchema } from "@/server/lib/fraud";
 import { User } from "@/server/models/user.model";
 
 const json = (body: unknown, status = 200) =>
