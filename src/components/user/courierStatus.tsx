@@ -124,6 +124,36 @@ export function CourierStatus({ result }: { result: FraudResult }) {
 						value={summary?.success_ratio ?? 0}
 						total={summary?.total_parcel}
 					/>
+					<div className="mt-4 grid grid-cols-2 gap-2 border-t border-slate-100 pt-4">
+						<div className="rounded-xl bg-slate-50 p-3">
+							<p className="text-xs font-semibold text-slate-500">
+								Total parcels
+							</p>
+							<p className="mt-1 text-lg font-extrabold text-slate-800">
+								{summary?.total_parcel ?? 0}
+							</p>
+						</div>
+						<div className="rounded-xl bg-emerald-50 p-3">
+							<p className="text-xs font-semibold text-emerald-600">Success</p>
+							<p className="mt-1 text-lg font-extrabold text-emerald-700">
+								{summary?.success_parcel ?? 0}
+							</p>
+						</div>
+						<div className="rounded-xl bg-rose-50 p-3">
+							<p className="text-xs font-semibold text-rose-500">Cancelled</p>
+							<p className="mt-1 text-lg font-extrabold text-rose-600">
+								{summary?.cancelled_parcel ?? 0}
+							</p>
+						</div>
+						<div className="rounded-xl bg-teal-50 p-3">
+							<p className="text-xs font-semibold text-teal-600">
+								Success rate
+							</p>
+							<p className="mt-1 text-lg font-extrabold text-teal-700">
+								{summary?.success_ratio ?? 0}%
+							</p>
+						</div>
+					</div>
 				</section>
 
 				{/* Right: per-courier data */}
