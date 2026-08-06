@@ -1,8 +1,9 @@
 // @ts-nocheck
 import { createFileRoute } from "@tanstack/react-router";
-import { AlertCircle, CheckCircle2, Search } from "lucide-react";
+import { AlertCircle, Search } from "lucide-react";
 import { useEffect, useState } from "react";
 import { z } from "zod";
+import { CourierStatus } from "@/components/user/courierStatus";
 import { checkFraud } from "@/server/functions/fraud.fn";
 
 const searchSchema = z.object({
@@ -100,17 +101,7 @@ function RouteComponent() {
 					</p>
 				)}
 
-				{result && (
-					<div className="mt-6 overflow-hidden rounded-2xl border border-emerald-200 bg-white shadow-sm">
-						<div className="flex items-center gap-2 border-b border-emerald-100 bg-emerald-50 px-4 py-3 text-sm font-bold text-emerald-800">
-							<CheckCircle2 className="size-4" aria-hidden="true" />
-							Courier check completed
-						</div>
-						<pre className="max-h-96 overflow-auto bg-slate-950 p-4 text-xs leading-6 text-slate-200 sm:p-5 sm:text-sm">
-							{JSON.stringify(result, null, 2)}
-						</pre>
-					</div>
-				)}
+				{result && <CourierStatus result={result} />}
 			</div>
 		</main>
 	);
