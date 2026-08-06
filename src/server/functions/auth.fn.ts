@@ -43,6 +43,11 @@ export const createUser = createServerFn({ method: "POST" })
 			apiKey: crypto.randomBytes(32).toString("hex"),
 		});
 
+		// Keep the new user signed in so the client can redirect to /panel,
+		// where inactive users see the account activation screen.
+		const session = await useAppSession();
+		await session.update({ userId: user._id.toString(), role: user.role });
+
 		const {
 			password: _password,
 			apiKey: _apiKey,

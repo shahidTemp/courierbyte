@@ -1,4 +1,5 @@
 // @ts-nocheck
+import { useNavigate } from "@tanstack/react-router";
 import { Eye, EyeOff, LockKeyhole, Phone, UserRound } from "lucide-react";
 import { useState } from "react";
 import { useAuth } from "@/context/userContext";
@@ -7,6 +8,7 @@ import { createUser } from "@/server/functions/auth.fn";
 const BANGLADESHI_MOBILE = /^01[3-9]\d{8}$/;
 
 export default function SignUp({ onLogin }) {
+	const navigate = useNavigate();
 	const { refreshUser } = useAuth();
 	const [name, setName] = useState("");
 	const [number, setNumber] = useState("");
@@ -15,7 +17,6 @@ export default function SignUp({ onLogin }) {
 	const [showPassword, setShowPassword] = useState(false);
 	const [showConfirmPassword, setShowConfirmPassword] = useState(false);
 	const [error, setError] = useState("");
-	const [success, setSuccess] = useState("");
 	const [errorField, setErrorField] = useState(null);
 	const [isSubmitting, setIsSubmitting] = useState(false);
 
@@ -26,7 +27,6 @@ export default function SignUp({ onLogin }) {
 
 	const clearError = () => {
 		setError("");
-		setSuccess("");
 		setErrorField(null);
 	};
 
@@ -54,7 +54,6 @@ export default function SignUp({ onLogin }) {
 		}
 
 		setError("");
-		setSuccess("");
 		setErrorField(null);
 		setIsSubmitting(true);
 
@@ -63,16 +62,7 @@ export default function SignUp({ onLogin }) {
 				data: { name, number, password },
 			});
 			await refreshUser();
-			setName("");
-			setNumber("");
-			setPassword("");
-			setConfirmPassword("");
-			setSuccess(
-				"অ্যাকাউন্ট তৈরি হয়েছে। অ্যাডমিন অনুমোদনের আগ পর্যন্ত আপনার অ্যাকাউন্টটি সক্রিয় থাকবে না।",
-			);
-			setIsSubmitting(false);
 		} catch (error) {
-			setSuccess("");
 			setError(
 				error instanceof Error
 					? error.message
@@ -80,6 +70,13 @@ export default function SignUp({ onLogin }) {
 			);
 			setIsSubmitting(false);
 			return;
+		}
+
+		try {
+			await navigate({ to: "/panel" });
+		} catch {
+			setError("প্যানেল খোলা যায়নি। অনুগ্রহ করে আবার চেষ্টা করুন।");
+			setIsSubmitting(false);
 		}
 	};
 
@@ -259,12 +256,6 @@ export default function SignUp({ onLogin }) {
 						>
 							{error}
 						</p>
-					)}
-
-					{success && (
-						<output className="block rounded-xl bg-emerald-50 px-4 py-3 text-sm font-semibold text-emerald-700">
-							{success}
-						</output>
 					)}
 
 					<button
