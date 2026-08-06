@@ -62,7 +62,7 @@ function RouteComponent() {
 				>
 					কাস্টমারের মোবাইল নাম্বার
 				</label>
-				<div className="flex flex-col gap-2 sm:flex-row">
+				<div className="flex gap-2">
 					<input
 						id="fraud-checker-phone"
 						type="tel"
@@ -75,13 +75,13 @@ function RouteComponent() {
 							)
 						}
 						placeholder="01XXXXXXXXX"
-						className="h-14 min-w-0 flex-1 rounded-xl border border-slate-200 bg-white px-4 text-base font-semibold tracking-wide text-slate-800 outline-none transition focus:border-secondary focus:ring-4 focus:ring-secondary/10"
+						className="min-h-14 w-full min-w-0 flex-1 rounded-xl border border-slate-200 bg-white px-4 py-3.5 text-base font-semibold leading-normal tracking-wide text-slate-800 outline-none transition focus:border-secondary focus:ring-4 focus:ring-secondary/10"
 					/>
 					<button
 						type="button"
 						onClick={handleSearch}
 						disabled={isChecking}
-						className="inline-flex h-14 items-center justify-center gap-2 rounded-xl bg-secondary px-6 text-sm font-bold text-white shadow-lg shadow-secondary/15 transition hover:bg-secondary-dark focus:outline-none focus:ring-4 focus:ring-secondary/20 disabled:cursor-not-allowed disabled:opacity-60"
+						className="inline-flex min-h-14 shrink-0 items-center justify-center gap-2 whitespace-nowrap rounded-xl bg-secondary px-3 py-3.5 text-sm font-bold text-white shadow-lg shadow-secondary/15 transition hover:bg-secondary-dark focus:outline-none focus:ring-4 focus:ring-secondary/20 disabled:cursor-not-allowed disabled:opacity-60 sm:px-6"
 					>
 						<Search className="h-4 w-4" />
 						{isChecking ? "Checking..." : "সার্চ করুন"}
