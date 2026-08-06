@@ -63,7 +63,9 @@ export const loginUser = createServerFn({ method: "POST" })
 		if (!user || !(await user.comparePassword(data.password))) {
 			throw new Error("ভুল নাম্বার বা পাসওয়ার্ড");
 		}
-		if (!user.isActive) throw new Error("এই অ্যাকাউন্টটি নিষ্ক্রিয়");
+		// Inactive users are allowed to log in so they can see the
+		// "contact us to activate" screen. Protected APIs still reject them
+		// via authMiddleware.
 
 		const session = await useAppSession();
 		await session.update({ userId: user._id.toString(), role: user.role });
@@ -101,7 +103,9 @@ export const validateUser = createServerFn({ method: "GET" }).handler(
 		if (!session.data.userId) return null;
 
 		const user = await User.findById(session.data.userId);
-		if (!user?.isActive) return null;
+		if (!user) return null;
+		// Return inactive users too (with isActive: false) so the client can
+		// render the activation screen instead of treating them as logged out.
 
 		const {
 			password: _password,

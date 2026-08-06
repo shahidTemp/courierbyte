@@ -67,7 +67,9 @@ export default function SignUp({ onLogin }) {
 			setNumber("");
 			setPassword("");
 			setConfirmPassword("");
-			setSuccess("অ্যাকাউন্ট তৈরি হয়েছে। অ্যাডমিন অনুমোদনের পর আপনি লগইন করতে পারবেন।");
+			setSuccess(
+				"অ্যাকাউন্ট তৈরি হয়েছে। অ্যাডমিন অনুমোদনের আগ পর্যন্ত আপনার অ্যাকাউন্টটি সক্রিয় থাকবে না।",
+			);
 			setIsSubmitting(false);
 		} catch (error) {
 			setSuccess("");

@@ -1,6 +1,7 @@
 // @ts-nocheck
 import { createFileRoute, Navigate, Outlet } from "@tanstack/react-router";
 import { Loader } from "@/components/common/loader";
+import { AccountInactive } from "@/components/user/accountInactive";
 import { Sidebar } from "@/components/user/sidebar";
 import { useAuth } from "@/context/userContext";
 
@@ -14,7 +15,9 @@ function UserLayout() {
 	if (isLoading) return <Loader />;
 
 	if (!isAuthenticated) return <Navigate to="/login" />;
-	if (user?.role !== "user" || !user?.isActive) return <Navigate to="/" />;
+	if (user?.role !== "user") return <Navigate to="/" />;
+	// Inactive users see a contact screen instead of the panel (no sidebar)
+	if (!user?.isActive) return <AccountInactive />;
 
 	return (
 		<div className="min-h-screen lg:flex">

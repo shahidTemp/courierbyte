@@ -198,7 +198,8 @@ const UserModal = ({
 							<option value="inactive">Inactive</option>
 						</select>
 						<p className="mt-1.5 text-xs text-gray-500 dark:text-gray-400">
-							Inactive users cannot log in or use the API.
+							Inactive users can log in but only see a "contact us" activation
+							screen and cannot use the API.
 						</p>
 					</div>
 					{error && (
