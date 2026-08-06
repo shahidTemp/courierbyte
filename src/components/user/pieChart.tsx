@@ -32,7 +32,7 @@ export function PieChart({ value, total, size = "large" }: PieChartProps) {
 			viewBox="0 0 220 220"
 			role="img"
 			aria-label={`${percentage}% success rate`}
-			className={isSmall ? "size-12 shrink-0" : "h-auto w-full max-w-[340px]"}
+			className={isSmall ? "size-16 shrink-0" : "h-auto w-full max-w-[340px]"}
 		>
 			<circle
 				cx={center.x}
@@ -99,13 +99,13 @@ export function PieChart({ value, total, size = "large" }: PieChartProps) {
 				x={center.x}
 				y={center.y}
 				fill="#35aaa0"
-				fontSize={isSmall ? 12 : 30}
+				fontSize={isSmall ? 16 : 30}
 				fontWeight="800"
 				textAnchor="middle"
 				dominantBaseline="middle"
 			>
 				{percentage}
-				<tspan fontSize={isSmall ? 6 : 14} dx="1">
+				<tspan fontSize={isSmall ? 8 : 14} dx="1">
 					%
 				</tspan>
 			</text>
