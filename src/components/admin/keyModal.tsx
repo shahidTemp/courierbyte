@@ -4,11 +4,13 @@ import { type FormEvent, useEffect, useState } from "react";
 export type KeyFormData = {
 	keyValue: string;
 	dailyLimit: string;
+	status: "active" | "inactive";
 };
 
 type KeyItem = {
 	_id?: string;
 	dailyLimit?: number;
+	status?: "active" | "inactive";
 };
 
 type KeyModalProps = {
@@ -33,12 +35,14 @@ export default function KeyModal({
 	const [form, setForm] = useState<KeyFormData>(() => ({
 		keyValue: "",
 		dailyLimit: String(keyItem?.dailyLimit ?? 50),
+		status: keyItem?.status ?? "active",
 	}));
 
 	useEffect(() => {
 		setForm({
 			keyValue: "",
 			dailyLimit: String(keyItem?.dailyLimit ?? 50),
+			status: keyItem?.status ?? "active",
 		});
 	}, [keyItem]);
 
@@ -141,6 +145,26 @@ export default function KeyModal({
 						/>
 						<span className="mt-1.5 block text-xs font-medium text-slate-400 dark:text-gray-400">
 							Requests this key is allowed per day.
+						</span>
+					</label>
+					<label
+						className="block text-sm font-bold text-slate-700 dark:text-gray-200"
+						htmlFor="key-status"
+					>
+						Status
+						<select
+							id="key-status"
+							className={`${inputClass} mt-2 cursor-pointer`}
+							value={form.status}
+							onChange={(event) =>
+								update("status", event.target.value as KeyFormData["status"])
+							}
+						>
+							<option value="active">Active</option>
+							<option value="inactive">Inactive</option>
+						</select>
+						<span className="mt-1.5 block text-xs font-medium text-slate-400 dark:text-gray-400">
+							Inactive keys are revoked and skipped by the request pool.
 						</span>
 					</label>
 

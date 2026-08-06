@@ -14,10 +14,6 @@ type KeyRow = {
 
 type KeysTableProps = {
 	data: KeyRow[];
-	onStatusChange: (
-		id: string,
-		status: "active" | "inactive",
-	) => Promise<void> | void;
 	onEditItem: (id: string) => void;
 	onDeleteItem: (id: string) => Promise<void>;
 	searchTerm?: string;
@@ -48,32 +44,6 @@ const StatusBadge = ({ status }: { status: StatusValue }) => {
 		</span>
 	);
 };
-
-const StatusSelect = ({
-	item,
-	onStatusChange,
-	isUpdating,
-}: {
-	item: KeyRow;
-	onStatusChange: (id: string, status: StatusValue) => Promise<void> | void;
-	isUpdating: boolean;
-}) => (
-	<select
-		value={item.status}
-		disabled={isUpdating}
-		onChange={(event) =>
-			onStatusChange(item._id, event.target.value as StatusValue)
-		}
-		aria-label="Change key status"
-		className="cursor-pointer rounded-xl border border-slate-200 bg-white px-3 py-2 text-sm font-bold text-secondary-dark outline-none transition focus:border-secondary focus:ring-4 focus:ring-secondary/10 disabled:opacity-60 dark:border-gray-700 dark:bg-gray-900 dark:text-white"
-	>
-		{Object.entries(statusConfig).map(([value, config]) => (
-			<option key={value} value={value}>
-				{config.label}
-			</option>
-		))}
-	</select>
-);
 
 const ActionButtons = ({
 	item,
@@ -123,29 +93,13 @@ const MobileField = ({
 
 export const KeysTable = ({
 	data,
-	onStatusChange,
 	onEditItem,
 	onDeleteItem,
 	searchTerm = "",
 }: KeysTableProps) => {
-	const [updatingId, setUpdatingId] = useState<string | null>(null);
 	const [deleteConfirm, setDeleteConfirm] = useState<string | null>(null);
 	const [isDeleting, setIsDeleting] = useState(false);
 	const [deleteError, setDeleteError] = useState("");
-	const [statusError, setStatusError] = useState("");
-
-	const handleStatusChange = async (id: string, status: StatusValue) => {
-		if (updatingId) return;
-		setUpdatingId(id);
-		setStatusError("");
-		try {
-			await onStatusChange(id, status);
-		} catch {
-			setStatusError("Failed to update key status. Please try again.");
-		} finally {
-			setUpdatingId(null);
-		}
-	};
 
 	const requestDelete = (id: string) => {
 		setDeleteError("");
@@ -213,13 +167,6 @@ export const KeysTable = ({
 							<MobileField label="Created At">
 								{formateDate(item.createdAt)}
 							</MobileField>
-							<MobileField label="Status">
-								<StatusSelect
-									item={item}
-									onStatusChange={handleStatusChange}
-									isUpdating={updatingId === item._id}
-								/>
-							</MobileField>
 							<MobileField label="Actions">
 								<ActionButtons
 									item={item}
@@ -274,11 +221,7 @@ export const KeysTable = ({
 									{item.count.toLocaleString()}
 								</td>
 								<td className="border-b border-slate-200 p-4 dark:border-gray-700">
-									<StatusSelect
-										item={item}
-										onStatusChange={handleStatusChange}
-										isUpdating={updatingId === item._id}
-									/>
+									<StatusBadge status={item.status} />
 								</td>
 								<td className="border-b border-slate-200 p-4 text-slate-500 dark:border-gray-700 dark:text-gray-400">
 									{formateDate(item.createdAt)}
@@ -296,12 +239,12 @@ export const KeysTable = ({
 				</table>
 			</div>
 
-			{(deleteError || statusError) && (
+			{deleteError && (
 				<p
 					className="mt-3 px-5 py-3 text-sm font-semibold text-rose-600"
 					role="alert"
 				>
-					{deleteError || statusError}
+					{deleteError}
 				</p>
 			)}
 

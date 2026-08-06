@@ -12,7 +12,6 @@ import {
 	deleteKey,
 	getKeys,
 	updateKey,
-	updateKeyStatus,
 } from "@/server/functions/keys.fn";
 
 const keysQuery = queryOptions({
@@ -33,7 +32,6 @@ function KeysPage() {
 	});
 	const createKeyFn = useServerFn(createKey);
 	const updateKeyFn = useServerFn(updateKey);
-	const updateStatusFn = useServerFn(updateKeyStatus);
 	const deleteKeyFn = useServerFn(deleteKey);
 	const [searchTerm, setSearchTerm] = useState("");
 	const [selectedKey, setSelectedKey] = useState(null);
@@ -98,11 +96,16 @@ function KeysPage() {
 						data: {
 							id: selectedKey._id,
 							dailyLimit: Number(data.dailyLimit),
+							status: data.status,
 							...(keyValue ? { keyValue } : {}),
 						},
 					})
 				: await createKeyFn({
-						data: { keyValue, dailyLimit: Number(data.dailyLimit) },
+						data: {
+							keyValue,
+							dailyLimit: Number(data.dailyLimit),
+							status: data.status,
+						},
 					});
 			queryClient.setQueryData(keysQuery.queryKey, (current = []) =>
 				selectedKey
@@ -119,13 +122,6 @@ function KeysPage() {
 		} finally {
 			setIsSubmitting(false);
 		}
-	};
-
-	const handleStatusChange = async (id, status) => {
-		const updated = await updateStatusFn({ data: { id, status } });
-		queryClient.setQueryData(keysQuery.queryKey, (current = []) =>
-			current.map((item) => (item._id === updated._id ? updated : item)),
-		);
 	};
 
 	const handleDelete = async (id) => {
@@ -166,7 +162,6 @@ function KeysPage() {
 				<KeysTable
 					data={filteredKeys}
 					searchTerm={searchTerm}
-					onStatusChange={handleStatusChange}
 					onEditItem={openEdit}
 					onDeleteItem={handleDelete}
 				/>

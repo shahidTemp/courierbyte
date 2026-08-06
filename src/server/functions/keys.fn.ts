@@ -13,15 +13,13 @@ const idSchema = z.object({
 const createKeySchema = z.object({
 	keyValue: z.string().trim().min(1, "Key value is required"),
 	dailyLimit: z.number().finite().int().min(1).default(50),
+	status: z.enum(["active", "inactive"]).default("active"),
 });
 
 const updateKeySchema = idSchema.extend({
 	keyValue: z.string().trim().min(1).optional(),
 	dailyLimit: z.number().finite().int().min(1),
-});
-
-const statusSchema = idSchema.extend({
-	status: z.enum(["active", "inactive"]),
+	status: z.enum(["active", "inactive"]).optional(),
 });
 
 const today = () => new Date().toISOString().slice(0, 10);
@@ -93,6 +91,9 @@ export const updateKey = createServerFn({ method: "POST" })
 		}
 
 		key.dailyLimit = data.dailyLimit;
+		if (data.status !== undefined) {
+			key.status = data.status;
+		}
 
 		try {
 			await key.save();
@@ -101,26 +102,8 @@ export const updateKey = createServerFn({ method: "POST" })
 			throw error;
 		}
 
-		await reload(); // pick up the new limit in the pool
+		await reload(); // pool must pick up the new limit/status immediately
 		return JSON.parse(JSON.stringify(toSafeKey(key.toObject())));
-	});
-
-export const updateKeyStatus = createServerFn({ method: "POST" })
-	.middleware([superAdminOnly])
-	.validator(statusSchema)
-	.handler(async ({ data }) => {
-		const key = await CourierKey.findByIdAndUpdate(
-			data.id,
-			{ status: data.status },
-			{ new: true, runValidators: true },
-		)
-			.select("+keyValue")
-			.lean();
-
-		if (!key) throw new Error("Key not found");
-
-		await reload(); // drop (or bring back) the key in the pool
-		return JSON.parse(JSON.stringify(toSafeKey(key)));
 	});
 
 export const deleteKey = createServerFn({ method: "POST" })
