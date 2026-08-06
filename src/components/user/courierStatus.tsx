@@ -42,25 +42,22 @@ function CourierRow({ courier }: { courier: CourierStats }) {
 	return (
 		<tr className="border-t border-slate-100">
 			<td className="px-3 py-3">
-				<div className="flex min-w-32 items-center gap-2">
+				<div className="flex min-w-32 items-center">
 					<img
 						src={courier.logo}
-						alt=""
+						alt={courier.name}
 						loading="lazy"
-						className="size-8 shrink-0 rounded-lg bg-slate-100 object-contain p-1"
+						className="size-11 shrink-0 rounded-xl bg-slate-100 object-contain p-1.5"
 					/>
-					<span className="truncate text-sm font-bold text-slate-800">
-						{courier.name}
-					</span>
 				</div>
 			</td>
-			<td className="px-3 py-3 text-right text-sm font-semibold text-slate-700">
+			<td className="px-3 py-3 text-right text-base font-semibold text-slate-700">
 				{courier.total_parcel}
 			</td>
-			<td className="px-3 py-3 text-right text-sm font-semibold text-emerald-600">
+			<td className="px-3 py-3 text-right text-base font-semibold text-emerald-600">
 				{courier.success_parcel}
 			</td>
-			<td className="px-3 py-3 text-right text-sm font-semibold text-rose-500">
+			<td className="px-3 py-3 text-right text-base font-semibold text-rose-500">
 				{courier.cancelled_parcel}
 			</td>
 			<td className="px-3 py-3">

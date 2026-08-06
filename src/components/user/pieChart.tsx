@@ -31,7 +31,7 @@ export function PieChart({ value, total, size = "large" }: PieChartProps) {
 		<svg
 			viewBox="0 0 220 220"
 			role="img"
-			aria-label={`${percentage}% success rate${total === undefined ? "" : ` out of ${total} parcels`}`}
+			aria-label={`${percentage}% success rate`}
 			className={isSmall ? "size-10 shrink-0" : "h-auto w-full max-w-[340px]"}
 		>
 			<circle
@@ -108,18 +108,6 @@ export function PieChart({ value, total, size = "large" }: PieChartProps) {
 					%
 				</tspan>
 			</text>
-			{!isSmall && total !== undefined && (
-				<text
-					x={center.x}
-					y={center.y + 18}
-					fill="#94a3b8"
-					fontSize="10"
-					fontWeight="600"
-					textAnchor="middle"
-				>
-					{total} parcels
-				</text>
-			)}
 		</svg>
 	);
 }
