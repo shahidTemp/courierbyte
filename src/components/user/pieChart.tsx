@@ -97,11 +97,12 @@ export function PieChart({ value, total, size = "large" }: PieChartProps) {
 			<circle cx={center.x} cy={center.y} r={radius - 15} fill="white" />
 			<text
 				x={center.x}
-				y={isSmall ? center.y + 3 : center.y - 3}
+				y={center.y}
 				fill="#35aaa0"
 				fontSize={isSmall ? 10 : 30}
 				fontWeight="800"
 				textAnchor="middle"
+				dominantBaseline="middle"
 			>
 				{percentage}
 				<tspan fontSize={isSmall ? 5 : 14} dx="1">
