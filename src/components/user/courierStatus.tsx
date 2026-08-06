@@ -42,76 +42,137 @@ function DonutChart({ summary }: { summary?: SummaryStats }) {
 	const success = summary?.success_parcel ?? 0;
 	const cancelled = summary?.cancelled_parcel ?? 0;
 	const ratio = summary?.success_ratio ?? 0;
+	const radius = 68;
+	const circumference = 2 * Math.PI * radius;
+	const successLength = total > 0 ? (success / total) * circumference : 0;
+	const cancelledLength = total > 0 ? (cancelled / total) * circumference : 0;
+	const successPart = total > 0 ? success / total : 0;
+	const cancelledPart = total > 0 ? cancelled / total : 0;
+	const center = { x: 130, y: 110 };
 
-	const R = 42;
-	const C = 2 * Math.PI * R;
-	const successLen = total > 0 ? (success / total) * C : 0;
-	const cancelledLen = total > 0 ? (cancelled / total) * C : 0;
+	const pointAt = (angle: number, distance: number) => {
+		const radians = ((angle - 90) * Math.PI) / 180;
+		return {
+			x: center.x + Math.cos(radians) * distance,
+			y: center.y + Math.sin(radians) * distance,
+		};
+	};
+
+	const labelLine = (angle: number, text: string, color: string) => {
+		const start = pointAt(angle, radius + 16);
+		const elbow = pointAt(angle, radius + 28);
+		const rightSide = elbow.x >= center.x;
+		const textX = rightSide ? 250 : 10;
+		const textY = Math.max(18, Math.min(202, elbow.y));
+		const lineEndX = rightSide ? textX - 4 : textX + 4;
+
+		return (
+			<g key={text}>
+				<path
+					d={`M ${start.x} ${start.y} L ${elbow.x} ${elbow.y} L ${lineEndX} ${textY}`}
+					fill="none"
+					stroke={color}
+					strokeWidth="1.5"
+				/>
+				<text
+					x={textX}
+					y={textY + 4}
+					fill={color}
+					fontSize="11"
+					fontWeight="700"
+					textAnchor={rightSide ? "end" : "start"}
+				>
+					{text}
+				</text>
+			</g>
+		);
+	};
 
 	return (
-		<div className="flex flex-col items-center gap-4">
-			<div className="relative">
-				<svg
-					viewBox="0 0 120 120"
-					role="img"
-					aria-label="Success versus cancelled parcels"
-					className="size-40 -rotate-90"
+		<div className="flex justify-center overflow-visible">
+			<svg
+				viewBox="0 0 260 220"
+				role="img"
+				aria-label={`Parcel summary: ${success} successful and ${cancelled} cancelled out of ${total}`}
+				className="h-auto w-full max-w-[340px] overflow-visible"
+			>
+				<circle
+					cx={center.x}
+					cy={center.y}
+					r={radius}
+					fill="none"
+					strokeWidth="30"
+					className="stroke-slate-100"
+				/>
+				<circle
+					cx={center.x}
+					cy={center.y}
+					r={radius}
+					fill="none"
+					strokeWidth="30"
+					className={total > 0 ? "stroke-[#35aaa0]" : "stroke-slate-200"}
+				/>
+				{cancelledLength > 0 && (
+					<>
+						<circle
+							cx={center.x}
+							cy={center.y}
+							r={radius}
+							fill="none"
+							strokeWidth="34"
+							strokeDasharray={`${cancelledLength} ${circumference}`}
+							strokeDashoffset={-successLength}
+							transform={`rotate(-90 ${center.x} ${center.y})`}
+							className="stroke-white"
+						/>
+						<circle
+							cx={center.x}
+							cy={center.y}
+							r={radius}
+							fill="none"
+							strokeWidth="30"
+							strokeDasharray={`${cancelledLength} ${circumference}`}
+							strokeDashoffset={-successLength}
+							transform={`rotate(-90 ${center.x} ${center.y})`}
+							className="stroke-[#ef5350]"
+						/>
+					</>
+				)}
+				<circle cx={center.x} cy={center.y} r={radius - 15} fill="white" />
+				{total > 0 && (
+					<>
+						{labelLine(successPart * 180, `Success ${success}`, "#35aaa0")}
+						{labelLine(
+							successPart * 360 + cancelledPart * 180,
+							`Cancelled ${cancelled}`,
+							"#ef5350",
+						)}
+					</>
+				)}
+				<text
+					x={center.x}
+					y={center.y - 3}
+					fill="#35aaa0"
+					fontSize="30"
+					fontWeight="800"
+					textAnchor="middle"
 				>
-					<circle
-						cx="60"
-						cy="60"
-						r={R}
-						fill="none"
-						strokeWidth="14"
-						className="stroke-slate-100"
-					/>
-					<circle
-						cx="60"
-						cy="60"
-						r={R}
-						fill="none"
-						strokeWidth="14"
-						strokeLinecap="round"
-						strokeDasharray={`${successLen} ${C}`}
-						className="stroke-emerald-500"
-					/>
-					<circle
-						cx="60"
-						cy="60"
-						r={R}
-						fill="none"
-						strokeWidth="14"
-						strokeLinecap="round"
-						strokeDasharray={`${cancelledLen} ${C}`}
-						strokeDashoffset={-successLen}
-						className="stroke-rose-500"
-					/>
-				</svg>
-				<div className="absolute inset-0 flex flex-col items-center justify-center">
-					<span className="text-2xl font-extrabold text-slate-900">
-						{ratio}%
-					</span>
-					<span className="text-xs font-medium text-slate-500">
-						{total} parcels
-					</span>
-				</div>
-			</div>
-			<div className="flex gap-4 text-sm">
-				<span className="flex items-center gap-1.5 font-semibold text-slate-700">
-					<span
-						className="size-2.5 rounded-full bg-emerald-500"
-						aria-hidden="true"
-					/>
-					Success {success}
-				</span>
-				<span className="flex items-center gap-1.5 font-semibold text-slate-700">
-					<span
-						className="size-2.5 rounded-full bg-rose-500"
-						aria-hidden="true"
-					/>
-					Cancelled {cancelled}
-				</span>
-			</div>
+					{ratio}
+					<tspan fontSize="14" dx="2">
+						%
+					</tspan>
+				</text>
+				<text
+					x={center.x}
+					y={center.y + 18}
+					fill="#94a3b8"
+					fontSize="10"
+					fontWeight="600"
+					textAnchor="middle"
+				>
+					{total} parcels
+				</text>
+			</svg>
 		</div>
 	);
 }
