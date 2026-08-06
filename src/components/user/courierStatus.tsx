@@ -46,10 +46,7 @@ function DonutChart({ summary }: { summary?: SummaryStats }) {
 	const circumference = 2 * Math.PI * radius;
 	const successLength = total > 0 ? (success / total) * circumference : 0;
 	const cancelledLength = total > 0 ? (cancelled / total) * circumference : 0;
-	const successPart = total > 0 ? success / total : 0;
-	const cancelledPart = total > 0 ? cancelled / total : 0;
 	const center = { x: 130, y: 110 };
-
 	const pointAt = (angle: number, distance: number) => {
 		const radians = ((angle - 90) * Math.PI) / 180;
 		return {
@@ -57,36 +54,7 @@ function DonutChart({ summary }: { summary?: SummaryStats }) {
 			y: center.y + Math.sin(radians) * distance,
 		};
 	};
-
-	const labelLine = (angle: number, text: string, color: string) => {
-		const start = pointAt(angle, radius + 16);
-		const elbow = pointAt(angle, radius + 28);
-		const rightSide = elbow.x >= center.x;
-		const textX = rightSide ? 250 : 10;
-		const textY = Math.max(18, Math.min(202, elbow.y));
-		const lineEndX = rightSide ? textX - 4 : textX + 4;
-
-		return (
-			<g key={text}>
-				<path
-					d={`M ${start.x} ${start.y} L ${elbow.x} ${elbow.y} L ${lineEndX} ${textY}`}
-					fill="none"
-					stroke={color}
-					strokeWidth="1.5"
-				/>
-				<text
-					x={textX}
-					y={textY + 4}
-					fill={color}
-					fontSize="11"
-					fontWeight="700"
-					textAnchor={rightSide ? "end" : "start"}
-				>
-					{text}
-				</text>
-			</g>
-		);
-	};
+	const separatorAngles = [0, total > 0 ? (success / total) * 360 : 0];
 
 	return (
 		<div className="flex justify-center overflow-visible">
@@ -138,17 +106,24 @@ function DonutChart({ summary }: { summary?: SummaryStats }) {
 						/>
 					</>
 				)}
+				{cancelledLength > 0 &&
+					separatorAngles.map((angle) => {
+						const inner = pointAt(angle, radius - 16);
+						const outer = pointAt(angle, radius + 16);
+						return (
+							<line
+								key={angle}
+								x1={inner.x}
+								y1={inner.y}
+								x2={outer.x}
+								y2={outer.y}
+								stroke="white"
+								strokeWidth="4"
+								strokeLinecap="round"
+							/>
+						);
+					})}
 				<circle cx={center.x} cy={center.y} r={radius - 15} fill="white" />
-				{total > 0 && (
-					<>
-						{labelLine(successPart * 180, `Success ${success}`, "#35aaa0")}
-						{labelLine(
-							successPart * 360 + cancelledPart * 180,
-							`Cancelled ${cancelled}`,
-							"#ef5350",
-						)}
-					</>
-				)}
 				<text
 					x={center.x}
 					y={center.y - 3}
@@ -177,46 +152,72 @@ function DonutChart({ summary }: { summary?: SummaryStats }) {
 	);
 }
 
-function CourierRow({ courier }: { courier: CourierStats }) {
-	const successPct =
-		courier.total_parcel > 0
-			? (courier.success_parcel / courier.total_parcel) * 100
-			: 0;
-	const cancelledPct =
-		courier.total_parcel > 0
-			? (courier.cancelled_parcel / courier.total_parcel) * 100
-			: 0;
+function MiniRateChart({ rate }: { rate: number }) {
+	const radius = 14;
+	const circumference = 2 * Math.PI * radius;
+	const successLength =
+		(Math.max(0, Math.min(rate, 100)) / 100) * circumference;
 
 	return (
-		<li className="flex items-center gap-3">
-			<img
-				src={courier.logo}
-				alt={courier.name}
-				loading="lazy"
-				className="size-10 shrink-0 rounded-lg bg-slate-100 object-contain p-1.5"
-			/>
-			<div className="min-w-0 flex-1">
-				<div className="flex items-baseline justify-between gap-2">
+		<div className="flex items-center gap-2">
+			<svg
+				viewBox="0 0 40 40"
+				role="img"
+				aria-label={`${rate}% success rate`}
+				className="size-9 -rotate-90"
+			>
+				<circle
+					cx="20"
+					cy="20"
+					r={radius}
+					fill="none"
+					strokeWidth="6"
+					className="stroke-slate-100"
+				/>
+				<circle
+					cx="20"
+					cy="20"
+					r={radius}
+					fill="none"
+					strokeWidth="6"
+					strokeDasharray={`${successLength} ${circumference}`}
+					className="stroke-[#35aaa0]"
+				/>
+			</svg>
+			<span className="text-xs font-extrabold text-slate-700">{rate}%</span>
+		</div>
+	);
+}
+
+function CourierRow({ courier }: { courier: CourierStats }) {
+	return (
+		<tr className="border-t border-slate-100">
+			<td className="px-3 py-3">
+				<div className="flex min-w-32 items-center gap-2">
+					<img
+						src={courier.logo}
+						alt=""
+						loading="lazy"
+						className="size-8 shrink-0 rounded-lg bg-slate-100 object-contain p-1"
+					/>
 					<span className="truncate text-sm font-bold text-slate-800">
 						{courier.name}
 					</span>
-					<span className="text-sm font-extrabold text-slate-900">
-						{courier.success_ratio}%
-					</span>
 				</div>
-				<div className="mt-1.5 flex h-1.5 overflow-hidden rounded-full bg-slate-100">
-					<span
-						className="bg-emerald-500"
-						style={{ width: `${successPct}%` }}
-					/>
-					<span className="bg-rose-400" style={{ width: `${cancelledPct}%` }} />
-				</div>
-				<p className="mt-1 text-xs text-slate-500">
-					{courier.success_parcel} success · {courier.cancelled_parcel}{" "}
-					cancelled · {courier.total_parcel} total
-				</p>
-			</div>
-		</li>
+			</td>
+			<td className="px-3 py-3 text-right text-sm font-semibold text-slate-700">
+				{courier.total_parcel}
+			</td>
+			<td className="px-3 py-3 text-right text-sm font-semibold text-emerald-600">
+				{courier.success_parcel}
+			</td>
+			<td className="px-3 py-3 text-right text-sm font-semibold text-rose-500">
+				{courier.cancelled_parcel}
+			</td>
+			<td className="px-3 py-3">
+				<MiniRateChart rate={courier.success_ratio} />
+			</td>
+		</tr>
 	);
 }
 
@@ -273,15 +274,28 @@ export function CourierStatus({ result }: { result: FraudResult }) {
 				</section>
 
 				{/* Right: per-courier data */}
-				<section className="rounded-2xl border border-slate-200 bg-white p-5 shadow-sm lg:col-span-3">
-					<h3 className="mb-4 text-sm font-bold uppercase tracking-wider text-slate-500">
+				<section className="overflow-hidden rounded-2xl border border-slate-200 bg-white shadow-sm lg:col-span-3">
+					<h3 className="px-5 pt-5 text-sm font-bold uppercase tracking-wider text-slate-500">
 						Couriers
 					</h3>
-					<ul className="space-y-4">
-						{couriers.map((courier) => (
-							<CourierRow key={courier.name} courier={courier} />
-						))}
-					</ul>
+					<div className="overflow-x-auto px-2 pb-2">
+						<table className="w-full min-w-[430px] text-left">
+							<thead>
+								<tr className="text-[11px] font-bold uppercase tracking-wide text-slate-400">
+									<th className="px-3 py-3">Courier</th>
+									<th className="px-3 py-3 text-right">Total</th>
+									<th className="px-3 py-3 text-right">Success</th>
+									<th className="px-3 py-3 text-right">Cancel</th>
+									<th className="px-3 py-3">Rate</th>
+								</tr>
+							</thead>
+							<tbody>
+								{couriers.map((courier) => (
+									<CourierRow key={courier.name} courier={courier} />
+								))}
+							</tbody>
+						</table>
+					</div>
 				</section>
 			</div>
 		</div>
