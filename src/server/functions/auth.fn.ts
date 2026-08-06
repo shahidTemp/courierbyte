@@ -43,14 +43,14 @@ export const createUser = createServerFn({ method: "POST" })
 			apiKey: crypto.randomBytes(32).toString("hex"),
 		});
 
-		const session = await useAppSession();
-		await session.update({ userId: user._id.toString(), role: user.role });
-
-		const { password: _password, ...safeUser } = user.toObject();
+		const {
+			password: _password,
+			apiKey: _apiKey,
+			...safeUser
+		} = user.toObject();
 		return {
 			success: true,
 			user: JSON.parse(JSON.stringify(safeUser)),
-			apiKey: user.apiKey,
 		};
 	});
 

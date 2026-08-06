@@ -67,6 +67,7 @@ function AdminAllPage() {
 						id: selectedUser._id,
 						name: data.name,
 						number: data.number,
+						isActive: data.isActive,
 						...(data.password ? { password: data.password } : {}),
 					},
 				});

@@ -1,5 +1,4 @@
 // @ts-nocheck
-import { useNavigate } from "@tanstack/react-router";
 import { Eye, EyeOff, LockKeyhole, Phone, UserRound } from "lucide-react";
 import { useState } from "react";
 import { useAuth } from "@/context/userContext";
@@ -8,7 +7,6 @@ import { createUser } from "@/server/functions/auth.fn";
 const BANGLADESHI_MOBILE = /^01[3-9]\d{8}$/;
 
 export default function SignUp({ onLogin }) {
-	const navigate = useNavigate();
 	const { refreshUser } = useAuth();
 	const [name, setName] = useState("");
 	const [number, setNumber] = useState("");
@@ -17,6 +15,7 @@ export default function SignUp({ onLogin }) {
 	const [showPassword, setShowPassword] = useState(false);
 	const [showConfirmPassword, setShowConfirmPassword] = useState(false);
 	const [error, setError] = useState("");
+	const [success, setSuccess] = useState("");
 	const [errorField, setErrorField] = useState(null);
 	const [isSubmitting, setIsSubmitting] = useState(false);
 
@@ -27,6 +26,7 @@ export default function SignUp({ onLogin }) {
 
 	const clearError = () => {
 		setError("");
+		setSuccess("");
 		setErrorField(null);
 	};
 
@@ -54,6 +54,7 @@ export default function SignUp({ onLogin }) {
 		}
 
 		setError("");
+		setSuccess("");
 		setErrorField(null);
 		setIsSubmitting(true);
 
@@ -62,8 +63,14 @@ export default function SignUp({ onLogin }) {
 				data: { name, number, password },
 			});
 			await refreshUser();
-			await navigate({ to: "/panel" });
+			setName("");
+			setNumber("");
+			setPassword("");
+			setConfirmPassword("");
+			setSuccess("অ্যাকাউন্ট তৈরি হয়েছে। অ্যাডমিন অনুমোদনের পর আপনি লগইন করতে পারবেন।");
+			setIsSubmitting(false);
 		} catch (error) {
+			setSuccess("");
 			setError(
 				error instanceof Error
 					? error.message
@@ -78,11 +85,13 @@ export default function SignUp({ onLogin }) {
 		<section className="flex min-h-[38rem] items-center justify-center px-4 py-12 sm:px-6">
 			<div className="w-full max-w-md rounded-3xl border border-slate-200/80 bg-white p-6 shadow-2xl shadow-secondary/10 sm:p-9">
 				<div className="mb-8">
+					{" "}
 					<h1 className="text-3xl font-extrabold tracking-tight text-slate-900">
 						আপনার অ্যাকাউন্ট তৈরি করুন
 					</h1>
 					<p className="mt-2 text-sm text-slate-500">
-						কুরিয়ারবাইট ব্যবহার শুরু করতে নিচের তথ্যগুলো দিন।
+						কুরিয়ারবাইট ব্যবহার শুরু করতে নিচের তথ্যগুলো দিন। অ্যাডমিন অনুমোদনের পর অ্যাকাউন্ট
+						সক্রিয় হবে।
 					</p>
 				</div>
 
@@ -248,6 +257,12 @@ export default function SignUp({ onLogin }) {
 						>
 							{error}
 						</p>
+					)}
+
+					{success && (
+						<output className="block rounded-xl bg-emerald-50 px-4 py-3 text-sm font-semibold text-emerald-700">
+							{success}
+						</output>
 					)}
 
 					<button

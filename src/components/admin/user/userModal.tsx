@@ -5,11 +5,13 @@ export type UserFormData = {
 	name: string;
 	number: string;
 	password: string;
+	isActive: boolean;
 };
 
 type UserModalUser = {
 	name?: string;
 	number?: string;
+	isActive?: boolean;
 };
 
 type UserModalProps = {
@@ -24,6 +26,7 @@ const emptyFormData: UserFormData = {
 	name: "",
 	number: "",
 	password: "",
+	isActive: false,
 };
 
 const UserModal = ({
@@ -38,6 +41,7 @@ const UserModal = ({
 		name: user?.name ?? "",
 		number: user?.number ?? "",
 		password: "",
+		isActive: user?.isActive ?? false,
 	}));
 
 	useEffect(() => {
@@ -47,6 +51,7 @@ const UserModal = ({
 						name: user.name ?? "",
 						number: user.number ?? "",
 						password: "",
+						isActive: user.isActive ?? false,
 					}
 				: emptyFormData,
 		);
@@ -66,7 +71,7 @@ const UserModal = ({
 	};
 
 	const updateField = (
-		field: keyof UserFormData,
+		field: Exclude<keyof UserFormData, "isActive">,
 		value: ChangeEvent<HTMLInputElement>["target"]["value"],
 	) => {
 		setFormData((currentData) => ({ ...currentData, [field]: value }));
@@ -129,7 +134,6 @@ const UserModal = ({
 							value={formData.name}
 						/>
 					</div>
-
 					<div>
 						<label
 							className="mb-1.5 block text-sm font-semibold text-gray-700 dark:text-gray-200"
@@ -149,7 +153,6 @@ const UserModal = ({
 							value={formData.number}
 						/>
 					</div>
-
 					<div>
 						<label
 							className="mb-1.5 block text-sm font-semibold text-gray-700 dark:text-gray-200"
@@ -172,8 +175,32 @@ const UserModal = ({
 							type="password"
 							value={formData.password}
 						/>
+					</div>{" "}
+					<div>
+						<label
+							className="mb-1.5 block text-sm font-semibold text-gray-700 dark:text-gray-200"
+							htmlFor="user-status"
+						>
+							Status
+						</label>
+						<select
+							className="w-full cursor-pointer rounded-lg border border-gray-200 bg-gray-50 px-3 py-2.5 text-gray-900 outline-none transition focus:border-secondary focus:bg-white focus:ring-4 focus:ring-secondary/10 dark:border-gray-600 dark:bg-gray-700 dark:text-white"
+							id="user-status"
+							value={formData.isActive ? "active" : "inactive"}
+							onChange={(event) =>
+								setFormData((currentData) => ({
+									...currentData,
+									isActive: event.target.value === "active",
+								}))
+							}
+						>
+							<option value="active">Active</option>
+							<option value="inactive">Inactive</option>
+						</select>
+						<p className="mt-1.5 text-xs text-gray-500 dark:text-gray-400">
+							Inactive users cannot log in or use the API.
+						</p>
 					</div>
-
 					{error && (
 						<p
 							className="rounded-lg bg-rose-50 px-3 py-2 text-sm font-semibold text-rose-600"
@@ -182,7 +209,6 @@ const UserModal = ({
 							{error}
 						</p>
 					)}
-
 					<div className="flex justify-end gap-3 pt-2">
 						<button
 							className="rounded-lg bg-gray-100 px-4 py-2 font-medium text-gray-700 transition-colors hover:bg-gray-200 focus:outline-none focus:ring-2 focus:ring-gray-300 disabled:cursor-not-allowed disabled:opacity-50 dark:bg-gray-700 dark:text-gray-300 dark:hover:bg-gray-600"

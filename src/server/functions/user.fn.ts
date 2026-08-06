@@ -23,6 +23,7 @@ const createAdminUserSchema = z.object({
 	name: z.string().trim().min(1),
 	number: z.string().trim().min(1),
 	password: z.string().min(6),
+	isActive: z.boolean(),
 });
 
 const updateAdminUserSchema = z.object({
@@ -30,6 +31,7 @@ const updateAdminUserSchema = z.object({
 	name: z.string().trim().min(1),
 	number: z.string().trim().min(1),
 	password: z.string().min(6).optional(),
+	isActive: z.boolean(),
 });
 
 export const createAdminUser = createServerFn({ method: "POST" })
@@ -46,6 +48,7 @@ export const createAdminUser = createServerFn({ method: "POST" })
 			number: data.number,
 			password: data.password,
 			apiKey: crypto.randomBytes(32).toString("hex"),
+			isActive: data.isActive,
 		});
 
 		const {
@@ -75,6 +78,7 @@ export const updateAdminUser = createServerFn({ method: "POST" })
 
 		user.name = data.name;
 		user.number = data.number;
+		user.isActive = data.isActive;
 		if (data.password !== undefined) user.password = data.password;
 
 		try {

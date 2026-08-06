@@ -69,6 +69,7 @@ export const createAdmin = createServerFn({ method: "POST" })
 				number: data.number,
 				password: data.password,
 				apiKey: crypto.randomBytes(32).toString("hex"),
+				isActive: true,
 				role: "admin",
 			});
 
