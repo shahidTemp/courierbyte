@@ -1,40 +1,46 @@
+import { advance, deactivate, getKey, recordUse } from "@/server/lib/courierKeyPool";
+
 async function checkCourier(phoneNumber: string) {
 	const url = "https://api.bdcourier.com/courier-check";
-	const apiKey = "YOUR_API_KEY";
 
-	try {
-		const response = await fetch(url, {
-			method: "POST",
-			headers: {
-				Authorization: `Bearer ${apiKey}`,
-				"Content-Type": "application/json",
-			},
-			body: JSON.stringify({
-				phone: phoneNumber,
-			}),
-		});
+	let key = await getKey();
 
-		const data = await response.json();
+	while (key) {
+		try {
+			const response = await fetch(url, {
+				method: "POST",
+				headers: {
+					Authorization: `Bearer ${key.value}`,
+					"Content-Type": "application/json",
+				},
+				body: JSON.stringify({
+					phone: phoneNumber,
+				}),
+			});
 
-		if (!response.ok) {
-			// If the API returned an error (e.g. 400, 401, 404)
-			throw data;
+			const data = await response.json();
+
+			if (response.status === 429) {
+				// provider says this key is spent for today → rotate to the next one
+				key = await advance(key.id);
+				continue;
+			}
+
+			if (response.status === 401 || response.status === 403) {
+				await deactivate(key.id); // key revoked → drop it
+				key = await getKey();
+				continue;
+			}
+
+			if (!response.ok) throw data;
+
+			await recordUse(key.id); // count today's request
+			return data;
+		} catch (error) {
+			console.error("Courier Check Error:", error);
+			throw error;
 		}
-
-		return data;
-	} catch (error) {
-		console.error("Courier Check Error:", error);
-		throw error;
 	}
-}
 
-// --- How to use the function ---
-
-async function handleRequest() {
-	try {
-		const info = await checkCourier("017xxxxxxxx");
-		console.log(info);
-	} catch (err) {
-		console.log(err);
-	}
+	throw new Error("All courier API keys are exhausted or inactive today");
 }
