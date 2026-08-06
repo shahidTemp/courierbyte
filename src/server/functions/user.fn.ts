@@ -9,6 +9,7 @@ export const getUsers = createServerFn({ method: "GET" })
 	.middleware([requireRole(["admin", "super_admin"])])
 	.handler(async () => {
 		const users = await User.find({ role: "user" })
+			.sort({ _id: -1 })
 			.select("name number isActive role createdAt updatedAt")
 			.lean();
 
