@@ -1,4 +1,5 @@
 import { CheckCircle2, ShieldAlert, XCircle } from "lucide-react";
+import { PieChart } from "@/components/user/pieChart";
 
 type CourierStats = {
 	name: string;
@@ -37,158 +38,6 @@ const RISK_STYLES: Record<string, { badge: string; icon: typeof ShieldAlert }> =
 		red: { badge: "bg-rose-100 text-rose-700", icon: XCircle },
 	};
 
-function DonutChart({ summary }: { summary?: SummaryStats }) {
-	const total = summary?.total_parcel ?? 0;
-	const success = summary?.success_parcel ?? 0;
-	const cancelled = summary?.cancelled_parcel ?? 0;
-	const ratio = summary?.success_ratio ?? 0;
-	const radius = 68;
-	const circumference = 2 * Math.PI * radius;
-	const successLength = total > 0 ? (success / total) * circumference : 0;
-	const cancelledLength = total > 0 ? (cancelled / total) * circumference : 0;
-	const center = { x: 130, y: 110 };
-	const pointAt = (angle: number, distance: number) => {
-		const radians = ((angle - 90) * Math.PI) / 180;
-		return {
-			x: center.x + Math.cos(radians) * distance,
-			y: center.y + Math.sin(radians) * distance,
-		};
-	};
-	const separatorAngles = [0, total > 0 ? (success / total) * 360 : 0];
-
-	return (
-		<div className="flex justify-center overflow-visible">
-			<svg
-				viewBox="0 0 260 220"
-				role="img"
-				aria-label={`Parcel summary: ${success} successful and ${cancelled} cancelled out of ${total}`}
-				className="h-auto w-full max-w-[340px] overflow-visible"
-			>
-				<circle
-					cx={center.x}
-					cy={center.y}
-					r={radius}
-					fill="none"
-					strokeWidth="30"
-					className="stroke-slate-100"
-				/>
-				<circle
-					cx={center.x}
-					cy={center.y}
-					r={radius}
-					fill="none"
-					strokeWidth="30"
-					className={total > 0 ? "stroke-[#35aaa0]" : "stroke-slate-200"}
-				/>
-				{cancelledLength > 0 && (
-					<>
-						<circle
-							cx={center.x}
-							cy={center.y}
-							r={radius}
-							fill="none"
-							strokeWidth="34"
-							strokeDasharray={`${cancelledLength} ${circumference}`}
-							strokeDashoffset={-successLength}
-							transform={`rotate(-90 ${center.x} ${center.y})`}
-							className="stroke-white"
-						/>
-						<circle
-							cx={center.x}
-							cy={center.y}
-							r={radius}
-							fill="none"
-							strokeWidth="30"
-							strokeDasharray={`${cancelledLength} ${circumference}`}
-							strokeDashoffset={-successLength}
-							transform={`rotate(-90 ${center.x} ${center.y})`}
-							className="stroke-[#ef5350]"
-						/>
-					</>
-				)}
-				{cancelledLength > 0 &&
-					separatorAngles.map((angle) => {
-						const inner = pointAt(angle, radius - 16);
-						const outer = pointAt(angle, radius + 16);
-						return (
-							<line
-								key={angle}
-								x1={inner.x}
-								y1={inner.y}
-								x2={outer.x}
-								y2={outer.y}
-								stroke="white"
-								strokeWidth="4"
-								strokeLinecap="round"
-							/>
-						);
-					})}
-				<circle cx={center.x} cy={center.y} r={radius - 15} fill="white" />
-				<text
-					x={center.x}
-					y={center.y - 3}
-					fill="#35aaa0"
-					fontSize="30"
-					fontWeight="800"
-					textAnchor="middle"
-				>
-					{ratio}
-					<tspan fontSize="14" dx="2">
-						%
-					</tspan>
-				</text>
-				<text
-					x={center.x}
-					y={center.y + 18}
-					fill="#94a3b8"
-					fontSize="10"
-					fontWeight="600"
-					textAnchor="middle"
-				>
-					{total} parcels
-				</text>
-			</svg>
-		</div>
-	);
-}
-
-function MiniRateChart({ rate }: { rate: number }) {
-	const radius = 14;
-	const circumference = 2 * Math.PI * radius;
-	const successLength =
-		(Math.max(0, Math.min(rate, 100)) / 100) * circumference;
-
-	return (
-		<div className="flex items-center gap-2">
-			<svg
-				viewBox="0 0 40 40"
-				role="img"
-				aria-label={`${rate}% success rate`}
-				className="size-9 -rotate-90"
-			>
-				<circle
-					cx="20"
-					cy="20"
-					r={radius}
-					fill="none"
-					strokeWidth="6"
-					className="stroke-slate-100"
-				/>
-				<circle
-					cx="20"
-					cy="20"
-					r={radius}
-					fill="none"
-					strokeWidth="6"
-					strokeDasharray={`${successLength} ${circumference}`}
-					className="stroke-[#35aaa0]"
-				/>
-			</svg>
-			<span className="text-xs font-extrabold text-slate-700">{rate}%</span>
-		</div>
-	);
-}
-
 function CourierRow({ courier }: { courier: CourierStats }) {
 	return (
 		<tr className="border-t border-slate-100">
@@ -215,7 +64,11 @@ function CourierRow({ courier }: { courier: CourierStats }) {
 				{courier.cancelled_parcel}
 			</td>
 			<td className="px-3 py-3">
-				<MiniRateChart rate={courier.success_ratio} />
+				<PieChart
+					value={courier.success_ratio}
+					total={courier.total_parcel}
+					size="small"
+				/>
 			</td>
 		</tr>
 	);
@@ -270,7 +123,10 @@ export function CourierStatus({ result }: { result: FraudResult }) {
 					<h3 className="mb-4 text-sm font-bold uppercase tracking-wider text-slate-500">
 						Summary
 					</h3>
-					<DonutChart summary={summary} />
+					<PieChart
+						value={summary?.success_ratio ?? 0}
+						total={summary?.total_parcel}
+					/>
 				</section>
 
 				{/* Right: per-courier data */}
