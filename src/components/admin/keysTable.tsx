@@ -274,7 +274,11 @@ export const KeysTable = ({
 									{item.count.toLocaleString()}
 								</td>
 								<td className="border-b border-slate-200 p-4 dark:border-gray-700">
-									<StatusBadge status={item.status} />
+									<StatusSelect
+										item={item}
+										onStatusChange={handleStatusChange}
+										isUpdating={updatingId === item._id}
+									/>
 								</td>
 								<td className="border-b border-slate-200 p-4 text-slate-500 dark:border-gray-700 dark:text-gray-400">
 									{formateDate(item.createdAt)}
