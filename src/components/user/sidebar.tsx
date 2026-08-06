@@ -34,7 +34,7 @@ function NavItemLink({ item, onNavigate }) {
 	return (
 		<Link
 			to={item.to}
-			activeOptions={{ exact: true }}
+			activeOptions={{ exact: true, includeSearch: false }}
 			onClick={onNavigate}
 			className={navLinkClasses}
 		>
