@@ -55,7 +55,7 @@ function RouteComponent() {
 
 	return (
 		<main className="p-4 sm:p-6 lg:p-8">
-			<div className="mx-auto max-w-3xl">
+			<div className="maxw">
 				<label
 					htmlFor="fraud-checker-phone"
 					className="mb-2 block text-sm font-bold text-secondary-dark"

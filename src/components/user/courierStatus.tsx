@@ -131,9 +131,6 @@ export function CourierStatus({ result }: { result: FraudResult }) {
 
 				{/* Right: per-courier data */}
 				<section className="overflow-hidden rounded-2xl border border-slate-200 bg-white shadow-sm lg:col-span-3">
-					<h3 className="px-5 pt-5 text-sm font-bold uppercase tracking-wider text-slate-500">
-						Couriers
-					</h3>
 					<div className="overflow-x-auto px-2 pb-2">
 						<table className="w-full min-w-[430px] text-left">
 							<thead>
