@@ -28,6 +28,7 @@ import { Route as AdminKeysAllRouteImport } from './routes/admin/keys.all'
 import { Route as AdminPackageAllRouteImport } from './routes/admin/package.all'
 import { Route as AdminSubscriptionAllRouteImport } from './routes/admin/subscription.all'
 import { Route as AdminUserAllRouteImport } from './routes/admin/user.all'
+import { Route as ApiV1CourierCheckRouteImport } from './routes/api/v1/courier-check'
 
 const WebsiteRouteRoute = WebsiteRouteRouteImport.update({
   id: '/_website',
@@ -123,6 +124,11 @@ const AdminUserAllRoute = AdminUserAllRouteImport.update({
   path: '/user/all',
   getParentRoute: () => AdminRouteRoute,
 } as any)
+const ApiV1CourierCheckRoute = ApiV1CourierCheckRouteImport.update({
+  id: '/api/v1/courier-check',
+  path: '/api/v1/courier-check',
+  getParentRoute: () => rootRouteImport,
+} as any)
 
 export interface FileRoutesByFullPath {
   '/': typeof WebsiteIndexRoute
@@ -143,6 +149,7 @@ export interface FileRoutesByFullPath {
   '/admin/package/all': typeof AdminPackageAllRoute
   '/admin/subscription/all': typeof AdminSubscriptionAllRoute
   '/admin/user/all': typeof AdminUserAllRoute
+  '/api/v1/courier-check': typeof ApiV1CourierCheckRoute
 }
 export interface FileRoutesByTo {
   '/subscription': typeof SubscriptionRoute
@@ -161,6 +168,7 @@ export interface FileRoutesByTo {
   '/admin/package/all': typeof AdminPackageAllRoute
   '/admin/subscription/all': typeof AdminSubscriptionAllRoute
   '/admin/user/all': typeof AdminUserAllRoute
+  '/api/v1/courier-check': typeof ApiV1CourierCheckRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
@@ -183,6 +191,7 @@ export interface FileRoutesById {
   '/admin/package/all': typeof AdminPackageAllRoute
   '/admin/subscription/all': typeof AdminSubscriptionAllRoute
   '/admin/user/all': typeof AdminUserAllRoute
+  '/api/v1/courier-check': typeof ApiV1CourierCheckRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
@@ -205,6 +214,7 @@ export interface FileRouteTypes {
     | '/admin/package/all'
     | '/admin/subscription/all'
     | '/admin/user/all'
+    | '/api/v1/courier-check'
   fileRoutesByTo: FileRoutesByTo
   to:
     | '/subscription'
@@ -223,6 +233,7 @@ export interface FileRouteTypes {
     | '/admin/package/all'
     | '/admin/subscription/all'
     | '/admin/user/all'
+    | '/api/v1/courier-check'
   id:
     | '__root__'
     | '/_website'
@@ -244,6 +255,7 @@ export interface FileRouteTypes {
     | '/admin/package/all'
     | '/admin/subscription/all'
     | '/admin/user/all'
+    | '/api/v1/courier-check'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
@@ -251,6 +263,7 @@ export interface RootRouteChildren {
   AdminRouteRoute: typeof AdminRouteRouteWithChildren
   PanelRouteRoute: typeof PanelRouteRouteWithChildren
   SubscriptionRoute: typeof SubscriptionRoute
+  ApiV1CourierCheckRoute: typeof ApiV1CourierCheckRoute
 }
 
 declare module '@tanstack/react-router' {
@@ -388,6 +401,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AdminUserAllRouteImport
       parentRoute: typeof AdminRouteRoute
     }
+    '/api/v1/courier-check': {
+      id: '/api/v1/courier-check'
+      path: '/api/v1/courier-check'
+      fullPath: '/api/v1/courier-check'
+      preLoaderRoute: typeof ApiV1CourierCheckRouteImport
+      parentRoute: typeof rootRouteImport
+    }
   }
 }
 
@@ -456,6 +476,7 @@ const rootRouteChildren: RootRouteChildren = {
   AdminRouteRoute: AdminRouteRouteWithChildren,
   PanelRouteRoute: PanelRouteRouteWithChildren,
   SubscriptionRoute: SubscriptionRoute,
+  ApiV1CourierCheckRoute: ApiV1CourierCheckRoute,
 }
 export const routeTree = rootRouteImport
   ._addFileChildren(rootRouteChildren)

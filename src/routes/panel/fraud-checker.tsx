@@ -8,6 +8,8 @@ const searchSchema = z.object({
 	phone: z.string().optional(),
 });
 
+const normalizePhone = (value: string) => value.replace(/\D/g, "").slice(0, 11);
+
 export const Route = createFileRoute("/panel/fraud-checker")({
 	validateSearch: searchSchema,
 	component: RouteComponent,
@@ -15,10 +17,10 @@ export const Route = createFileRoute("/panel/fraud-checker")({
 
 function RouteComponent() {
 	const { phone } = Route.useSearch();
-	const [searchNumber, setSearchNumber] = useState(phone ?? "");
+	const [searchNumber, setSearchNumber] = useState(normalizePhone(phone ?? ""));
 
 	useEffect(() => {
-		setSearchNumber(phone ?? "");
+		setSearchNumber(normalizePhone(phone ?? ""));
 	}, [phone]);
 
 	return (
@@ -35,9 +37,12 @@ function RouteComponent() {
 						id="fraud-checker-phone"
 						type="tel"
 						inputMode="numeric"
+						maxLength={11}
 						value={searchNumber}
 						onChange={(event) =>
-							setSearchNumber(event.target.value.replace(/\D/g, ""))
+							setSearchNumber(
+								event.target.value.replace(/\D/g, "").slice(0, 11),
+							)
 						}
 						placeholder="01XXXXXXXXX"
 						className="h-14 min-w-0 flex-1 rounded-xl border border-slate-200 bg-white px-4 text-base font-semibold tracking-wide text-slate-800 outline-none transition focus:border-secondary focus:ring-4 focus:ring-secondary/10"

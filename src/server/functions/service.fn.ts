@@ -1,10 +1,11 @@
 import { getKey, recordUse, reportFailure } from "@/server/lib/courierKeyPool";
 
-async function checkCourier(phoneNumber: string) {
+export async function checkCourier(phoneNumber: string) {
 	const url = "https://api.bdcourier.com/courier-check";
 
 	const key = await getKey();
-	if (!key) throw new Error("All courier API keys are exhausted or inactive today");
+	if (!key)
+		throw new Error("All courier API keys are exhausted or inactive today");
 
 	const response = await fetch(url, {
 		method: "POST",
@@ -15,11 +16,23 @@ async function checkCourier(phoneNumber: string) {
 		body: JSON.stringify({ phone: phoneNumber }),
 	});
 
-	const data = await response.json();
+	let data: unknown;
+	try {
+		data = await response.json();
+	} catch {
+		await reportFailure(key.id);
+		throw new Error("Courier provider returned an invalid response");
+	}
 
-	if (data.status !== "success") {
+	if (
+		!response.ok ||
+		typeof data !== "object" ||
+		data === null ||
+		!("status" in data) ||
+		data.status !== "success"
+	) {
 		await reportFailure(key.id); // 3 consecutive errors → this key gets deactivated
-		throw data;
+		throw new Error("Courier provider rejected the request");
 	}
 
 	await recordUse(key.id);
