@@ -1,17 +1,17 @@
 // @ts-nocheck
-import { Link } from "@tanstack/react-router";
-import { ArrowRight, Search, Sparkles, XCircle } from "lucide-react";
+import { useNavigate } from "@tanstack/react-router";
+import { Search, XCircle } from "lucide-react";
 import { useState } from "react";
+import { useAuth } from "@/context/userContext";
 
 export default function SearchDemo() {
+	const navigate = useNavigate();
+	const { isAuthenticated, isLoading } = useAuth();
 	const [phone, setPhone] = useState("");
-	const [used, setUsed] = useState(0);
-	const [message, setMessage] = useState("");
 	const [error, setError] = useState("");
 
 	const handleChange = (event) => {
 		setPhone(event.target.value.replace(/\D/g, "").slice(0, 11));
-		setMessage("");
 		setError("");
 	};
 
@@ -21,14 +21,12 @@ export default function SearchDemo() {
 			setError("সঠিক ১১ সংখ্যার মোবাইল নাম্বার দিন");
 			return;
 		}
-		if (used >= 5) {
-			setMessage(
-				"আপনার আজকের ৫টি ফ্রি সার্চ শেষ। চালিয়ে যেতে লগইন করে একটি প্যাকেজ নিন।",
-			);
-			return;
-		}
-		setUsed((current) => current + 1);
-		setMessage("ডেমো রিপোর্ট প্রস্তুত — আসল ডেটা কানেক্ট হলে এখানেই ফলাফল দেখাবে।");
+		if (isLoading) return;
+		void navigate(
+			isAuthenticated
+				? { to: "/panel/fraud-checker", search: { phone } }
+				: { to: "/login" },
+		);
 	};
 
 	return (
@@ -40,16 +38,13 @@ export default function SearchDemo() {
 				>
 					<label className="relative flex-1">
 						<span className="sr-only">কাস্টমারের মোবাইল নাম্বার</span>
-						<span className="pointer-events-none absolute left-4 top-1/2 -translate-y-1/2 text-sm font-bold text-secondary">
-							+880
-						</span>
 						<input
 							type="tel"
 							inputMode="numeric"
 							value={phone}
 							onChange={handleChange}
 							placeholder="01XXXXXXXXX"
-							className="w-full rounded-xl border border-slate-200 bg-white py-4 pl-16 pr-4 text-base font-bold tracking-wider text-slate-800 outline-none transition-all placeholder:font-normal placeholder:tracking-normal placeholder:text-slate-400 focus:border-secondary focus:ring-4 focus:ring-secondary/10"
+							className="w-full rounded-xl border border-slate-200 bg-white py-4 pl-4 pr-4 text-base font-bold tracking-wider text-slate-800 outline-none transition-all placeholder:font-normal placeholder:tracking-normal placeholder:text-slate-400 focus:border-secondary focus:ring-4 focus:ring-secondary/10"
 						/>
 					</label>
 					<button
@@ -67,32 +62,6 @@ export default function SearchDemo() {
 						<XCircle className="h-4 w-4" /> {error}
 					</p>
 				)}
-				{message && (
-					<div
-						aria-live="polite"
-						className="mt-3 rounded-xl bg-white px-3.5 py-3 ring-1 ring-secondary/10"
-					>
-						<p className="flex items-start gap-1.5 text-xs font-semibold leading-relaxed text-secondary-dark">
-							<Sparkles className="mt-0.5 h-4 w-4 shrink-0" /> {message}
-						</p>
-						{used >= 5 && (
-							<div className="mt-3 flex flex-wrap gap-2">
-								<Link
-									to="/login"
-									className="inline-flex items-center gap-1.5 rounded-lg bg-secondary px-3 py-2 text-[11px] font-extrabold text-white transition hover:bg-secondary-dark"
-								>
-									লগইন করে চালিয়ে যান <ArrowRight className="h-3.5 w-3.5" />
-								</Link>
-								<a
-									href="#pricing"
-									className="inline-flex items-center gap-1.5 rounded-lg border border-secondary/20 px-3 py-2 text-[11px] font-bold text-secondary transition hover:bg-secondary/10"
-								>
-									প্যাকেজ দেখুন
-								</a>
-							</div>
-						)}
-					</div>
-				)}{" "}
 			</div>
 		</div>
 	);
