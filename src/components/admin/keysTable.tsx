@@ -1,6 +1,6 @@
-import { Link } from "@tanstack/react-router";
+import { Link, useNavigate } from "@tanstack/react-router";
 import { ArrowRight, KeyRound, Pencil, Trash2 } from "lucide-react";
-import { type ReactNode, useState } from "react";
+import { type MouseEvent, type ReactNode, useState } from "react";
 import { KeyErrorBadge } from "@/components/admin/keyErrorBadge";
 import DeleteModal from "@/components/common/deleteModal";
 import { formateDate } from "@/utils/formateDate";
@@ -57,7 +57,7 @@ const StatusBadge = ({ status }: { status: StatusValue }) => {
 const KeyLink = ({ item }: { item: KeyRow }) => (
 	<Link
 		to="/admin/keys/errors"
-		search={{ keyId: item._id }}
+		search={{ key: item._id }}
 		title="View key errors"
 		className="group inline-flex items-center gap-1.5 rounded-lg px-1.5 py-1 text-secondary-dark transition hover:bg-secondary/10 hover:text-secondary dark:text-white"
 	>
@@ -129,16 +129,28 @@ const MobileField = ({
 		<div className="text-slate-900 dark:text-gray-100">{children}</div>
 	</div>
 );
-
 export const KeysTable = ({
 	data,
 	onEditItem,
 	onDeleteItem,
 	searchTerm = "",
 }: KeysTableProps) => {
+	const navigate = useNavigate();
 	const [deleteConfirm, setDeleteConfirm] = useState<string | null>(null);
 	const [isDeleting, setIsDeleting] = useState(false);
 	const [deleteError, setDeleteError] = useState("");
+
+	// Clicking anywhere on the row opens that key's errors — except on the
+	// Edit/Delete buttons and the key link itself, which handle their own action.	// Clicking anywhere on the row opens that key's errors — except on the
+	// Edit/Delete buttons and the key link (the keyboard/screen-reader path).
+	const openKeyErrors = (keyId: string) => {
+		navigate({ to: "/admin/keys/errors", search: { key: keyId } });
+	};
+	const handleRowClick = (event: MouseEvent<HTMLElement>, keyId: string) => {
+		if ((event.target as HTMLElement).closest("button, a, input, label"))
+			return;
+		openKeyErrors(keyId);
+	};
 
 	const requestDelete = (id: string) => {
 		setDeleteError("");
@@ -181,9 +193,11 @@ export const KeysTable = ({
 			{/* Mobile cards */}
 			<div className="space-y-4 md:hidden">
 				{data.map((item, index) => (
+					// biome-ignore lint/a11y/useKeyWithClickEvents: the key link inside the card is the keyboard/screen-reader path.
 					<article
-						className="overflow-hidden rounded-lg border-2 border-slate-200 bg-white shadow-sm transition hover:border-secondary/40 hover:shadow-md dark:border-gray-700 dark:bg-gray-900"
 						key={item._id}
+						onClick={(event) => handleRowClick(event, item._id)}
+						className="cursor-pointer overflow-hidden rounded-lg border-2 border-slate-200 bg-white shadow-sm transition hover:border-secondary/40 hover:shadow-md dark:border-gray-700 dark:bg-gray-900"
 					>
 						<div className="flex items-center justify-between border-b border-slate-200 bg-slate-50 px-3 py-2 dark:border-gray-700 dark:bg-gray-800">
 							<span className="text-xs font-bold uppercase tracking-[0.14em] text-slate-500 dark:text-gray-400">
@@ -246,8 +260,9 @@ export const KeysTable = ({
 					<tbody>
 						{data.map((item, index) => (
 							<tr
-								className="text-secondary-dark transition even:bg-slate-50 hover:bg-emerald-50/40 dark:text-white dark:even:bg-gray-800 dark:hover:bg-gray-800/80"
 								key={item._id}
+								onClick={(event) => handleRowClick(event, item._id)}
+								className="cursor-pointer text-secondary-dark transition even:bg-slate-50 hover:bg-emerald-50/40 dark:text-white dark:even:bg-gray-800 dark:hover:bg-gray-800/80"
 							>
 								<td className="border-b border-slate-200 p-4 dark:border-gray-700">
 									{index + 1}

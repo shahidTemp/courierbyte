@@ -10,7 +10,7 @@ import { getKeyErrors } from "@/server/functions/keys.fn";
 import { formateDate } from "@/utils/formateDate";
 
 const searchSchema = z.object({
-	keyId: z.string().optional(),
+	key: z.string().optional(),
 });
 
 export const Route = createFileRoute("/admin/keys/errors")({
@@ -46,15 +46,15 @@ const TruncatedCell = ({
 
 function KeyErrorsPage() {
 	const { user } = useAuth();
-	const { keyId } = Route.useSearch();
+	const { key } = Route.useSearch();
 	const [searchTerm, setSearchTerm] = useState("");
 
 	// Ignore malformed ids so a hand-edited URL falls back to "all errors".
-	const safeKeyId = keyId && KEY_ID_PATTERN.test(keyId) ? keyId : undefined;
+	const safeKey = key && KEY_ID_PATTERN.test(key) ? key : undefined;
 
 	const { data, isPending, error } = useQuery({
-		queryKey: ["key-errors", safeKeyId ?? "all"],
-		queryFn: () => getKeyErrors({ data: { keyId: safeKeyId } }),
+		queryKey: ["key-errors", safeKey ?? "all"],
+		queryFn: () => getKeyErrors({ data: { keyId: safeKey } }),
 		enabled: user?.role === "super_admin",
 	});
 
@@ -114,7 +114,7 @@ function KeyErrorsPage() {
 							Courier API failure logs
 							{filterKey
 								? ` — filtered to ${filterKey.keyValue}`
-								: safeKeyId
+								: safeKey
 									? " — filtered to a deleted key"
 									: " — all keys"}
 						</p>
@@ -179,7 +179,7 @@ function KeyErrorsPage() {
 						<h2 className="text-xl font-extrabold text-secondary-dark">
 							{query
 								? "No matching errors"
-								: safeKeyId
+								: safeKey
 									? "No errors for this key"
 									: "No key errors recorded"}
 						</h2>
