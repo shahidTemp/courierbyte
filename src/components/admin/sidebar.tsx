@@ -31,9 +31,6 @@ const MAIN_NAV = [
 		to: "/admin/keys/errors",
 		icon: AlertTriangle,
 	},
-	{ label: "Fraud Checker", to: "/admin/fraud-checker", icon: ShieldCheck },
-	{ label: "Billing", to: "/admin/billing", icon: Receipt },
-	{ label: "Developer API", to: "/admin/developer-api", icon: Code2 },
 ];
 
 const navLinkClasses =
