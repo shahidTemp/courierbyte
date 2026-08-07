@@ -1,4 +1,8 @@
 import { Types } from "mongoose";
+import {
+	type CourierErrorDetails,
+	logCourierError,
+} from "@/server/lib/courierErrorLog";
 import { CourierKey } from "@/server/models/courierKey.model";
 
 type CachedKey = {
@@ -70,13 +74,23 @@ async function recordUse(id: string): Promise<void> {
 	}
 }
 
-/** A request failed on this key — 3 consecutive errors and the key is deactivated. */
-async function reportFailure(id: string): Promise<void> {
+/**
+ * A request failed on this key — every failure is persisted to the error log,
+ * and 3 consecutive errors deactivate the key.
+ */
+async function reportFailure(
+	id: string,
+	details: CourierErrorDetails,
+): Promise<void> {
 	const key = keys.find((k) => k.id === id);
 	if (!key) return;
 
 	key.failures += 1;
-	if (key.failures < MAX_FAILURES) return;
+	const deactivated = key.failures >= MAX_FAILURES;
+
+	await logCourierError({ ...details, keyId: id, keyDeactivated: deactivated });
+
+	if (!deactivated) return;
 
 	await CourierKey.updateOne(
 		{ _id: new Types.ObjectId(id) },

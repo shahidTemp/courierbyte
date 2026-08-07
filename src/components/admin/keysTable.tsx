@@ -3,6 +3,13 @@ import { type ReactNode, useState } from "react";
 import DeleteModal from "@/components/common/deleteModal";
 import { formateDate } from "@/utils/formateDate";
 
+type LastError = {
+	category: string;
+	message: string;
+	providerMessage: string | null;
+	createdAt: string;
+};
+
 type KeyRow = {
 	_id: string;
 	keyValue: string;
@@ -10,6 +17,7 @@ type KeyRow = {
 	count: number;
 	status: "active" | "inactive";
 	createdAt: string;
+	lastError: LastError | null;
 };
 
 type KeysTableProps = {
@@ -39,6 +47,61 @@ const StatusBadge = ({ status }: { status: StatusValue }) => {
 	return (
 		<span
 			className={`inline-flex rounded-full px-3 py-1 text-xs font-semibold ${config.classes}`}
+		>
+			{config.label}
+		</span>
+	);
+};
+
+const errorCategoryConfig = {
+	KEYS_EXHAUSTED: {
+		label: "Keys exhausted",
+		classes:
+			"bg-slate-100 text-slate-700 dark:bg-gray-700/50 dark:text-gray-300",
+	},
+	NETWORK_ERROR: {
+		label: "Network error",
+		classes:
+			"bg-orange-100 text-orange-700 dark:bg-orange-900/30 dark:text-orange-400",
+	},
+	AUTH_FAILED: {
+		label: "Auth failed",
+		classes: "bg-red-100 text-red-700 dark:bg-red-900/30 dark:text-red-400",
+	},
+	RATE_LIMITED: {
+		label: "Rate limited",
+		classes:
+			"bg-amber-100 text-amber-700 dark:bg-amber-900/30 dark:text-amber-400",
+	},
+	PROVIDER_REJECTED: {
+		label: "Rejected",
+		classes:
+			"bg-amber-100 text-amber-700 dark:bg-amber-900/30 dark:text-amber-400",
+	},
+	INVALID_RESPONSE: {
+		label: "Bad response",
+		classes: "bg-rose-100 text-rose-700 dark:bg-rose-900/30 dark:text-rose-400",
+	},
+} as const;
+
+type ErrorCategoryKey = keyof typeof errorCategoryConfig;
+
+const LastErrorCell = ({ error }: { error: LastError | null }) => {
+	if (!error) {
+		return <span className="text-slate-400 dark:text-gray-500">—</span>;
+	}
+	const config = errorCategoryConfig[error.category as ErrorCategoryKey] ?? {
+		label: error.category,
+		classes:
+			"bg-slate-100 text-slate-700 dark:bg-gray-700/50 dark:text-gray-300",
+	};
+	const detail = [error.message, error.providerMessage]
+		.filter(Boolean)
+		.join(" — ");
+	return (
+		<span
+			title={`${detail} (${formateDate(error.createdAt)})`}
+			className={`inline-flex cursor-help items-center rounded-full px-3 py-1 text-xs font-semibold ${config.classes}`}
 		>
 			{config.label}
 		</span>
@@ -164,6 +227,9 @@ export const KeysTable = ({
 							<MobileField label="Used today">
 								{item.count.toLocaleString()}
 							</MobileField>
+							<MobileField label="Last error">
+								<LastErrorCell error={item.lastError} />
+							</MobileField>
 							<MobileField label="Created At">
 								{formateDate(item.createdAt)}
 							</MobileField>
@@ -190,11 +256,12 @@ export const KeysTable = ({
 								"Daily limit",
 								"Used today",
 								"Status",
+								"Last error",
 								"Created At",
 								"Actions",
 							].map((heading, index) => (
 								<th
-									className={`p-4 font-bold ${index === 0 ? "rounded-tl-2xl" : ""} ${index === 6 ? "rounded-tr-2xl" : ""}`}
+									className={`p-4 font-bold ${index === 0 ? "rounded-tl-2xl" : ""} ${index === 7 ? "rounded-tr-2xl" : ""}`}
 									key={heading}
 								>
 									{heading}
@@ -222,6 +289,9 @@ export const KeysTable = ({
 								</td>
 								<td className="border-b border-slate-200 p-4 dark:border-gray-700">
 									<StatusBadge status={item.status} />
+								</td>
+								<td className="border-b border-slate-200 p-4 dark:border-gray-700">
+									<LastErrorCell error={item.lastError} />
 								</td>
 								<td className="border-b border-slate-200 p-4 text-slate-500 dark:border-gray-700 dark:text-gray-400">
 									{formateDate(item.createdAt)}

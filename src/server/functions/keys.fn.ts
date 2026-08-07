@@ -2,6 +2,7 @@ import { createServerFn } from "@tanstack/react-start";
 import { z } from "zod";
 import { reload } from "@/server/lib/courierKeyPool";
 import { requireRole } from "@/server/middleware";
+import { CourierErrorLog } from "@/server/models/courierErrorLog.model";
 import { CourierKey } from "@/server/models/courierKey.model";
 
 const superAdminOnly = requireRole("super_admin");
@@ -30,34 +31,78 @@ const isDuplicate = (error: unknown) =>
 	"code" in error &&
 	error.code === 11000;
 
+type LastErrorInfo = {
+	category: string;
+	message: string;
+	providerMessage: string | null;
+	createdAt: unknown;
+};
+
 // Never send the full secret to the client — mask it. Count belongs to today,
 // otherwise it is yesterday's leftover and would be misleading.
-const toSafeKey = (key: {
-	_id: unknown;
-	keyValue: string;
-	dailyLimit: number;
-	count: number;
-	date: string;
-	status: string;
-	createdAt: unknown;
-}) => ({
+const toSafeKey = (
+	key: {
+		_id: unknown;
+		keyValue: string;
+		dailyLimit: number;
+		count: number;
+		date: string;
+		status: string;
+		createdAt: unknown;
+	},
+	lastError: LastErrorInfo | null = null,
+) => ({
 	_id: String(key._id),
 	keyValue: `••••${key.keyValue.slice(-4)}`,
 	dailyLimit: key.dailyLimit,
 	count: key.date === today() ? key.count : 0,
 	status: key.status,
 	createdAt: key.createdAt,
+	lastError,
 });
 
 export const getKeys = createServerFn({ method: "GET" })
 	.middleware([superAdminOnly])
 	.handler(async () => {
-		const keys = await CourierKey.find()
-			.select("+keyValue")
-			.sort({ createdAt: -1 })
-			.lean();
+		const [keys, lastErrors] = await Promise.all([
+			CourierKey.find().select("+keyValue").sort({ createdAt: -1 }).lean(),
+			// Only the newest error per key — avoids loading the whole log.
+			CourierErrorLog.aggregate([
+				{ $match: { keyId: { $ne: null } } },
+				{ $sort: { createdAt: -1 } },
+				{
+					$group: {
+						_id: "$keyId",
+						category: { $first: "$category" },
+						message: { $first: "$message" },
+						providerMessage: { $first: "$providerMessage" },
+						createdAt: { $first: "$createdAt" },
+					},
+				},
+			]),
+		]);
 
-		return JSON.parse(JSON.stringify(keys.map(toSafeKey)));
+		// Map aggregation results to their key id for the admin keys table.
+		const lastErrorByKey = new Map<string, LastErrorInfo>();
+		for (const entry of lastErrors) {
+			const keyId = entry._id ? String(entry._id) : "";
+			if (keyId) {
+				lastErrorByKey.set(keyId, {
+					category: entry.category,
+					message: entry.message,
+					providerMessage: entry.providerMessage,
+					createdAt: entry.createdAt,
+				});
+			}
+		}
+
+		return JSON.parse(
+			JSON.stringify(
+				keys.map((key) =>
+					toSafeKey(key, lastErrorByKey.get(String(key._id)) ?? null),
+				),
+			),
+		);
 	});
 
 export const createKey = createServerFn({ method: "POST" })

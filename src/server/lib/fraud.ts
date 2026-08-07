@@ -30,8 +30,9 @@ export class FraudError extends Error {
 		code: FraudErrorCode,
 		message: string,
 		status: 400 | 401 | 403 | 429 | 503,
+		options?: ErrorOptions,
 	) {
-		super(message);
+		super(message, options);
 		this.name = "FraudError";
 		this.code = code;
 		this.status = status;
@@ -152,15 +153,19 @@ export async function executeFraudCheck(userId: string, phone: unknown) {
 	let result: unknown;
 	try {
 		result = await checkCourier(parsed.data.phone);
-	} catch {
+	} catch (error) {
 		await userSubscription.updateOne(
 			{ _id: reservedSubscription._id, "api_calls_pending.id": reservationId },
 			{ $pull: { api_calls_pending: { id: reservationId } } },
 		);
+		// The generic message is safe for the end user; the original provider
+		// error is preserved as the cause for server-side debugging and has
+		// already been persisted by checkCourier to the CourierErrorLog.
 		throw new FraudError(
 			"COURIER_UNAVAILABLE",
 			"Courier service is temporarily unavailable",
 			503,
+			{ cause: error },
 		);
 	}
 

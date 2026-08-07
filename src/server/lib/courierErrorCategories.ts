@@ -1,0 +1,10 @@
+export const COURIER_ERROR_CATEGORIES = [
+	"KEYS_EXHAUSTED",
+	"NETWORK_ERROR",
+	"AUTH_FAILED",
+	"RATE_LIMITED",
+	"PROVIDER_REJECTED",
+	"INVALID_RESPONSE",
+] as const;
+
+export type CourierErrorCategory = (typeof COURIER_ERROR_CATEGORIES)[number];
