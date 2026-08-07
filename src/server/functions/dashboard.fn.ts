@@ -1,12 +1,14 @@
 import { createServerFn } from "@tanstack/react-start";
 import { expireSubscriptions } from "@/server/lib/subscription";
-import { authMiddleware } from "@/server/middleware";
+import { authMiddleware, requireRole } from "@/server/middleware";
 import { SearchUsage } from "@/server/models/searchUsage.model";
 import { userSubscription } from "@/server/models/subscription.model";
+import { User } from "@/server/models/user.model";
 
 const BANGLADESH_TIME_ZONE = "Asia/Dhaka";
+const DAY_MS = 24 * 60 * 60 * 1000;
 
-function getBangladeshDayBounds(now = new Date()) {
+function getBangladeshDateParts(now = new Date()) {
 	const dateFormatter = new Intl.DateTimeFormat("en-CA", {
 		timeZone: BANGLADESH_TIME_ZONE,
 		year: "numeric",
@@ -14,17 +16,140 @@ function getBangladeshDayBounds(now = new Date()) {
 		day: "2-digit",
 	});
 	const parts = dateFormatter.formatToParts(now);
-	const dateParts = Object.fromEntries(
+	return Object.fromEntries(
 		parts
 			.filter(({ type }) => type !== "literal")
 			.map(({ type, value }) => [type, value]),
+	) as { year: string; month: string; day: string };
+}
+
+function getDhakaMidnight(year: number, month: number, day: number) {
+	return new Date(
+		`${String(year).padStart(4, "0")}-${String(month).padStart(2, "0")}-${String(day).padStart(2, "0")}T00:00:00+06:00`,
 	);
-	const localDate = `${dateParts.year}-${dateParts.month}-${dateParts.day}`;
-	const dayStart = new Date(`${localDate}T00:00:00+06:00`);
-	const nextDayStart = new Date(dayStart.getTime() + 24 * 60 * 60 * 1000);
+}
+
+function getBangladeshMonthBounds(now = new Date()) {
+	const { year, month } = getBangladeshDateParts(now);
+	const currentYear = Number(year);
+	const currentMonth = Number(month);
+	const currentMonthStart = getDhakaMidnight(currentYear, currentMonth, 1);
+	const previousMonthStart =
+		currentMonth === 1
+			? getDhakaMidnight(currentYear - 1, 12, 1)
+			: getDhakaMidnight(currentYear, currentMonth - 1, 1);
+
+	return { currentMonthStart, previousMonthStart };
+}
+
+function getBangladeshDayBounds(now = new Date()) {
+	const dateParts = getBangladeshDateParts(now);
+	const dayStart = getDhakaMidnight(
+		Number(dateParts.year),
+		Number(dateParts.month),
+		Number(dateParts.day),
+	);
+	const nextDayStart = new Date(dayStart.getTime() + DAY_MS);
 
 	return { dayStart, nextDayStart };
 }
+
+export const getAdminDashboardStats = createServerFn({ method: "GET" })
+	.middleware([requireRole(["admin", "super_admin"])])
+	.handler(async () => {
+		await expireSubscriptions();
+
+		const now = new Date();
+		const { dayStart, nextDayStart } = getBangladeshDayBounds(now);
+		const { currentMonthStart, previousMonthStart } =
+			getBangladeshMonthBounds(now);
+		const newUserThreshold = new Date(dayStart.getTime() - 30 * DAY_MS);
+		const trendStart = new Date(dayStart.getTime() - 13 * DAY_MS);
+		const activeSubscriberIds = await userSubscription.distinct("userId", {
+			status: "active",
+			end_date: { $gt: now },
+		});
+
+		const [
+			totalUsers,
+			activeUsers,
+			newUsers,
+			oldUsers,
+			activeSubscribers,
+			requestsToday,
+			requestsLastMonth,
+			requestsCurrentMonth,
+			dailyRequests,
+		] = await Promise.all([
+			User.countDocuments({ role: "user" }),
+			User.countDocuments({ role: "user", isActive: true }),
+			User.countDocuments({
+				role: "user",
+				createdAt: { $gte: newUserThreshold },
+			}),
+			User.countDocuments({
+				role: "user",
+				createdAt: { $lt: newUserThreshold },
+			}),
+			activeSubscriberIds.length
+				? User.countDocuments({
+						role: "user",
+						_id: { $in: activeSubscriberIds },
+					})
+				: 0,
+			SearchUsage.countDocuments({
+				createdAt: { $gte: dayStart, $lt: nextDayStart },
+			}),
+			SearchUsage.countDocuments({
+				createdAt: { $gte: previousMonthStart, $lt: currentMonthStart },
+			}),
+			SearchUsage.countDocuments({
+				createdAt: { $gte: currentMonthStart, $lt: now },
+			}),
+			SearchUsage.aggregate([
+				{
+					$match: {
+						createdAt: { $gte: trendStart, $lt: now },
+					},
+				},
+				{
+					$group: {
+						_id: {
+							$dateToString: {
+								format: "%Y-%m-%d",
+								date: "$createdAt",
+								timezone: BANGLADESH_TIME_ZONE,
+							},
+						},
+						requests: { $sum: 1 },
+					},
+				},
+				{ $sort: { _id: 1 } },
+			]),
+		]);
+
+		return JSON.parse(
+			JSON.stringify({
+				generatedAt: now,
+				users: {
+					total: totalUsers,
+					active: activeUsers,
+					new: newUsers,
+					old: oldUsers,
+				},
+				activeSubscribers,
+				requests: {
+					today: requestsToday,
+					lastMonth: requestsLastMonth,
+					currentMonth: requestsCurrentMonth,
+				},
+				dailyRequests: dailyRequests.map((item) => ({
+					date: item._id,
+					requests: item.requests,
+				})),
+			}),
+		);
+	});
 
 export const getDashboardStats = createServerFn({ method: "GET" })
 	.middleware([authMiddleware])
