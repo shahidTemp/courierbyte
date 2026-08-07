@@ -1,16 +1,8 @@
 import { Link, useNavigate } from "@tanstack/react-router";
 import { ArrowRight, KeyRound, Pencil, Trash2 } from "lucide-react";
 import { type MouseEvent, type ReactNode, useState } from "react";
-import { KeyErrorBadge } from "@/components/admin/keyErrorBadge";
 import DeleteModal from "@/components/common/deleteModal";
 import { formateDate } from "@/utils/formateDate";
-
-type LastError = {
-	category: string;
-	message: string;
-	providerMessage: string | null;
-	createdAt: string;
-};
 
 type KeyRow = {
 	_id: string;
@@ -19,7 +11,6 @@ type KeyRow = {
 	count: number;
 	status: "active" | "inactive";
 	createdAt: string;
-	lastError: LastError | null;
 };
 
 type KeysTableProps = {
@@ -68,21 +59,6 @@ const KeyLink = ({ item }: { item: KeyRow }) => (
 		/>
 	</Link>
 );
-
-const LastErrorCell = ({ error }: { error: LastError | null }) => {
-	if (!error) {
-		return <span className="text-slate-400 dark:text-gray-500">—</span>;
-	}
-	const detail = [error.message, error.providerMessage]
-		.filter(Boolean)
-		.join(" — ");
-	return (
-		<KeyErrorBadge
-			category={error.category}
-			title={`${detail} (${formateDate(error.createdAt)})`}
-		/>
-	);
-};
 
 const ActionButtons = ({
 	item,
@@ -141,7 +117,6 @@ export const KeysTable = ({
 	const [deleteError, setDeleteError] = useState("");
 
 	// Clicking anywhere on the row opens that key's errors — except on the
-	// Edit/Delete buttons and the key link itself, which handle their own action.	// Clicking anywhere on the row opens that key's errors — except on the
 	// Edit/Delete buttons and the key link (the keyboard/screen-reader path).
 	const openKeyErrors = (keyId: string) => {
 		navigate({ to: "/admin/keys/errors", search: { key: keyId } });
@@ -215,9 +190,6 @@ export const KeysTable = ({
 							<MobileField label="Used today">
 								{item.count.toLocaleString()}
 							</MobileField>
-							<MobileField label="Last error">
-								<LastErrorCell error={item.lastError} />
-							</MobileField>
 							<MobileField label="Created At">
 								{formateDate(item.createdAt)}
 							</MobileField>
@@ -244,12 +216,11 @@ export const KeysTable = ({
 								"Daily limit",
 								"Used today",
 								"Status",
-								"Last error",
 								"Created At",
 								"Actions",
 							].map((heading, index) => (
 								<th
-									className={`p-4 font-bold ${index === 0 ? "rounded-tl-2xl" : ""} ${index === 7 ? "rounded-tr-2xl" : ""}`}
+									className={`p-4 font-bold ${index === 0 ? "rounded-tl-2xl" : ""} ${index === 6 ? "rounded-tr-2xl" : ""}`}
 									key={heading}
 								>
 									{heading}
@@ -278,9 +249,6 @@ export const KeysTable = ({
 								</td>
 								<td className="border-b border-slate-200 p-4 dark:border-gray-700">
 									<StatusBadge status={item.status} />
-								</td>
-								<td className="border-b border-slate-200 p-4 dark:border-gray-700">
-									<LastErrorCell error={item.lastError} />
 								</td>
 								<td className="border-b border-slate-200 p-4 text-slate-500 dark:border-gray-700 dark:text-gray-400">
 									{formateDate(item.createdAt)}
