@@ -23,6 +23,13 @@ const updateKeySchema = idSchema.extend({
 	status: z.enum(["active", "inactive"]).optional(),
 });
 
+const keyErrorsSchema = z.object({
+	keyId: z
+		.string()
+		.regex(/^[a-f\d]{24}$/i, "Invalid key ID")
+		.optional(),
+});
+
 const today = () => new Date().toISOString().slice(0, 10);
 
 const isDuplicate = (error: unknown) =>
@@ -40,6 +47,8 @@ type LastErrorInfo = {
 
 // Never send the full secret to the client — mask it. Count belongs to today,
 // otherwise it is yesterday's leftover and would be misleading.
+const maskKeyValue = (keyValue: string) => `••••${keyValue.slice(-4)}`;
+
 const toSafeKey = (
 	key: {
 		_id: unknown;
@@ -53,7 +62,7 @@ const toSafeKey = (
 	lastError: LastErrorInfo | null = null,
 ) => ({
 	_id: String(key._id),
-	keyValue: `••••${key.keyValue.slice(-4)}`,
+	keyValue: maskKeyValue(key.keyValue),
 	dailyLimit: key.dailyLimit,
 	count: key.date === today() ? key.count : 0,
 	status: key.status,
@@ -150,7 +159,6 @@ export const updateKey = createServerFn({ method: "POST" })
 		await reload(); // pool must pick up the new limit/status immediately
 		return JSON.parse(JSON.stringify(toSafeKey(key.toObject())));
 	});
-
 export const deleteKey = createServerFn({ method: "POST" })
 	.middleware([superAdminOnly])
 	.validator(idSchema)
@@ -160,4 +168,72 @@ export const deleteKey = createServerFn({ method: "POST" })
 
 		await reload();
 		return { success: true, id: data.id };
+	});
+
+export const getKeyErrors = createServerFn({ method: "GET" })
+	.middleware([superAdminOnly])
+	.validator(keyErrorsSchema)
+	.handler(async ({ data }) => {
+		// No keyId → all keys' errors (when the page is visited directly).
+		const filter = data.keyId ? { keyId: data.keyId } : {};
+		const KEY_ERROR_LIMIT = 100;
+		const errors = await CourierErrorLog.find(filter)
+			.sort({ createdAt: -1 })
+			.limit(KEY_ERROR_LIMIT)
+			.lean();
+
+		// Resolve masked key values only for keys that actually have errors.
+		const keyIds = [
+			...new Set(
+				errors
+					.map((error) => (error.keyId ? String(error.keyId) : ""))
+					.filter(Boolean),
+			),
+		];
+		const keys = keyIds.length
+			? await CourierKey.find({ _id: { $in: keyIds } })
+					.select("+keyValue")
+					.lean()
+			: [];
+		const keyValueByKeyId = new Map(
+			keys.map((key) => [String(key._id), maskKeyValue(key.keyValue)]),
+		);
+
+		const rows = errors.map((error) => ({
+			_id: String(error._id),
+			keyId: error.keyId ? String(error.keyId) : null,
+			keyValue: error.keyId
+				? (keyValueByKeyId.get(String(error.keyId)) ?? null)
+				: null,
+			category: error.category,
+			httpStatus: error.httpStatus,
+			message: error.message,
+			providerMessage: error.providerMessage,
+			detail: error.detail,
+			phone: error.phone,
+			keyDeactivated: error.keyDeactivated,
+			createdAt: error.createdAt,
+		}));
+
+		// Key info for the page header when filtered by key.
+		let key = null;
+		if (data.keyId) {
+			const found = await CourierKey.findById(data.keyId)
+				.select("+keyValue")
+				.lean();
+			if (found) {
+				key = {
+					_id: String(found._id),
+					keyValue: maskKeyValue(found.keyValue),
+				};
+			}
+		}
+
+		return JSON.parse(
+			JSON.stringify({
+				errors: rows,
+				key,
+				hasMore: errors.length === KEY_ERROR_LIMIT,
+			}),
+		);
 	});

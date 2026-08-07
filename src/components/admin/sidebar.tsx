@@ -1,6 +1,7 @@
 // @ts-nocheck
 import { Link, useNavigate } from "@tanstack/react-router";
 import {
+	AlertTriangle,
 	Code2,
 	CreditCard,
 	KeyRound,
@@ -25,6 +26,11 @@ const MAIN_NAV = [
 	{ label: "Packages", to: "/admin/package/all", icon: PackageSearch },
 	{ label: "Subscriptions", to: "/admin/subscription/all", icon: CreditCard },
 	{ label: "Keys", to: "/admin/keys/all", icon: KeyRound },
+	{
+		label: "Key Errors",
+		to: "/admin/keys/errors",
+		icon: AlertTriangle,
+	},
 	{ label: "Fraud Checker", to: "/admin/fraud-checker", icon: ShieldCheck },
 	{ label: "Billing", to: "/admin/billing", icon: Receipt },
 	{ label: "Developer API", to: "/admin/developer-api", icon: Code2 },
@@ -79,7 +85,7 @@ function SidebarContent({ onNavigate }) {
 	const navItems =
 		user?.role === "super_admin"
 			? MAIN_NAV
-			: MAIN_NAV.filter((item) => item.to !== "/admin/keys/all");
+			: MAIN_NAV.filter((item) => !item.to.startsWith("/admin/keys"));
 
 	const handleLogout = async () => {
 		onNavigate?.();

@@ -1,5 +1,7 @@
-import { KeyRound, Pencil, Trash2 } from "lucide-react";
+import { Link } from "@tanstack/react-router";
+import { ArrowRight, KeyRound, Pencil, Trash2 } from "lucide-react";
 import { type ReactNode, useState } from "react";
+import { KeyErrorBadge } from "@/components/admin/keyErrorBadge";
 import DeleteModal from "@/components/common/deleteModal";
 import { formateDate } from "@/utils/formateDate";
 
@@ -52,59 +54,33 @@ const StatusBadge = ({ status }: { status: StatusValue }) => {
 		</span>
 	);
 };
-
-const errorCategoryConfig = {
-	KEYS_EXHAUSTED: {
-		label: "Keys exhausted",
-		classes:
-			"bg-slate-100 text-slate-700 dark:bg-gray-700/50 dark:text-gray-300",
-	},
-	NETWORK_ERROR: {
-		label: "Network error",
-		classes:
-			"bg-orange-100 text-orange-700 dark:bg-orange-900/30 dark:text-orange-400",
-	},
-	AUTH_FAILED: {
-		label: "Auth failed",
-		classes: "bg-red-100 text-red-700 dark:bg-red-900/30 dark:text-red-400",
-	},
-	RATE_LIMITED: {
-		label: "Rate limited",
-		classes:
-			"bg-amber-100 text-amber-700 dark:bg-amber-900/30 dark:text-amber-400",
-	},
-	PROVIDER_REJECTED: {
-		label: "Rejected",
-		classes:
-			"bg-amber-100 text-amber-700 dark:bg-amber-900/30 dark:text-amber-400",
-	},
-	INVALID_RESPONSE: {
-		label: "Bad response",
-		classes: "bg-rose-100 text-rose-700 dark:bg-rose-900/30 dark:text-rose-400",
-	},
-} as const;
-
-type ErrorCategoryKey = keyof typeof errorCategoryConfig;
+const KeyLink = ({ item }: { item: KeyRow }) => (
+	<Link
+		to="/admin/keys/errors"
+		search={{ keyId: item._id }}
+		title="View key errors"
+		className="group inline-flex items-center gap-1.5 rounded-lg px-1.5 py-1 text-secondary-dark transition hover:bg-secondary/10 hover:text-secondary dark:text-white"
+	>
+		{item.keyValue}
+		<ArrowRight
+			aria-hidden="true"
+			className="size-3.5 opacity-0 transition group-hover:opacity-100"
+		/>
+	</Link>
+);
 
 const LastErrorCell = ({ error }: { error: LastError | null }) => {
 	if (!error) {
 		return <span className="text-slate-400 dark:text-gray-500">—</span>;
 	}
-	const config = errorCategoryConfig[error.category as ErrorCategoryKey] ?? {
-		label: error.category,
-		classes:
-			"bg-slate-100 text-slate-700 dark:bg-gray-700/50 dark:text-gray-300",
-	};
 	const detail = [error.message, error.providerMessage]
 		.filter(Boolean)
 		.join(" — ");
 	return (
-		<span
+		<KeyErrorBadge
+			category={error.category}
 			title={`${detail} (${formateDate(error.createdAt)})`}
-			className={`inline-flex cursor-help items-center rounded-full px-3 py-1 text-xs font-semibold ${config.classes}`}
-		>
-			{config.label}
-		</span>
+		/>
 	);
 };
 
@@ -217,9 +193,7 @@ export const KeysTable = ({
 						</div>
 						<div>
 							<MobileField label="Key">
-								<span className="font-mono text-xs font-bold">
-									{item.keyValue}
-								</span>
+								<KeyLink item={item} />
 							</MobileField>
 							<MobileField label="Daily limit">
 								{item.dailyLimit.toLocaleString()}
@@ -279,7 +253,7 @@ export const KeysTable = ({
 									{index + 1}
 								</td>
 								<td className="border-b border-slate-200 p-4 font-mono text-sm font-bold dark:border-gray-700">
-									{item.keyValue}
+									<KeyLink item={item} />
 								</td>
 								<td className="border-b border-slate-200 p-4 font-bold dark:border-gray-700">
 									{item.dailyLimit.toLocaleString()}

@@ -25,6 +25,7 @@ import { Route as PanelProfileRouteImport } from './routes/panel/profile'
 import { Route as PanelSubscriptionPlansRouteImport } from './routes/panel/subscription-plans'
 import { Route as AdminAdminAllRouteImport } from './routes/admin/admin.all'
 import { Route as AdminKeysAllRouteImport } from './routes/admin/keys.all'
+import { Route as AdminKeysErrorsRouteImport } from './routes/admin/keys.errors'
 import { Route as AdminPackageAllRouteImport } from './routes/admin/package.all'
 import { Route as AdminSubscriptionAllRouteImport } from './routes/admin/subscription.all'
 import { Route as AdminUserAllRouteImport } from './routes/admin/user.all'
@@ -109,6 +110,11 @@ const AdminKeysAllRoute = AdminKeysAllRouteImport.update({
   path: '/keys/all',
   getParentRoute: () => AdminRouteRoute,
 } as any)
+const AdminKeysErrorsRoute = AdminKeysErrorsRouteImport.update({
+  id: '/keys/errors',
+  path: '/keys/errors',
+  getParentRoute: () => AdminRouteRoute,
+} as any)
 const AdminPackageAllRoute = AdminPackageAllRouteImport.update({
   id: '/package/all',
   path: '/package/all',
@@ -146,6 +152,7 @@ export interface FileRoutesByFullPath {
   '/panel/': typeof PanelIndexRoute
   '/admin/admin/all': typeof AdminAdminAllRoute
   '/admin/keys/all': typeof AdminKeysAllRoute
+  '/admin/keys/errors': typeof AdminKeysErrorsRoute
   '/admin/package/all': typeof AdminPackageAllRoute
   '/admin/subscription/all': typeof AdminSubscriptionAllRoute
   '/admin/user/all': typeof AdminUserAllRoute
@@ -165,6 +172,7 @@ export interface FileRoutesByTo {
   '/panel': typeof PanelIndexRoute
   '/admin/admin/all': typeof AdminAdminAllRoute
   '/admin/keys/all': typeof AdminKeysAllRoute
+  '/admin/keys/errors': typeof AdminKeysErrorsRoute
   '/admin/package/all': typeof AdminPackageAllRoute
   '/admin/subscription/all': typeof AdminSubscriptionAllRoute
   '/admin/user/all': typeof AdminUserAllRoute
@@ -188,6 +196,7 @@ export interface FileRoutesById {
   '/panel/': typeof PanelIndexRoute
   '/admin/admin/all': typeof AdminAdminAllRoute
   '/admin/keys/all': typeof AdminKeysAllRoute
+  '/admin/keys/errors': typeof AdminKeysErrorsRoute
   '/admin/package/all': typeof AdminPackageAllRoute
   '/admin/subscription/all': typeof AdminSubscriptionAllRoute
   '/admin/user/all': typeof AdminUserAllRoute
@@ -211,6 +220,7 @@ export interface FileRouteTypes {
     | '/panel/'
     | '/admin/admin/all'
     | '/admin/keys/all'
+    | '/admin/keys/errors'
     | '/admin/package/all'
     | '/admin/subscription/all'
     | '/admin/user/all'
@@ -230,6 +240,7 @@ export interface FileRouteTypes {
     | '/panel'
     | '/admin/admin/all'
     | '/admin/keys/all'
+    | '/admin/keys/errors'
     | '/admin/package/all'
     | '/admin/subscription/all'
     | '/admin/user/all'
@@ -252,6 +263,7 @@ export interface FileRouteTypes {
     | '/panel/'
     | '/admin/admin/all'
     | '/admin/keys/all'
+    | '/admin/keys/errors'
     | '/admin/package/all'
     | '/admin/subscription/all'
     | '/admin/user/all'
@@ -380,6 +392,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AdminKeysAllRouteImport
       parentRoute: typeof AdminRouteRoute
     }
+    '/admin/keys/errors': {
+      id: '/admin/keys/errors'
+      path: '/keys/errors'
+      fullPath: '/admin/keys/errors'
+      preLoaderRoute: typeof AdminKeysErrorsRouteImport
+      parentRoute: typeof AdminRouteRoute
+    }
     '/admin/package/all': {
       id: '/admin/package/all'
       path: '/package/all'
@@ -429,6 +448,7 @@ interface AdminRouteRouteChildren {
   AdminIndexRoute: typeof AdminIndexRoute
   AdminAdminAllRoute: typeof AdminAdminAllRoute
   AdminKeysAllRoute: typeof AdminKeysAllRoute
+  AdminKeysErrorsRoute: typeof AdminKeysErrorsRoute
   AdminPackageAllRoute: typeof AdminPackageAllRoute
   AdminSubscriptionAllRoute: typeof AdminSubscriptionAllRoute
   AdminUserAllRoute: typeof AdminUserAllRoute
@@ -438,6 +458,7 @@ const AdminRouteRouteChildren: AdminRouteRouteChildren = {
   AdminIndexRoute: AdminIndexRoute,
   AdminAdminAllRoute: AdminAdminAllRoute,
   AdminKeysAllRoute: AdminKeysAllRoute,
+  AdminKeysErrorsRoute: AdminKeysErrorsRoute,
   AdminPackageAllRoute: AdminPackageAllRoute,
   AdminSubscriptionAllRoute: AdminSubscriptionAllRoute,
   AdminUserAllRoute: AdminUserAllRoute,
