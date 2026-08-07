@@ -1,6 +1,6 @@
 // @ts-nocheck
 import { Link, useNavigate } from "@tanstack/react-router";
-import { LayoutDashboard, LogIn, Menu, X } from "lucide-react";
+import { LayoutDashboard, LogIn, Menu, PackageSearch, X } from "lucide-react";
 import { useEffect, useRef, useState } from "react";
 import { useAuth } from "@/context/userContext";
 
@@ -97,7 +97,7 @@ const Header = () => {
 			<div className="maxw px-4 sm:px-6 lg:px-8 py-4 flex items-center justify-between gap-4">
 				<Link to="/" className="flex shrink-0 items-center gap-2.5">
 					<span className="flex h-10 w-10 items-center justify-center rounded-xl bg-gradient-to-br from-secondary to-secondary-dark text-white shadow-lg shadow-secondary/25">
-						<img src="/logo.png" alt="" aria-hidden="true" className="h-7 w-7 object-contain" />
+						<PackageSearch className="h-5 w-5" />
 					</span>
 					<span className="text-xl font-extrabold tracking-tight">
 						কুরিয়ারবাইট
@@ -155,7 +155,7 @@ const Header = () => {
 						className="flex shrink-0 items-center gap-2.5"
 					>
 						<span className="flex h-9 w-9 items-center justify-center rounded-lg bg-gradient-to-br from-secondary to-secondary-dark text-white">
-							<img src="/logo.png" alt="" aria-hidden="true" className="h-7 w-7 object-contain" />
+							<PackageSearch className="h-5 w-5" />
 						</span>
 						<span className="text-lg font-extrabold tracking-tight">
 							কুরিয়ারবাইট

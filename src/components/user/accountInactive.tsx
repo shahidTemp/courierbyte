@@ -3,6 +3,7 @@ import { Link, useNavigate } from "@tanstack/react-router";
 import {
 	LogOut,
 	MessageCircle,
+	PackageSearch,
 	ShieldAlert,
 } from "lucide-react";
 import { useAuth } from "@/context/userContext";
@@ -26,7 +27,7 @@ export const AccountInactive = () => {
 			<div className="w-full max-w-md animate-fade-in-up">
 				<Link to="/" className="mb-8 flex items-center justify-center gap-3">
 					<span className="flex h-12 w-12 items-center justify-center rounded-2xl bg-gradient-to-br from-secondary to-secondary-dark text-white shadow-lg shadow-secondary/25">
-						<img src="/logo.png" alt="" aria-hidden="true" className="h-8 w-8 object-contain" />
+						<PackageSearch className="h-6 w-6" />
 					</span>
 					<span className="text-2xl font-extrabold tracking-tight text-secondary-dark">
 						কুরিয়ারবাইট

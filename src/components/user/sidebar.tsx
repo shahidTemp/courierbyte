@@ -7,6 +7,7 @@ import {
 	LogOut,
 	Menu,
 	MessageSquare,
+	PackageSearch,
 	Receipt,
 	ShieldCheck,
 	UserRound,
@@ -51,7 +52,7 @@ function Brand({ onClick }) {
 	return (
 		<Link to="/" onClick={onClick} className="flex items-center gap-3">
 			<span className="flex h-10 w-10 shrink-0 items-center justify-center rounded-xl bg-gradient-to-br from-secondary to-secondary-dark text-white shadow-md shadow-secondary/25">
-				<img src="/logo.png" alt="" aria-hidden="true" className="h-7 w-7 object-contain" />
+				<PackageSearch className="h-5 w-5" />
 			</span>
 			<span className="flex flex-col leading-tight">
 				<span className="text-lg font-extrabold tracking-tight text-secondary-dark">

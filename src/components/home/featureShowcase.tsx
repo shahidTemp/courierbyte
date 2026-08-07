@@ -1,6 +1,7 @@
 // @ts-nocheck
 import {
 	CheckCircle2,
+	PackageSearch,
 	Target,
 	TrendingDown,
 	WalletCards,
@@ -8,7 +9,7 @@ import {
 
 const valueFeatures = [
 	{
-		icon: "logo",
+		icon: PackageSearch,
 		tag: "০১ · ঝুঁকি বুঝুন",
 		title: "প্রতিটি গ্রাহক সম্পর্কে পরিষ্কার ধারণা পান",
 		desc: "শুধু ‘ভালো’ বা ‘খারাপ’ নয়—কোন কুরিয়ারে তার কতগুলো পার্সেল ডেলিভারি হয়েছে, কতগুলো গ্রহণ করা হয়েছে এবং কোথায় সমস্যা হয়েছে, সবই দেখুন।",
@@ -142,11 +143,7 @@ export default function FeatureShowcase() {
 							>
 								<div>
 									<span className="inline-flex items-center gap-2 rounded-full bg-white px-3.5 py-2 text-xs font-bold text-secondary shadow-sm ring-1 ring-secondary/10">
-										{feature.icon === "logo" ? (
-											<img src="/logo.png" alt="" aria-hidden="true" className="h-5 w-5 object-contain" />
-										) : (
-											<Icon className="h-3.5 w-3.5" />
-										)} {feature.tag}
+										<Icon className="h-3.5 w-3.5" /> {feature.tag}
 									</span>
 									<h3 className="mt-5 text-3xl font-extrabold leading-tight text-slate-900">
 										{feature.title}
