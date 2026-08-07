@@ -6,7 +6,8 @@ import {
 import { getKey, recordUse, reportFailure } from "@/server/lib/courierKeyPool";
 
 const PROVIDER_URL = "https://api.bdcourier.com/courier-check";
-const REVIEWS_URL = "https://checkreviewsbd.com/customer-reviews";
+// const REVIEWS_URL = "https://checkreviewsbd.com/customer-reviews";
+const REVIEWS_URL = "https://fraudshield.bd/customer-reviews";
 
 /** How long to wait for the optional reviews lookup before giving up. */
 const REVIEWS_TIMEOUT_MS = 10_000;

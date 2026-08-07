@@ -162,16 +162,15 @@ function RequestChart({ dailyRequests = [], selectedDate, onSelectDate }) {
 									style={{ height: `${height}%` }}
 								/>
 							</div>
-							<p className={`mt-2 truncate text-center text-[10px] font-semibold ${isSelected ? "text-slate-900" : "text-slate-400"}`}>
+							<p
+								className={`mt-2 truncate text-center text-[10px] font-semibold ${isSelected ? "text-slate-900" : "text-slate-400"}`}
+							>
 								{formatDay(item.date)}
 							</p>
 						</button>
 					);
 				})}
 			</div>
-			<p className="mt-3 text-[11px] font-semibold text-slate-400">
-				Successful requests · Bangladesh time · Click a bar to inspect that day
-			</p>
 		</div>
 	);
 }
@@ -345,7 +344,8 @@ function RouteComponent() {
 	const selectedRequest = stats.dailyRequests?.find(
 		(item) => item.date === selectedRequestDate,
 	);
-	const displayedTodayRequests = selectedRequest?.requests ?? stats.requests.today;
+	const displayedTodayRequests =
+		selectedRequest?.requests ?? stats.requests.today;
 	return (
 		<main className="min-h-screen bg-slate-100/70 px-4 py-5 sm:px-6 lg:px-8">
 			<div className="mx-auto max-w-[1500px] space-y-5">
@@ -434,7 +434,9 @@ function RouteComponent() {
 							<div className="grid grid-cols-3 divide-x divide-slate-200 bg-white">
 								<div className="border-t-4 border-sky-500 bg-sky-50/70 p-4">
 									<p className="text-xs font-bold uppercase tracking-wide text-sky-700">
-										{selectedRequest ? formatDay(selectedRequest.date) : "Today"}
+										{selectedRequest
+											? formatDay(selectedRequest.date)
+											: "Today"}
 									</p>
 									<p className="mt-1 text-2xl font-extrabold text-slate-900">
 										{formatNumber(displayedTodayRequests)}
