@@ -12,6 +12,7 @@ import {
 	Users,
 	UsersRound,
 } from "lucide-react";
+import { useState } from "react";
 import { Loader } from "@/components/common/loader";
 import { useAuth } from "@/context/userContext";
 import { getAdminDashboardStats } from "@/server/functions/dashboard.fn";
@@ -128,7 +129,7 @@ function PanelHeader({ title, detail, action }) {
 	);
 }
 
-function RequestChart({ dailyRequests = [] }) {
+function RequestChart({ dailyRequests = [], selectedDate, onSelectDate }) {
 	const points = dailyRequests.slice(-14);
 	const maxRequests = Math.max(...points.map((item) => item.requests), 1);
 
@@ -143,29 +144,33 @@ function RequestChart({ dailyRequests = [] }) {
 	return (
 		<div>
 			<div className="flex h-40 items-end gap-1.5 border-b border-slate-100 pb-0.5 sm:gap-2">
-				{points.map((item) => {
+				{points.map((item, index) => {
 					const height = Math.max(4, (item.requests / maxRequests) * 100);
+					const isSelected = selectedDate === item.date;
 					return (
-						<div
+						<button
 							key={item.date}
-							className="group flex h-full min-w-0 flex-1 flex-col justify-end"
+							type="button"
+							onClick={() => onSelectDate(isSelected ? null : item.date)}
+							aria-label={`${formatNumber(item.requests)} requests on ${formatDay(item.date)}. ${isSelected ? "Selected" : "Select this date"}`}
+							aria-pressed={isSelected}
+							className={`group flex h-full min-w-0 flex-1 flex-col justify-end rounded-md px-0.5 focus:outline-none focus-visible:ring-2 focus-visible:ring-secondary/50 focus-visible:ring-offset-2 ${isSelected ? "bg-slate-100" : ""}`}
 						>
 							<div className="relative flex min-h-0 flex-1 items-end">
 								<div
-									className={`w-full rounded-t transition-colors group-hover:opacity-90 ${["bg-sky-500", "bg-violet-500", "bg-emerald-500", "bg-amber-500", "bg-rose-500"][points.indexOf(item) % 5]}`}
+									className={`w-full rounded-t transition-all group-hover:opacity-90 ${["bg-sky-500", "bg-violet-500", "bg-emerald-500", "bg-amber-500", "bg-rose-500"][index % 5]} ${isSelected ? "ring-2 ring-slate-900 ring-offset-1" : ""}`}
 									style={{ height: `${height}%` }}
-									title={`${formatNumber(item.requests)} requests on ${formatDay(item.date)}`}
 								/>
 							</div>
-							<p className="mt-2 truncate text-center text-[10px] font-semibold text-slate-400">
+							<p className={`mt-2 truncate text-center text-[10px] font-semibold ${isSelected ? "text-slate-900" : "text-slate-400"}`}>
 								{formatDay(item.date)}
 							</p>
-						</div>
+						</button>
 					);
 				})}
 			</div>
 			<p className="mt-3 text-[11px] font-semibold text-slate-400">
-				Successful requests · Bangladesh time · Hover a bar for details
+				Successful requests · Bangladesh time · Click a bar to inspect that day
 			</p>
 		</div>
 	);
@@ -280,6 +285,7 @@ function CompositionDonut({ total, newUsers, olderUsers }) {
 
 function RouteComponent() {
 	const { user, isLoading: isAuthLoading, error: authError } = useAuth();
+	const [selectedRequestDate, setSelectedRequestDate] = useState(null);
 	const {
 		data: stats,
 		isLoading: isStatsLoading,
@@ -336,6 +342,10 @@ function RouteComponent() {
 	const subscriptionRate = stats.users.total
 		? Math.round((stats.activeSubscribers / stats.users.total) * 100)
 		: 0;
+	const selectedRequest = stats.dailyRequests?.find(
+		(item) => item.date === selectedRequestDate,
+	);
+	const displayedTodayRequests = selectedRequest?.requests ?? stats.requests.today;
 	return (
 		<main className="min-h-screen bg-slate-100/70 px-4 py-5 sm:px-6 lg:px-8">
 			<div className="mx-auto max-w-[1500px] space-y-5">
@@ -424,10 +434,13 @@ function RouteComponent() {
 							<div className="grid grid-cols-3 divide-x divide-slate-200 bg-white">
 								<div className="border-t-4 border-sky-500 bg-sky-50/70 p-4">
 									<p className="text-xs font-bold uppercase tracking-wide text-sky-700">
-										Today
+										{selectedRequest ? formatDay(selectedRequest.date) : "Today"}
 									</p>
 									<p className="mt-1 text-2xl font-extrabold text-slate-900">
-										{formatNumber(stats.requests.today)}
+										{formatNumber(displayedTodayRequests)}
+									</p>
+									<p className="mt-1 text-xs font-semibold text-slate-500">
+										{selectedRequest ? "Selected day" : "Bangladesh time"}
 									</p>
 								</div>
 								<div className="border-t-4 border-violet-500 bg-violet-50/70 p-4">
@@ -448,7 +461,11 @@ function RouteComponent() {
 								</div>
 							</div>
 							<div className="border-t border-slate-200 p-4 sm:p-5">
-								<RequestChart dailyRequests={stats.dailyRequests} />
+								<RequestChart
+									dailyRequests={stats.dailyRequests}
+									selectedDate={selectedRequestDate}
+									onSelectDate={setSelectedRequestDate}
+								/>
 							</div>
 						</div>
 					</div>
