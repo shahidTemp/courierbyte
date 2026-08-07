@@ -79,7 +79,7 @@ export const getAdminDashboardStats = createServerFn({ method: "GET" })
 			requestsToday,
 			requestsLastMonth,
 			requestsCurrentMonth,
-			dailyRequests,
+			dailyRequestRows,
 		] = await Promise.all([
 			User.countDocuments({ role: "user" }),
 			User.countDocuments({ role: "user", isActive: true }),
@@ -128,6 +128,17 @@ export const getAdminDashboardStats = createServerFn({ method: "GET" })
 			]),
 		]);
 
+		const requestsByDate = new Map(
+			dailyRequestRows.map((item) => [item._id, item.requests]),
+		);
+		const dailyRequests = Array.from({ length: 14 }, (_, index) => {
+			const date = getBangladeshDateParts(
+				new Date(dayStart.getTime() - (13 - index) * DAY_MS),
+			);
+			const dateKey = `${date.year}-${date.month}-${date.day}`;
+			return { date: dateKey, requests: requestsByDate.get(dateKey) ?? 0 };
+		});
+
 		return JSON.parse(
 			JSON.stringify({
 				generatedAt: now,
@@ -143,10 +154,7 @@ export const getAdminDashboardStats = createServerFn({ method: "GET" })
 					lastMonth: requestsLastMonth,
 					currentMonth: requestsCurrentMonth,
 				},
-				dailyRequests: dailyRequests.map((item) => ({
-					date: item._id,
-					requests: item.requests,
-				})),
+				dailyRequests,
 			}),
 		);
 	});
