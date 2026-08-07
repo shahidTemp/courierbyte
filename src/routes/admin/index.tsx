@@ -93,11 +93,6 @@ function StatCard({ icon: Icon, label, value, detail, tone, href }) {
 			<p className="mt-2 truncate text-xs font-semibold text-slate-500">
 				{detail}
 			</p>
-			{href && (
-				<span className="mt-3 inline-flex items-center gap-1 text-xs font-bold text-secondary transition group-hover:gap-1.5">
-					Open <ArrowRight className="size-3" aria-hidden="true" />
-				</span>
-			)}
 		</div>
 	);
 
