@@ -78,11 +78,16 @@ function Brand({ onClick }) {
 function SidebarContent({ onNavigate }) {
 	const { user, logout } = useAuth();
 	const navigate = useNavigate();
-	// Keys expose the raw courier API credentials — super admin only.
+	// Keys expose the raw courier API credentials and admin management
+	// is reserved for super admins only.
 	const navItems =
 		user?.role === "super_admin"
 			? MAIN_NAV
-			: MAIN_NAV.filter((item) => !item.to.startsWith("/admin/keys"));
+			: MAIN_NAV.filter(
+					(item) =>
+						!item.to.startsWith("/admin/keys") &&
+						!item.to.startsWith("/admin/admin"),
+				);
 
 	const handleLogout = async () => {
 		onNavigate?.();
