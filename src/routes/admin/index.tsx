@@ -46,17 +46,37 @@ const formatDay = (date) =>
 	});
 
 const statStyles = {
-	blue: { icon: "bg-sky-50 text-sky-700", bar: "bg-sky-500" },
-	green: { icon: "bg-emerald-50 text-emerald-700", bar: "bg-emerald-500" },
-	violet: { icon: "bg-violet-50 text-violet-700", bar: "bg-violet-500" },
-	amber: { icon: "bg-amber-50 text-amber-700", bar: "bg-amber-500" },
-	rose: { icon: "bg-rose-50 text-rose-700", bar: "bg-rose-500" },
+	blue: {
+		icon: "bg-sky-100 text-sky-700",
+		bar: "bg-sky-500",
+		border: "border-l-sky-500",
+	},
+	green: {
+		icon: "bg-emerald-100 text-emerald-700",
+		bar: "bg-emerald-500",
+		border: "border-l-emerald-500",
+	},
+	violet: {
+		icon: "bg-violet-100 text-violet-700",
+		bar: "bg-violet-500",
+		border: "border-l-violet-500",
+	},
+	amber: {
+		icon: "bg-amber-100 text-amber-700",
+		bar: "bg-amber-500",
+		border: "border-l-amber-500",
+	},
+	rose: {
+		icon: "bg-rose-100 text-rose-700",
+		bar: "bg-rose-500",
+		border: "border-l-rose-500",
+	},
 };
 
 function StatCard({ icon: Icon, label, value, detail, tone, href }) {
 	const styles = statStyles[tone];
 	const content = (
-		<div className="group h-full rounded-xl border border-slate-200 bg-white p-4 shadow-sm transition hover:border-slate-300 hover:shadow-md">
+		<div className={`group h-full rounded-xl border border-slate-200 border-l-4 bg-white p-4 shadow-sm transition hover:border-slate-300 hover:shadow-md ${styles.border}`}>
 			<div className="flex items-start justify-between gap-3">
 				<div className="min-w-0">
 					<p className="truncate text-xs font-bold uppercase tracking-wide text-slate-500">{label}</p>
@@ -117,7 +137,7 @@ function RequestChart({ dailyRequests = [] }) {
 						<div key={item.date} className="group flex h-full min-w-0 flex-1 flex-col justify-end">
 							<div className="relative flex min-h-0 flex-1 items-end">
 								<div
-									className="w-full rounded-t bg-secondary/75 transition-colors group-hover:bg-secondary"
+									className={`w-full rounded-t transition-colors group-hover:opacity-90 ${["bg-sky-500", "bg-violet-500", "bg-emerald-500", "bg-amber-500", "bg-rose-500"][points.indexOf(item) % 5]}`}
 									style={{ height: `${height}%` }}
 									title={`${formatNumber(item.requests)} requests on ${formatDay(item.date)}`}
 								/>
@@ -205,7 +225,7 @@ function RouteComponent() {
 		? Math.round((stats.activeSubscribers / stats.users.total) * 100)
 		: 0;
 	return (
-		<main className="min-h-screen bg-slate-50 px-4 py-5 sm:px-6 lg:px-8">
+		<main className="min-h-screen bg-slate-100/70 px-4 py-5 sm:px-6 lg:px-8">
 			<div className="mx-auto max-w-[1500px] space-y-5">
 				<header className="flex flex-col gap-3 border-b border-slate-200 pb-4 sm:flex-row sm:items-center sm:justify-between">
 					<div>
@@ -244,10 +264,10 @@ function RouteComponent() {
 							action={<span className="text-xs font-semibold text-slate-400">Current month is in progress</span>}
 						/>
 						<div className="mt-4 overflow-hidden rounded-lg border border-slate-200">
-							<div className="grid grid-cols-3 divide-x divide-slate-200 bg-slate-50">
-								<div className="p-4"><p className="text-xs font-bold uppercase tracking-wide text-slate-500">Today</p><p className="mt-1 text-2xl font-extrabold text-slate-900">{formatNumber(stats.requests.today)}</p><p className="mt-1 text-xs font-semibold text-slate-400">Bangladesh time</p></div>
-								<div className="p-4"><p className="text-xs font-bold uppercase tracking-wide text-slate-500">This month</p><p className="mt-1 text-2xl font-extrabold text-slate-900">{formatNumber(stats.requests.currentMonth)}</p><p className="mt-1 text-xs font-semibold text-slate-400">Calendar month</p></div>
-								<div className="p-4"><p className="text-xs font-bold uppercase tracking-wide text-slate-500">Last month</p><p className="mt-1 text-2xl font-extrabold text-slate-900">{formatNumber(stats.requests.lastMonth)}</p><p className="mt-1 text-xs font-semibold text-slate-400">Previous month</p></div>
+							<div className="grid grid-cols-3 divide-x divide-slate-200 bg-white">
+								<div className="border-t-4 border-sky-500 bg-sky-50/70 p-4"><p className="text-xs font-bold uppercase tracking-wide text-sky-700">Today</p><p className="mt-1 text-2xl font-extrabold text-slate-900">{formatNumber(stats.requests.today)}</p><p className="mt-1 text-xs font-semibold text-slate-500">Bangladesh time</p></div>
+								<div className="border-t-4 border-violet-500 bg-violet-50/70 p-4"><p className="text-xs font-bold uppercase tracking-wide text-violet-700">This month</p><p className="mt-1 text-2xl font-extrabold text-slate-900">{formatNumber(stats.requests.currentMonth)}</p><p className="mt-1 text-xs font-semibold text-slate-500">Calendar month</p></div>
+								<div className="border-t-4 border-amber-500 bg-amber-50/70 p-4"><p className="text-xs font-bold uppercase tracking-wide text-amber-700">Last month</p><p className="mt-1 text-2xl font-extrabold text-slate-900">{formatNumber(stats.requests.lastMonth)}</p><p className="mt-1 text-xs font-semibold text-slate-500">Previous month</p></div>
 							</div>
 							<div className="border-t border-slate-200 p-4 sm:p-5"><RequestChart dailyRequests={stats.dailyRequests} /></div>
 						</div>
