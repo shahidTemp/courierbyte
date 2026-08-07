@@ -36,5 +36,7 @@ export async function checkCourier(phoneNumber: string) {
 	}
 
 	await recordUse(key.id);
+	console.log(data);
+
 	return data;
 }
