@@ -121,6 +121,10 @@ export const deleteKey = createServerFn({ method: "POST" })
 		const deleted = await CourierKey.findByIdAndDelete(data.id);
 		if (!deleted) throw new Error("Key not found");
 
+		// Cascade: remove the key's error logs so no orphan logs with a
+		// dangling keyId are ever left behind.
+		await CourierErrorLog.deleteMany({ keyId: data.id });
+
 		await reload();
 		return { success: true, id: data.id };
 	});
