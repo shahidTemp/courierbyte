@@ -1,5 +1,12 @@
-import { CheckCircle2, ShieldAlert, XCircle } from "lucide-react";
+import {
+	AlertTriangle,
+	CalendarDays,
+	CheckCircle2,
+	ShieldAlert,
+	XCircle,
+} from "lucide-react";
 import { PieChart } from "@/components/user/pieChart";
+import { formateDate } from "@/utils/formateDate";
 
 type CourierStats = {
 	name: string;
@@ -17,10 +24,19 @@ type SummaryStats = {
 	success_ratio: number;
 };
 
+type CustomerReview = {
+	id?: number;
+	name?: string;
+	rating?: string;
+	comment?: string;
+	created_at?: string;
+};
+
 export type FraudResult = {
 	status?: string;
 	data?: Record<string, CourierStats> & { summary?: SummaryStats };
 	reports?: unknown[];
+	reviews?: CustomerReview[];
 };
 
 type RiskLevel = {
@@ -100,7 +116,7 @@ function CourierRow({ courier }: { courier: CourierStats }) {
 	);
 }
 export function CourierStatus({ result }: { result: FraudResult }) {
-	const { data = {} } = result;
+	const { data = {}, reviews = [] } = result;
 	const { summary, ...courierMap } = data;
 	const couriers = Object.values(courierMap).sort(
 		(a, b) => b.total_parcel - a.total_parcel,
@@ -221,6 +237,67 @@ export function CourierStatus({ result }: { result: FraudResult }) {
 					</div>
 				</section>
 			</div>
+
+			{/* Customer complaints */}
+			<section className="rounded-2xl border border-rose-200/70 bg-white p-5 shadow-sm">
+				<div className="mb-4 flex flex-wrap items-center justify-between gap-2">
+					<h3 className="flex items-center gap-2 text-sm font-bold uppercase tracking-wider text-slate-500">
+						<AlertTriangle className="size-4 text-rose-500" />
+						কাস্টমার অভিযোগ
+					</h3>
+					{reviews.length > 0 && (
+						<span className="rounded-full bg-rose-50 px-3 py-1 text-xs font-bold text-rose-600">
+							{reviews.length} টি অভিযোগ
+						</span>
+					)}
+				</div>
+				{reviews.length === 0 ? (
+					<p className="text-sm font-medium text-slate-500">
+						এই নাম্বারের কোনো অভিযোগ পাওয়া যায়নি।
+					</p>
+				) : (
+					<ul className="space-y-3">
+						{reviews.map((review) => {
+							const initial = (review.name ?? "?").trim().charAt(0) || "?";
+							return (
+								<li
+									key={review.id}
+									className="rounded-xl border border-rose-100 bg-gradient-to-br from-white to-rose-50/50 p-4 transition hover:border-rose-300 hover:shadow-md"
+								>
+									<div className="flex flex-wrap items-center justify-between gap-3">
+										<div className="flex items-center gap-3">
+											<span
+												aria-hidden="true"
+												className="flex size-10 shrink-0 items-center justify-center rounded-full bg-gradient-to-br from-rose-500 to-red-600 text-sm font-extrabold text-white shadow-sm"
+											>
+												{initial}
+											</span>
+											<div>
+												<p className="text-sm font-bold text-slate-800">
+													{review.name || "অজানা কাস্টমার"}
+												</p>
+												<p className="text-xs font-semibold text-rose-500">
+													অভিযোগকারী
+												</p>
+											</div>
+										</div>
+										<time
+											className="inline-flex items-center gap-1.5 rounded-full bg-rose-50 px-3 py-1 text-xs font-semibold text-rose-600"
+											dateTime={review.created_at}
+										>
+											<CalendarDays className="size-3.5" aria-hidden="true" />
+											{review.created_at ? formateDate(review.created_at) : ""}
+										</time>
+									</div>
+									<p className="mt-3 rounded-r-lg border-l-2 border-rose-400 bg-white/60 py-1 pl-3 text-sm leading-6 text-slate-600">
+										{review.comment}
+									</p>
+								</li>
+							);
+						})}
+					</ul>
+				)}
+			</section>
 		</div>
 	);
 }
