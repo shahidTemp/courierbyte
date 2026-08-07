@@ -1,15 +1,15 @@
 // @ts-nocheck
 import {
 	CheckCircle2,
-	PackageSearch,
 	Target,
 	TrendingDown,
 	WalletCards,
 } from "lucide-react";
+import { LogoIcon } from "@/components/common/logoIcon";
 
 const valueFeatures = [
 	{
-		icon: PackageSearch,
+		icon: LogoIcon,
 		tag: "01 · ঝুঁকি বোঝা",
 		title: "প্রতিটি কাস্টমারের জন্য একটি পরিষ্কার উত্তর",
 		desc: "শুধু ‘ভালো’ বা ‘খারাপ’ নয় — কোন কুরিয়ারে কতবার নিয়েছে, কতবার রিসিভ করেছে, কোথায় সমস্যা হয়েছে সব দেখুন।",
