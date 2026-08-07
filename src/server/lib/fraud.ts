@@ -1,6 +1,6 @@
 import crypto from "node:crypto";
 import { z } from "zod";
-import { checkCourier } from "@/server/functions/service.fn";
+import { checkCourier, checkReviews } from "@/server/functions/service.fn";
 import { expireSubscriptions } from "@/server/lib/subscription";
 import { SearchUsage } from "@/server/models/searchUsage.model";
 import { userSubscription } from "@/server/models/subscription.model";
@@ -208,5 +208,10 @@ export async function executeFraudCheck(userId: string, phone: unknown) {
 		console.error("Search usage event could not be recorded:", error);
 	}
 
-	return result;
+	// Optional enrichment: the reviews lookup resolves to an empty array on any
+	// failure, so it can never affect the successful courier check result.
+	const reviews = await checkReviews(parsed.data.phone);
+	const courierData = (result ?? {}) as Record<string, unknown>;
+
+	return { ...courierData, reviews };
 }

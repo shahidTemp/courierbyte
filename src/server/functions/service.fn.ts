@@ -6,6 +6,10 @@ import {
 import { getKey, recordUse, reportFailure } from "@/server/lib/courierKeyPool";
 
 const PROVIDER_URL = "https://api.bdcourier.com/courier-check";
+const REVIEWS_URL = "https://checkreviewsbd.com/customer-reviews";
+
+/** How long to wait for the optional reviews lookup before giving up. */
+const REVIEWS_TIMEOUT_MS = 10_000;
 
 function isSuccessPayload(data: unknown): boolean {
 	return (
@@ -89,4 +93,30 @@ export async function checkCourier(phoneNumber: string) {
 	await recordUse(key.id);
 
 	return data;
+}
+
+/**
+ * Best-effort lookup of customer reviews for a phone number.
+ *
+ * Unlike {@link checkCourier}, this call is optional: any failure (network
+ * error, timeout, non-OK status, invalid payload) resolves to an empty array
+ * so it can never break the main courier check flow.
+ */
+export async function checkReviews(phoneNumber: string): Promise<unknown[]> {
+	try {
+		const response = await fetch(
+			`${REVIEWS_URL}/${encodeURIComponent(phoneNumber)}`,
+			{
+				method: "GET",
+				signal: AbortSignal.timeout(REVIEWS_TIMEOUT_MS),
+			},
+		);
+		if (!response.ok) return [];
+
+		const payload: unknown = await response.json();
+		const data = (payload as { data?: unknown })?.data;
+		return Array.isArray(data) ? data : [];
+	} catch {
+		return [];
+	}
 }
