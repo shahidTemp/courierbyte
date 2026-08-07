@@ -429,9 +429,6 @@ function RouteComponent() {
 									<p className="mt-1 text-2xl font-extrabold text-slate-900">
 										{formatNumber(stats.requests.today)}
 									</p>
-									<p className="mt-1 text-xs font-semibold text-slate-500">
-										Bangladesh time
-									</p>
 								</div>
 								<div className="border-t-4 border-violet-500 bg-violet-50/70 p-4">
 									<p className="text-xs font-bold uppercase tracking-wide text-violet-700">
@@ -440,9 +437,6 @@ function RouteComponent() {
 									<p className="mt-1 text-2xl font-extrabold text-slate-900">
 										{formatNumber(stats.requests.currentMonth)}
 									</p>
-									<p className="mt-1 text-xs font-semibold text-slate-500">
-										Calendar month
-									</p>
 								</div>
 								<div className="border-t-4 border-amber-500 bg-amber-50/70 p-4">
 									<p className="text-xs font-bold uppercase tracking-wide text-amber-700">
@@ -450,9 +444,6 @@ function RouteComponent() {
 									</p>
 									<p className="mt-1 text-2xl font-extrabold text-slate-900">
 										{formatNumber(stats.requests.lastMonth)}
-									</p>
-									<p className="mt-1 text-xs font-semibold text-slate-500">
-										Previous month
 									</p>
 								</div>
 							</div>
