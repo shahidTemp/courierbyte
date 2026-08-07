@@ -17,26 +17,55 @@ type SummaryStats = {
 	success_ratio: number;
 };
 
-type RiskVerdict = {
-	label?: string;
-	action?: string;
-	color?: string;
-	reasons?: string[];
-};
-
 export type FraudResult = {
 	status?: string;
 	data?: Record<string, CourierStats> & { summary?: SummaryStats };
 	reports?: unknown[];
-	risk_verdict?: RiskVerdict;
 };
 
-const RISK_STYLES: Record<string, { badge: string; icon: typeof ShieldAlert }> =
-	{
-		green: { badge: "bg-emerald-100 text-emerald-700", icon: CheckCircle2 },
-		amber: { badge: "bg-amber-100 text-amber-700", icon: ShieldAlert },
-		red: { badge: "bg-rose-100 text-rose-700", icon: XCircle },
+type RiskLevel = {
+	title: string;
+	message: string;
+	icon: typeof CheckCircle2;
+	badge: string;
+	bar: string;
+	text: string;
+	glow: string;
+};
+
+const getRiskLevel = (ratio: number): RiskLevel => {
+	if (ratio >= 80) {
+		return {
+			title: "নিরাপদ কাস্টমার",
+			message: "এই কাস্টমারটি নিরাপদ — নিশ্চিন্তে পার্সেল পাঠাতে পারেন।",
+			icon: CheckCircle2,
+			badge: "from-emerald-500 to-teal-600",
+			bar: "bg-emerald-500",
+			text: "text-emerald-600",
+			glow: "bg-emerald-400",
+		};
+	}
+	if (ratio >= 50) {
+		return {
+			title: "কম ঝুঁকি",
+			message: "পার্সেল পাঠানোর আগে সাবধান হোন।",
+			icon: ShieldAlert,
+			badge: "from-amber-400 to-orange-500",
+			bar: "bg-amber-400",
+			text: "text-amber-600",
+			glow: "bg-amber-400",
+		};
+	}
+	return {
+		title: "উচ্চ ঝুঁকি",
+		message: "পার্সেল পাঠানোর আগে কুরিয়ার চার্জ নিন।",
+		icon: XCircle,
+		badge: "from-rose-500 to-red-600",
+		bar: "bg-rose-500",
+		text: "text-rose-600",
+		glow: "bg-rose-400",
 	};
+};
 
 function CourierRow({ courier }: { courier: CourierStats }) {
 	return (
@@ -70,47 +99,61 @@ function CourierRow({ courier }: { courier: CourierStats }) {
 		</tr>
 	);
 }
-
 export function CourierStatus({ result }: { result: FraudResult }) {
-	const { data = {}, risk_verdict } = result;
+	const { data = {} } = result;
 	const { summary, ...courierMap } = data;
 	const couriers = Object.values(courierMap).sort(
 		(a, b) => b.total_parcel - a.total_parcel,
 	);
 
-	const style = RISK_STYLES[risk_verdict?.color ?? ""] ?? RISK_STYLES.amber;
-	const VerdictIcon = style.icon;
+	const ratio = summary?.success_ratio ?? 0;
+	const level = getRiskLevel(ratio);
+	const VerdictIcon = level.icon;
 
 	return (
 		<div className="mt-6 space-y-4">
 			{/* Risk verdict header */}
-			<div className="flex flex-col gap-3 rounded-2xl border border-slate-200 bg-white p-4 shadow-sm sm:flex-row sm:items-center sm:justify-between sm:p-5">
-				<div className="flex items-center gap-3">
-					<span
-						className={`flex size-11 items-center justify-center rounded-xl ${style.badge}`}
-					>
-						<VerdictIcon className="size-6" aria-hidden="true" />
-					</span>
-					<div>
-						<p className="text-xs font-semibold uppercase tracking-wider text-slate-500">
-							Risk verdict
-						</p>
-						<p className="text-lg font-extrabold text-slate-900">
-							{risk_verdict?.label ?? "Unknown"}
-						</p>
+			<div className="relative overflow-hidden rounded-2xl border border-slate-200 bg-white p-5 shadow-sm sm:p-6">
+				<span
+					aria-hidden="true"
+					className={`pointer-events-none absolute -right-16 -top-16 size-52 rounded-full ${level.glow} opacity-10 blur-3xl`}
+				/>
+				<div className="relative flex flex-col gap-5 sm:flex-row sm:items-center sm:justify-between">
+					<div className="flex items-center gap-4">
+						<span
+							className={`flex size-12 shrink-0 items-center justify-center rounded-2xl bg-gradient-to-br ${level.badge} text-white shadow-lg`}
+						>
+							<VerdictIcon className="size-6" aria-hidden="true" />
+						</span>
+						<div>
+							<p className="text-[11px] font-bold uppercase tracking-wider text-slate-400">
+								ঝুঁকি মূল্যায়ন
+							</p>
+							<p className={`text-lg font-extrabold ${level.text}`}>
+								{level.title}
+							</p>
+							<p className="mt-0.5 max-w-md text-sm font-medium text-slate-600">
+								{level.message}
+							</p>
+						</div>
 					</div>
-				</div>
-				<div className="text-sm">
-					{risk_verdict?.action && (
-						<p className="font-semibold text-slate-800">
-							{risk_verdict.action}
+					<div className="shrink-0 rounded-2xl border border-slate-100 bg-slate-50/80 px-5 py-3.5">
+						<p className="text-[11px] font-bold uppercase tracking-wider text-slate-400">
+							সফলতার হার
 						</p>
-					)}
-					{risk_verdict?.reasons?.map((reason) => (
-						<p key={reason} className="text-xs text-slate-500">
-							• {reason}
+						<p
+							className={`mt-0.5 text-3xl font-extrabold tabular-nums ${level.text}`}
+						>
+							{ratio}
+							<span className="ml-0.5 text-lg">%</span>
 						</p>
-					))}
+						<div className="mt-2 h-1.5 w-32 overflow-hidden rounded-full bg-slate-200">
+							<div
+								className={`h-full rounded-full ${level.bar}`}
+								style={{ width: `${ratio}%` }}
+							/>
+						</div>
+					</div>
 				</div>
 			</div>
 
