@@ -89,9 +89,10 @@ export default function PackageModal({
 	};
 
 	return (
-		<div className="fixed inset-0 z-[999] flex items-center justify-center overflow-y-auto p-4">
+		<div className="fixed inset-0 z-[999] overflow-y-auto p-4">
 			<button aria-label="Close package dialog" className="fixed inset-0 cursor-default bg-slate-950/55 backdrop-blur-sm" disabled={isSubmitting} onClick={onCancel} type="button" />
-			<div className="relative my-8 w-full max-w-3xl rounded-2xl border border-white/70 bg-white p-6 shadow-2xl sm:p-8" role="dialog" aria-modal="true" aria-labelledby="package-dialog-title">
+			<div className="flex min-h-full items-center justify-center">
+				<div className="relative my-8 w-full max-w-3xl rounded-2xl border border-white/70 bg-white p-6 shadow-2xl sm:p-8" role="dialog" aria-modal="true" aria-labelledby="package-dialog-title">
 				<div className="mb-6 flex items-start justify-between gap-4">
 					<div className="flex items-center gap-3"><span className="flex size-11 items-center justify-center rounded-2xl bg-amber-100 text-amber-700"><Package className="size-5" /></span><div><p className="text-xs font-bold uppercase tracking-[0.16em] text-secondary/60">Catalog</p><h2 id="package-dialog-title" className="text-xl font-extrabold text-secondary-dark">{isEditing ? "Edit package" : "Add package"}</h2></div></div>
 					<button aria-label="Close package dialog" className="rounded-xl p-2 text-slate-400 transition hover:bg-slate-100 hover:text-slate-700" disabled={isSubmitting} onClick={onCancel} type="button"><X className="size-5" /></button>
@@ -100,9 +101,9 @@ export default function PackageModal({
 					<div className="grid gap-5 md:grid-cols-2">
 						<label className="text-sm font-bold text-slate-700 md:col-span-2" htmlFor="package-name">Package name<input id="package-name" className={`${inputClass} mt-2`} value={form.name} onChange={(event) => update("name", event.target.value)} maxLength={100} placeholder="e.g. Growth" required /></label>
 						<label className="text-sm font-bold text-slate-700 md:col-span-2" htmlFor="package-description">Description<textarea id="package-description" className={`${inputClass} mt-2 min-h-24 resize-y`} value={form.description} onChange={(event) => update("description", event.target.value)} maxLength={2000} placeholder="Describe what this package includes" required /></label>
-						{numericFields.map(({ field, label, placeholder }) => <label className="text-sm font-bold text-slate-700" htmlFor={`package-${field}`} key={field}>{label}<input id={`package-${field}`} className={`${inputClass} mt-2`} inputMode="numeric" type="number" min={field === "duration_in_days" ? 1 : 0} value={form[field]} onChange={(event) => update(field, event.target.value)} placeholder={placeholder} required /></label>)}
+						{numericFields.map(({ field, label, placeholder }) => <label className="text-sm font-bold text-slate-700" htmlFor={`package-${field}`} key={field}>{label}<input id={`package-${field}`} className={`${inputClass} mt-2`} type="text" inputMode="numeric" value={form[field]} onChange={(event) => update(field, event.target.value)} placeholder={placeholder} required /></label>)}
 					</div>
-					<div><div className="mb-2 flex items-center justify-between"><span className="text-sm font-bold text-slate-700">Features</span><button type="button" disabled={form.features.length >= 50} onClick={() => update("features", [...form.features, ""])} className="inline-flex items-center gap-1 text-sm font-bold text-secondary hover:text-secondary-dark disabled:opacity-50"><Plus className="size-4" /> Add feature</button></div><div className="space-y-3">{form.features.map((feature, index) => <div
+					<div><div className="mb-2 flex items-center justify-between"><span className="text-sm font-bold text-slate-700">Features</span><button type="button" disabled={form.features.length >= 50} onClick={() => update("features", [...form.features, ""])} className="inline-flex items-center gap-1 text-sm font-bold text-secondary hover:text-secondary-dark disabled:opacity-50"><Plus className="size-4" /> Add feature</button></div><div className="max-h-72 space-y-3 overflow-y-auto pr-2">{form.features.map((feature, index) => <div
 										className="flex gap-2"
 										// biome-ignore lint/suspicious/noArrayIndexKey: feature rows are position-controlled
 										key={index}
@@ -111,6 +112,7 @@ export default function PackageModal({
 					{error && <p className="rounded-xl bg-rose-50 px-3 py-2 text-sm font-semibold text-rose-700" role="alert">{error}</p>}
 					<div className="flex justify-end gap-3 pt-2"><button className="rounded-xl bg-slate-100 px-4 py-2.5 font-bold text-slate-700 transition hover:bg-slate-200 disabled:opacity-50" disabled={isSubmitting} onClick={onCancel} type="button">Cancel</button><button className="rounded-xl bg-secondary px-4 py-2.5 font-bold text-white shadow-lg shadow-secondary/20 transition hover:bg-secondary-dark disabled:opacity-60" disabled={isSubmitting} type="submit">{isSubmitting ? "Saving..." : isEditing ? "Save changes" : "Create package"}</button></div>
 				</form>
+				</div>
 			</div>
 		</div>
 	);
