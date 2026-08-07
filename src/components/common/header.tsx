@@ -2,15 +2,14 @@
 import { Link, useNavigate } from "@tanstack/react-router";
 import { LayoutDashboard, LogIn, Menu, X } from "lucide-react";
 import { useEffect, useRef, useState } from "react";
-import { LogoIcon } from "@/components/common/logoIcon";
 import { useAuth } from "@/context/userContext";
 
 const NAV_ITEMS = [
-	{ label: "কিভাবে কাজ করে", section: "how" },
+	{ label: "যেভাবে কাজ করে", section: "how" },
 	{ label: "ফিচারসমূহ", section: "features" },
-	{ label: "ফ্রি কীভাবে কাজ করে", section: "free" },
-	{ label: "প্রাইসিং", section: "pricing" },
-	{ label: "FAQ", section: "faq" },
+	{ label: "বিনামূল্যে ব্যবহার", section: "free" },
+	{ label: "মূল্যতালিকা", section: "pricing" },
+	{ label: "সাধারণ প্রশ্ন", section: "faq" },
 ];
 
 const linkClasses =
@@ -50,7 +49,7 @@ function AuthButton({ onClick }) {
 			) : (
 				<LogIn className="h-3.5 w-3.5" />
 			)}
-			{isAuthenticated ? "Panel" : "Login"}
+			{isAuthenticated ? "ড্যাশবোর্ড" : "লগইন"}
 		</Link>
 	);
 }
@@ -98,7 +97,7 @@ const Header = () => {
 			<div className="maxw px-4 sm:px-6 lg:px-8 py-4 flex items-center justify-between gap-4">
 				<Link to="/" className="flex shrink-0 items-center gap-2.5">
 					<span className="flex h-10 w-10 items-center justify-center rounded-xl bg-gradient-to-br from-secondary to-secondary-dark text-white shadow-lg shadow-secondary/25">
-						<LogoIcon className="h-7 w-7" />
+						<img src="/logo.png" alt="" aria-hidden="true" className="h-7 w-7 object-contain" />
 					</span>
 					<span className="text-xl font-extrabold tracking-tight">
 						কুরিয়ারবাইট
@@ -156,7 +155,7 @@ const Header = () => {
 						className="flex shrink-0 items-center gap-2.5"
 					>
 						<span className="flex h-9 w-9 items-center justify-center rounded-lg bg-gradient-to-br from-secondary to-secondary-dark text-white">
-							<LogoIcon className="h-7 w-7" />
+							<img src="/logo.png" alt="" aria-hidden="true" className="h-7 w-7 object-contain" />
 						</span>
 						<span className="text-lg font-extrabold tracking-tight">
 							কুরিয়ারবাইট

@@ -16,7 +16,7 @@ export default function FinalCta() {
 					/>
 					<div className="relative">
 						<span className="inline-flex items-center gap-2 rounded-full border border-white/15 bg-white/10 px-3.5 py-2 text-xs font-bold text-white/75">
-							<Zap className="h-3.5 w-3.5" /> আজই আপনার প্রথম চেক করুন
+							<Zap className="h-3.5 w-3.5" /> আজই প্রথম যাচাই করুন
 						</span>
 						<h2 className="mx-auto mt-5 max-w-2xl text-3xl font-extrabold leading-tight text-white sm:text-4xl">
 							আপনার পরের COD অর্ডারটি
@@ -24,15 +24,15 @@ export default function FinalCta() {
 							অনুমানের ওপর ছেড়ে দেবেন না
 						</h2>
 						<p className="mx-auto mt-4 max-w-xl text-base leading-relaxed text-white/75">
-							প্রতিদিনের ৫টি ফ্রি সার্চ দিয়ে শুরু করুন। কুরিয়ারবাইট আপনার লাভ রক্ষা করতে কতটা
-							সাহায্য করে, নিজেই দেখুন।
+							প্রতিদিনের ৫টি বিনামূল্যের যাচাই দিয়ে শুরু করুন। কুরিয়ারবাইট আপনার লাভ রক্ষায় কতটা
+							সাহায্য করতে পারে, নিজেই দেখে নিন।
 						</p>
 						<div className="mt-8 flex flex-col items-center justify-center gap-3 sm:flex-row">
 							<a
 								href="#hero"
 								className="inline-flex items-center gap-2 rounded-xl bg-white px-7 py-3.5 text-sm font-extrabold text-secondary shadow-xl transition hover:-translate-y-0.5 hover:bg-secondary/10"
 							>
-								<Search className="h-4 w-4" /> ফ্রি সার্চ শুরু করুন
+								<Search className="h-4 w-4" /> বিনামূল্যে যাচাই শুরু করুন
 							</a>
 							<a
 								href="#pricing"
@@ -42,7 +42,7 @@ export default function FinalCta() {
 							</a>
 						</div>
 						<p className="mt-5 text-xs font-medium text-white/55">
-							কোনো কার্ড লাগবে না · কোনো commitment নেই
+							কোনো কার্ড লাগবে না · কোনো বাধ্যবাধকতা নেই
 						</p>
 					</div>
 				</div>

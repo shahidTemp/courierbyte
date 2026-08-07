@@ -5,20 +5,20 @@ const steps = [
 	{
 		number: "০১",
 		icon: Search,
-		title: "অর্ডার আসলেই নাম্বার দিন",
-		desc: "কাস্টমারের মোবাইল নাম্বারটি লিখুন। কোনো রেজিস্ট্রেশন ছাড়াই প্রথম ৫টি সার্চ ফ্রি।",
+		title: "অর্ডার এলেই নম্বর দিন",
+		desc: "অর্ডার পাওয়ার পর গ্রাহকের মোবাইল নম্বর লিখুন। নিবন্ধন ছাড়াই প্রথম ৫টি যাচাই বিনামূল্যে করতে পারবেন।",
 	},
 	{
 		number: "০২",
 		icon: BarChart3,
-		title: "রিপোর্টে ঝুঁকি বুঝুন",
-		desc: "ডেলিভারি, ক্যানসেল, কুরিয়ারভিত্তিক ইতিহাস ও সাকসেস রেশিও এক স্ক্রিনে দেখুন।",
+		title: "এক নজরে ঝুঁকি বুঝুন",
+		desc: "ডেলিভারি, বাতিল ও ফেরতের ইতিহাস এবং সফল ডেলিভারির হার এক নজরে দেখুন।",
 	},
 	{
 		number: "০৩",
 		icon: ShieldCheck,
-		title: "লাভের সিদ্ধান্ত নিন",
-		desc: "COD পাঠাবেন, কনফার্মেশন কল করবেন নাকি অগ্রিম নেবেন — ডেটা দেখে ঠিক করুন।",
+		title: "তথ্য দেখে সিদ্ধান্ত নিন",
+		desc: "COD পাঠাবেন, ফোন করে অর্ডার নিশ্চিত করবেন, নাকি অগ্রিম নেবেন—সিদ্ধান্ত নিন তথ্যের ভিত্তিতে।",
 	},
 ];
 
@@ -28,13 +28,13 @@ export default function HowItWorks() {
 			<div className="maxw px-4 sm:px-6 lg:px-8">
 				<div className="max-w-2xl">
 					<p className="text-xs font-bold uppercase tracking-[0.2em] text-secondary">
-						সহজ workflow
+						সহজ প্রক্রিয়া
 					</p>
 					<h2 className="mt-3 text-3xl font-extrabold tracking-tight text-slate-900 sm:text-4xl">
 						অর্ডার থেকে সিদ্ধান্ত — এক মিনিটেরও কম সময়ে
 					</h2>
 					<p className="mt-4 text-lg leading-relaxed text-slate-600">
-						আপনার টিমকে অনুমান করে নয়, তথ্য দেখে সিদ্ধান্ত নেওয়ার অভ্যাস দিন।
+						আপনার টিমকে অনুমানের বদলে তথ্যের ভিত্তিতে সিদ্ধান্ত নিতে সাহায্য করুন।
 					</p>
 				</div>
 				<div className="relative mt-12 grid gap-5 md:grid-cols-3">

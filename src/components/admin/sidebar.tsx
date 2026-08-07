@@ -15,7 +15,6 @@ import {
 	X,
 } from "lucide-react";
 import { useEffect, useRef, useState } from "react";
-import { LogoIcon } from "@/components/common/logoIcon";
 import { useAuth } from "@/context/userContext";
 
 // These `to` paths map to the admin routes defined under src/routes/admin/.
@@ -23,7 +22,7 @@ const MAIN_NAV = [
 	{ label: "Dashboard", to: "/admin", icon: LayoutDashboard },
 	{ label: "Users", to: "/admin/user/all", icon: Users },
 	{ label: "Admins", to: "/admin/admin/all", icon: UserRound },
-	{ label: "Packages", to: "/admin/package/all", icon: LogoIcon },
+	{ label: "Packages", to: "/admin/package/all", icon: "logo" },
 	{ label: "Subscriptions", to: "/admin/subscription/all", icon: CreditCard },
 	{ label: "Keys", to: "/admin/keys/all", icon: KeyRound },
 	{
@@ -48,7 +47,11 @@ function NavItemLink({ item, onNavigate }) {
 				aria-hidden="true"
 				className="absolute left-0 top-1/2 h-6 w-1 -translate-y-1/2 rounded-r-full bg-secondary-dark opacity-0 transition-opacity duration-200 group-data-[status=active]:opacity-100"
 			/>
-			<item.icon className="h-5 w-5 shrink-0" />
+			{item.icon === "logo" ? (
+				<img src="/logo.png" alt="" aria-hidden="true" className="h-7 w-7 shrink-0 object-contain" />
+			) : (
+				<item.icon className="h-5 w-5 shrink-0" />
+			)}
 			<span className="truncate">{item.label}</span>
 		</Link>
 	);
@@ -61,7 +64,7 @@ function Brand({ onClick }) {
 	return (
 		<Link to="/" onClick={onClick} className="flex items-center gap-3">
 			<span className="flex h-10 w-10 shrink-0 items-center justify-center rounded-xl bg-gradient-to-br from-secondary to-secondary-dark text-white shadow-md shadow-secondary/25">
-				<LogoIcon className="h-7 w-7" />
+				<img src="/logo.png" alt="" aria-hidden="true" className="h-7 w-7 object-contain" />
 			</span>
 			<span className="flex flex-col leading-tight">
 				<span className="text-lg font-extrabold tracking-tight text-secondary-dark">

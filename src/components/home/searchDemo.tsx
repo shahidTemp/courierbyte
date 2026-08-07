@@ -18,7 +18,7 @@ export default function SearchDemo() {
 	const handleSubmit = (event) => {
 		event.preventDefault();
 		if (!/^01[3-9]\d{8}$/.test(phone)) {
-			setError("সঠিক ১১ সংখ্যার মোবাইল নাম্বার দিন");
+			setError("সঠিক ১১ সংখ্যার মোবাইল নম্বর দিন");
 			return;
 		}
 		if (isLoading) return;
@@ -37,7 +37,7 @@ export default function SearchDemo() {
 					className="flex flex-col gap-2.5 sm:flex-row"
 				>
 					<label className="relative flex-1">
-						<span className="sr-only">কাস্টমারের মোবাইল নাম্বার</span>
+						<span className="sr-only">গ্রাহকের মোবাইল নম্বর</span>
 						<input
 							type="tel"
 							inputMode="numeric"
@@ -51,7 +51,7 @@ export default function SearchDemo() {
 						type="submit"
 						className="flex items-center justify-center gap-2 rounded-xl bg-secondary px-6 py-4 text-sm font-bold text-white shadow-lg shadow-secondary/15 transition-all hover:-translate-y-0.5 hover:bg-secondary-dark active:translate-y-0"
 					>
-						<Search className="h-4 w-4" /> রিপোর্ট দেখুন
+						<Search className="h-4 w-4" /> ফলাফল দেখুন
 					</button>
 				</form>
 				{error && (

@@ -5,7 +5,6 @@ import {
 	MessageCircle,
 	ShieldAlert,
 } from "lucide-react";
-import { LogoIcon } from "@/components/common/logoIcon";
 import { useAuth } from "@/context/userContext";
 
 // Activation support WhatsApp number (local BD format)
@@ -27,7 +26,7 @@ export const AccountInactive = () => {
 			<div className="w-full max-w-md animate-fade-in-up">
 				<Link to="/" className="mb-8 flex items-center justify-center gap-3">
 					<span className="flex h-12 w-12 items-center justify-center rounded-2xl bg-gradient-to-br from-secondary to-secondary-dark text-white shadow-lg shadow-secondary/25">
-						<LogoIcon className="h-8 w-8" />
+						<img src="/logo.png" alt="" aria-hidden="true" className="h-8 w-8 object-contain" />
 					</span>
 					<span className="text-2xl font-extrabold tracking-tight text-secondary-dark">
 						কুরিয়ারবাইট

@@ -12,18 +12,18 @@ import {
 const outcomes = [
 	{
 		icon: CircleDollarSign,
-		title: "রিটার্ন খরচ কমে",
-		desc: "প্রতিটি এড়ানো রিটার্ন সরাসরি আপনার লাভে যোগ হয়",
+		title: "ফেরতের খরচ কমে",
+		desc: "এড়ানো প্রতিটি ফেরতের খরচ সরাসরি আপনার লাভে যোগ হয়",
 	},
 	{
 		icon: Target,
-		title: "সঠিক কাস্টমারে ফোকাস",
-		desc: "ডেটা দেখে অর্ডার কনফার্মেশন ও COD সিদ্ধান্ত নিন",
+		title: "সঠিক গ্রাহকের দিকে মনোযোগ",
+		desc: "তথ্য দেখে অর্ডার নিশ্চিত করা ও COD-এর সিদ্ধান্ত নিন",
 	},
 	{
 		icon: RefreshCw,
-		title: "বিক্রির গতি বাড়ে",
-		desc: "কম রিটার্ন, কম সময় নষ্ট — বেশি অর্ডার সামলান",
+		title: "বিক্রি আরও সহজ হয়",
+		desc: "কম ফেরত, কম সময় নষ্ট—আরও বেশি অর্ডার সামলান",
 	},
 ];
 
@@ -34,33 +34,33 @@ export default function BusinessOutcome() {
 				<div className="grid items-end gap-10 lg:grid-cols-[0.9fr_1.1fr]">
 					<div>
 						<p className="text-xs font-bold uppercase tracking-[0.2em] text-white/75">
-							আপনার লাভের হিসাব
+							লাভের হিসাবটা সহজ রাখুন
 						</p>
 						<h2 className="mt-4 max-w-xl text-3xl font-extrabold leading-tight sm:text-4xl">
-							কুরিয়ার ফি কমলেই লাভ বাড়ে — হিসাবটা এতই সহজ
+							কুরিয়ার খরচ কমলে লাভ বাড়ে—হিসাবটা খুব সহজ
 						</h2>
 						<p className="mt-5 max-w-lg text-base leading-relaxed text-white/65">
-							একজন কাস্টমার পার্সেল না নিলে পণ্যের লাভ তো যায়ই, সঙ্গে যোগ হয় ডেলিভারি ও
-							রিটার্ন চার্জ। কুরিয়ারবাইট সেই সিদ্ধান্তটা অর্ডার পাঠানোর আগেই সহজ করে।
+							গ্রাহক পার্সেল গ্রহণ না করলে পণ্যের লাভের পাশাপাশি যোগ হয় ডেলিভারি ও ফেরত পাঠানোর
+							খরচ। কুরিয়ারবাইট অর্ডার পাঠানোর আগেই সঠিক সিদ্ধান্ত নিতে সাহায্য করে।
 						</p>
 						<a
 							href="#pricing"
 							className="mt-8 inline-flex items-center gap-2 rounded-xl bg-white px-5 py-3.5 text-sm font-bold text-secondary transition hover:-translate-y-0.5 hover:bg-secondary/10"
 						>
-							কোন প্যাকেজ আমার জন্য? <ArrowRight className="h-4 w-4" />
+							কোন প্যাকেজটি আমার জন্য? <ArrowRight className="h-4 w-4" />
 						</a>
 					</div>
 					<div className="grid gap-3 sm:grid-cols-3">
 						<div className="rounded-2xl border border-rose-300/15 bg-rose-300/[0.07] p-5">
 							<div className="flex items-center justify-between">
 								<span className="text-xs font-bold text-rose-200/70">
-									চেক না করলে (উদাহরণ)
+									যাচাই না করলে (উদাহরণ)
 								</span>
 								<TrendingDown className="h-4 w-4 text-rose-300" />
 							</div>
 							<p className="mt-4 text-3xl font-extrabold text-white">-৳ ৩৫০</p>
 							<p className="mt-2 text-xs leading-relaxed text-rose-100/55">
-								প্রতি রিটার্নে পণ্য পাঠানো, ডেলিভারি ও রিটার্ন খরচ
+								প্রতি ফেরতে পণ্য পাঠানো, ডেলিভারি ও ফেরত পাঠানোর খরচ
 							</p>
 						</div>
 						<div className="flex items-center justify-center sm:-mx-1">
@@ -70,7 +70,7 @@ export default function BusinessOutcome() {
 						<div className="rounded-2xl border border-white/20 bg-white/[0.09] p-5">
 							<div className="flex items-center justify-between">
 								<span className="text-xs font-bold text-white/80">
-									চেক করলে (উদাহরণ)
+									যাচাই করলে (উদাহরণ)
 								</span>
 								<TrendingUp className="h-4 w-4 text-white/75" />
 							</div>
@@ -78,7 +78,7 @@ export default function BusinessOutcome() {
 								+৳ ৩৫০
 							</p>
 							<p className="mt-2 text-xs leading-relaxed text-white/60">
-								ঝুঁকিপূর্ণ অর্ডার আগে বুঝে, সঠিক কাস্টমারে ফোকাস
+								ঝুঁকিপূর্ণ অর্ডার আগে বুঝে, সঠিক গ্রাহকের দিকে মনোযোগ দিন
 							</p>
 						</div>
 					</div>

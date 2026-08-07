@@ -9,16 +9,16 @@ export default function FreemiumSection() {
 					<div className="grid lg:grid-cols-[1fr_0.9fr]">
 						<div className="bg-gradient-to-br from-secondary/10 to-white p-7 sm:p-10 lg:p-14">
 							<span className="inline-flex items-center gap-2 rounded-full bg-secondary px-3.5 py-2 text-xs font-bold text-white shadow-lg shadow-secondary/20">
-								<Sparkles className="h-3.5 w-3.5" /> Free forever শুরু করুন
+								<Sparkles className="h-3.5 w-3.5" /> বিনামূল্যে শুরু করুন
 							</span>
 							<h2 className="mt-5 text-3xl font-extrabold leading-tight text-slate-900 sm:text-4xl">
 								আগে ব্যবহার করে দেখুন।
 								<br />
-								<span className="gradient-text">ভালো লাগলে তবেই আপগ্রেড করুন।</span>
+								<span className="gradient-text">ভালো লাগলে আপগ্রেড করুন।</span>
 							</h2>
 							<p className="mt-5 max-w-lg text-base leading-relaxed text-slate-600">
-								প্রতিদিন ৫টি কাস্টমার চেক সম্পূর্ণ ফ্রি। কোনো কার্ড, কোনো commitment নেই।
-								আপনার ব্যবসায় এটি কতটা কাজে লাগে, নিজেই বুঝে নিন।
+								প্রতিদিন ৫ জন গ্রাহকের তথ্য যাচাই সম্পূর্ণ বিনামূল্যে। কোনো কার্ড বা অগ্রিম পেমেন্ট লাগবে না।
+								আপনার ব্যবসায় এটি কতটা কাজে আসে, নিজেই দেখে নিন।
 							</p>
 							<div className="mt-8 grid gap-3 sm:grid-cols-2">
 								<div className="rounded-xl border border-secondary/10 bg-white p-4">
@@ -26,13 +26,13 @@ export default function FreemiumSection() {
 										৫টি
 									</p>
 									<p className="mt-1 text-xs font-semibold text-slate-500">
-										প্রতিদিন ফ্রি সার্চ
+										প্রতিদিন ৫ জন গ্রাহকের তথ্য যাচাই
 									</p>
 								</div>
 								<div className="rounded-xl border border-secondary/10 bg-white p-4">
 									<p className="text-2xl font-extrabold text-secondary">৳০</p>
 									<p className="mt-1 text-xs font-semibold text-slate-500">
-										শুরু করতে খরচ
+										শুরুতে খরচ
 									</p>
 								</div>
 							</div>
@@ -41,7 +41,7 @@ export default function FreemiumSection() {
 							<div className="flex items-center justify-between">
 								<div>
 									<p className="text-xs font-bold uppercase tracking-[0.18em] text-white/75">
-										Free usage pass
+										আজকের বিনামূল্যের ব্যবহার
 									</p>
 									<h3 className="mt-2 text-xl font-extrabold">আজকের ব্যবহার</h3>
 								</div>
@@ -53,11 +53,11 @@ export default function FreemiumSection() {
 								<div>
 									<span className="text-5xl font-extrabold text-white">০</span>
 									<span className="ml-2 text-sm font-medium text-white/50">
-										/ ৫ সার্চ
+										/ ৫টি যাচাই
 									</span>
 								</div>
 								<span className="rounded-full bg-white/10 px-3 py-1.5 text-xs font-bold text-white/75">
-									আজ ফ্রি
+									আজ বিনামূল্যে
 								</span>
 							</div>
 							<div className="mt-8 rounded-2xl border border-white/10 bg-white/[0.05] p-4">
@@ -67,10 +67,10 @@ export default function FreemiumSection() {
 									</span>
 									<div>
 										<p className="text-sm font-bold text-white">
-											৫টির বেশি সার্চ দরকার?
+											আরও বেশি যাচাই দরকার?
 										</p>
 										<p className="mt-1 text-xs leading-relaxed text-white/60">
-											লগইন করে একটি প্যাকেজ নিলে আপনার পুরো টিম আরও বেশি কাস্টমার চেক
+											লগইন করে একটি প্যাকেজ নিলে আপনার পুরো টিম আরও বেশি গ্রাহক যাচাই
 											করতে পারবে।
 										</p>
 									</div>
@@ -80,7 +80,7 @@ export default function FreemiumSection() {
 								href="#pricing"
 								className="mt-6 flex items-center justify-center gap-2 rounded-xl bg-white px-5 py-3.5 text-sm font-extrabold text-secondary-dark transition hover:bg-white/90"
 							>
-								প্যাকেজগুলো দেখুন <ArrowRight className="h-4 w-4" />
+								প্যাকেজ দেখুন <ArrowRight className="h-4 w-4" />
 							</a>
 						</div>
 					</div>

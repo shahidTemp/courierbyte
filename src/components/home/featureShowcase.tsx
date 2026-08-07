@@ -5,29 +5,28 @@ import {
 	TrendingDown,
 	WalletCards,
 } from "lucide-react";
-import { LogoIcon } from "@/components/common/logoIcon";
 
 const valueFeatures = [
 	{
-		icon: LogoIcon,
-		tag: "01 · ঝুঁকি বোঝা",
-		title: "প্রতিটি কাস্টমারের জন্য একটি পরিষ্কার উত্তর",
-		desc: "শুধু ‘ভালো’ বা ‘খারাপ’ নয় — কোন কুরিয়ারে কতবার নিয়েছে, কতবার রিসিভ করেছে, কোথায় সমস্যা হয়েছে সব দেখুন।",
+		icon: "logo",
+		tag: "০১ · ঝুঁকি বুঝুন",
+		title: "প্রতিটি গ্রাহক সম্পর্কে পরিষ্কার ধারণা পান",
+		desc: "শুধু ‘ভালো’ বা ‘খারাপ’ নয়—কোন কুরিয়ারে তার কতগুলো পার্সেল ডেলিভারি হয়েছে, কতগুলো গ্রহণ করা হয়েছে এবং কোথায় সমস্যা হয়েছে, সবই দেখুন।",
 		points: [
-			"মোট অর্ডার বনাম সফল ডেলিভারি",
-			"ক্যানসেল ও রিটার্নের ইতিহাস",
-			"সহজ Risk level ও action hint",
+			"মোট অর্ডার ও সফল ডেলিভারির হিসাব",
+			"বাতিল ও ফেরতের ইতিহাস",
+			"সহজ ঝুঁকি-স্তর ও পরবর্তী করণীয়",
 		],
 	},
 	{
 		icon: WalletCards,
-		tag: "02 · লাভ রক্ষা",
-		title: "রিপোর্ট শুধু তথ্য নয় — টাকার সিদ্ধান্ত",
-		desc: "একটি রিটার্নে কত খরচ হতে পারে, সেই হিসাব মাথায় রেখেই আপনার টিমকে পরবর্তী পদক্ষেপ বুঝিয়ে দিন।",
+		tag: "০২ · লাভ বাঁচান",
+		title: "রিপোর্ট শুধু তথ্য নয়—সঠিক সিদ্ধান্তের ভিত্তি",
+		desc: "একটি ফেরতে কতটা খরচ হতে পারে, তা বুঝে আপনার টিমকে পরবর্তী পদক্ষেপ নিতে সাহায্য করুন।",
 		points: [
-			"সম্ভাব্য লোকসানের ইঙ্গিত",
-			"সাকসেস রেশিও দেখে COD সিদ্ধান্ত",
-			"অর্ডার কনফার্মেশন workflow",
+			"সম্ভাব্য লোকসানের আগাম ধারণা",
+			"সফল ডেলিভারির হার দেখে COD-এর সিদ্ধান্ত",
+			"অর্ডার নিশ্চিত করার সহজ প্রক্রিয়া",
 		],
 	},
 ];
@@ -54,7 +53,7 @@ function SavingsBoard() {
 						</span>
 						<div>
 							<p className="text-[10px] font-bold uppercase tracking-[0.16em] text-slate-400">
-								Business impact
+								ব্যবসার প্রভাব
 							</p>
 							<p className="mt-1 text-sm font-extrabold text-slate-900">
 								লাভের হিসাব
@@ -62,31 +61,31 @@ function SavingsBoard() {
 						</div>
 					</div>
 					<span className="rounded-full bg-secondary/10 px-2.5 py-1 text-[10px] font-bold text-secondary">
-						UI preview
+						নমুনা
 					</span>
 				</div>
 				<div className="mt-5 grid grid-cols-2 gap-3">
 					<div className="rounded-xl bg-slate-50 p-4">
 						<p className="text-[10px] font-semibold text-slate-400">
-							চেক না করলে
+							যাচাই না করলে
 						</p>
 						<p className="mt-2 text-2xl font-extrabold text-rose-500">-৳ ৩৫০</p>
-						<p className="mt-1 text-[10px] text-slate-500">সম্ভাব্য রিটার্ন খরচ</p>
+						<p className="mt-1 text-[10px] text-slate-500">সম্ভাব্য ফেরতের খরচ</p>
 					</div>
 					<div className="rounded-xl bg-secondary/10 p-4">
 						<p className="text-[10px] font-semibold text-secondary/60">
-							চেক করলে
+							যাচাই করলে
 						</p>
 						<p className="mt-2 text-2xl font-extrabold text-secondary">
 							+৳ ৩৫০
 						</p>
-						<p className="mt-1 text-[10px] text-secondary/60">লাভ রক্ষার সুযোগ</p>
+						<p className="mt-1 text-[10px] text-secondary/60">লাভ বাঁচানোর সুযোগ</p>
 					</div>
 				</div>
 				<div className="mt-5 rounded-xl border border-slate-100 p-4">
 					<div className="flex items-center justify-between">
 						<p className="text-xs font-extrabold text-slate-800">
-							মাসিক রিটার্ন কমানোর সম্ভাবনা
+							মাসিক ফেরত কমানোর সম্ভাবনা
 						</p>
 						<TrendingDown className="h-4 w-4 text-secondary" />
 					</div>
@@ -109,7 +108,7 @@ function SavingsBoard() {
 				</div>
 				<div className="mt-4 flex items-center gap-2 rounded-xl bg-secondary/10 px-3 py-3 text-[11px] font-bold text-secondary-dark">
 					<Target className="h-4 w-4 shrink-0 text-secondary" /> প্রতিটি সঠিক
-					সিদ্ধান্ত আপনার margin রক্ষা করে
+					সিদ্ধান্ত আপনার লাভ রক্ষা করে
 				</div>
 			</div>
 		</div>
@@ -125,12 +124,12 @@ export default function FeatureShowcase() {
 						আপনার ব্যবসায় বাস্তব প্রভাব
 					</p>
 					<h2 className="mt-3 text-3xl font-extrabold tracking-tight text-slate-900 sm:text-4xl">
-						ফিচার দেখানোর জন্য নয়,
-						<br className="hidden sm:block" /> সিদ্ধান্ত বদলানোর জন্য তৈরি
+						শুধু ফিচার দেখানোর জন্য নয়,
+						<br className="hidden sm:block" /> সিদ্ধান্ত সহজ করার জন্য তৈরি
 					</h2>
 					<p className="mx-auto mt-4 max-w-2xl text-lg text-slate-600">
-						একটি সুন্দর ড্যাশবোর্ডের পেছনে আছে আপনার সময়, পণ্য ও লাভ রক্ষার একটি নির্দিষ্ট
-						workflow।
+						সুন্দর ড্যাশবোর্ডের পেছনে আছে আপনার সময়, পণ্য ও লাভ রক্ষার একটি বাস্তবসম্মত
+						প্রক্রিয়া।
 					</p>
 				</div>
 				<div className="mt-16 space-y-20">
@@ -143,7 +142,11 @@ export default function FeatureShowcase() {
 							>
 								<div>
 									<span className="inline-flex items-center gap-2 rounded-full bg-white px-3.5 py-2 text-xs font-bold text-secondary shadow-sm ring-1 ring-secondary/10">
-										<Icon className="h-3.5 w-3.5" /> {feature.tag}
+										{feature.icon === "logo" ? (
+											<img src="/logo.png" alt="" aria-hidden="true" className="h-5 w-5 object-contain" />
+										) : (
+											<Icon className="h-3.5 w-3.5" />
+										)} {feature.tag}
 									</span>
 									<h3 className="mt-5 text-3xl font-extrabold leading-tight text-slate-900">
 										{feature.title}
