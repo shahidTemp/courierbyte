@@ -48,27 +48,22 @@ const formatDay = (date) =>
 const statStyles = {
 	blue: {
 		icon: "bg-sky-100 text-sky-700",
-		bar: "bg-sky-500",
 		border: "border-l-sky-500",
 	},
 	green: {
 		icon: "bg-emerald-100 text-emerald-700",
-		bar: "bg-emerald-500",
 		border: "border-l-emerald-500",
 	},
 	violet: {
 		icon: "bg-violet-100 text-violet-700",
-		bar: "bg-violet-500",
 		border: "border-l-violet-500",
 	},
 	amber: {
 		icon: "bg-amber-100 text-amber-700",
-		bar: "bg-amber-500",
 		border: "border-l-amber-500",
 	},
 	rose: {
 		icon: "bg-rose-100 text-rose-700",
-		bar: "bg-rose-500",
 		border: "border-l-rose-500",
 	},
 };
@@ -156,18 +151,85 @@ function RequestChart({ dailyRequests = [] }) {
 	);
 }
 
-function ProgressRow({ label, value, total, tone }) {
-	const percentage = total ? Math.min(100, Math.round((value / total) * 100)) : 0;
+function CompositionDonut({ total, newUsers, olderUsers }) {
+	const safeTotal = Math.max(0, Number(total ?? 0));
+	const safeNewUsers = Math.max(0, Number(newUsers ?? 0));
+	const safeOlderUsers = Math.max(0, Number(olderUsers ?? 0));
+	const radius = 58;
+	const circumference = 2 * Math.PI * radius;
+	const newLength = safeTotal
+		? (Math.min(safeNewUsers, safeTotal) / safeTotal) * circumference
+		: 0;
+	const olderLength = safeTotal
+		? (Math.min(safeOlderUsers, safeTotal) / safeTotal) * circumference
+		: 0;
+	const newPercentage = safeTotal
+		? Math.round((safeNewUsers / safeTotal) * 100)
+		: 0;
+	const olderPercentage = safeTotal
+		? Math.round((safeOlderUsers / safeTotal) * 100)
+		: 0;
+
 	return (
-		<div>
-			<div className="flex items-center justify-between gap-3 text-sm">
-				<span className="font-semibold text-slate-600">{label}</span>
-				<span className="font-extrabold text-slate-900">
-					{formatNumber(value)} <span className="font-semibold text-slate-400">({percentage}%)</span>
-				</span>
-			</div>
-			<div className="mt-2 h-2 overflow-hidden rounded-full bg-slate-100">
-				<div className={`h-full rounded-full ${statStyles[tone].bar}`} style={{ width: `${percentage}%` }} />
+		<div className="flex flex-wrap items-center justify-center gap-4 sm:gap-5">
+			<svg
+				viewBox="0 0 160 160"
+				role="img"
+				aria-label={`User age composition: ${newPercentage}% new users and ${olderPercentage}% older users`}
+				className="size-36 shrink-0 sm:size-40"
+			>
+				<circle cx="80" cy="80" r={radius} fill="none" stroke="#f1f5f9" strokeWidth="22" />
+				{safeTotal > 0 && (
+					<>
+						<circle
+							cx="80"
+							cy="80"
+							r={radius}
+							fill="none"
+							stroke="#f59e0b"
+							strokeWidth="22"
+							strokeDasharray={`${olderLength} ${circumference}`}
+							strokeDashoffset={-newLength}
+							transform="rotate(-90 80 80)"
+						/>
+						<circle
+							cx="80"
+							cy="80"
+							r={radius}
+							fill="none"
+							stroke="#8b5cf6"
+							strokeWidth="22"
+							strokeDasharray={`${newLength} ${circumference}`}
+							transform="rotate(-90 80 80)"
+						/>
+					</>
+				)}
+				<circle cx="80" cy="80" r="39" fill="white" />
+				<text x="80" y="76" textAnchor="middle" className="fill-slate-900 text-[20px] font-extrabold">
+					{formatNumber(safeTotal)}
+				</text>
+				<text x="80" y="94" textAnchor="middle" className="fill-slate-400 text-[9px] font-bold">
+					TOTAL USERS
+				</text>
+			</svg>
+
+			<div className="w-full max-w-[190px] space-y-3">
+				<div className="flex items-center justify-between gap-3 text-sm">
+					<span className="flex items-center gap-2 font-semibold text-slate-600">
+						<span className="size-2.5 rounded-full bg-violet-500" /> New users
+					</span>
+					<span className="font-extrabold text-slate-900">
+						{formatNumber(safeNewUsers)} <span className="font-semibold text-slate-400">({newPercentage}%)</span>
+					</span>
+				</div>
+				<div className="flex items-center justify-between gap-3 text-sm">
+					<span className="flex items-center gap-2 font-semibold text-slate-600">
+						<span className="size-2.5 rounded-full bg-amber-500" /> Older users
+					</span>
+					<span className="font-extrabold text-slate-900">
+						{formatNumber(safeOlderUsers)} <span className="font-semibold text-slate-400">({olderPercentage}%)</span>
+					</span>
+				</div>
 			</div>
 		</div>
 	);
@@ -274,14 +336,25 @@ function RouteComponent() {
 					</div>
 
 					<div className="rounded-xl border border-slate-200 bg-white p-5 shadow-sm sm:p-6">
-						<PanelHeader title="User composition" detail="How the user base is distributed" />
-						<div className="mt-5 space-y-5">
-							<ProgressRow label="Enabled users" value={stats.users.active} total={stats.users.total} tone="green" />
-							<ProgressRow label="Active subscribers" value={stats.activeSubscribers} total={stats.users.total} tone="violet" />
-							<ProgressRow label="New users · 30 days" value={stats.users.new} total={stats.users.total} tone="amber" />
-							<ProgressRow label="Older users" value={stats.users.old} total={stats.users.total} tone="rose" />
+						<PanelHeader title="User composition" detail="New versus older accounts" />
+						<div className="mt-5">
+							<CompositionDonut
+								total={stats.users.total}
+								newUsers={stats.users.new}
+								olderUsers={stats.users.old}
+							/>
 						</div>
-						<div className="mt-6 border-t border-slate-100 pt-4">
+						<div className="mt-5 grid grid-cols-2 gap-2 border-t border-slate-100 pt-4">
+							<div className="rounded-lg bg-emerald-50 p-3">
+								<p className="text-xs font-semibold text-emerald-700">Active users</p>
+								<p className="mt-1 text-lg font-extrabold text-emerald-800">{formatNumber(stats.users.active)}</p>
+							</div>
+							<div className="rounded-lg bg-violet-50 p-3">
+								<p className="text-xs font-semibold text-violet-700">Active subscribers</p>
+								<p className="mt-1 text-lg font-extrabold text-violet-800">{formatNumber(stats.activeSubscribers)}</p>
+							</div>
+						</div>
+						<div className="mt-4">
 							<Link to="/admin/user/all" className="inline-flex items-center gap-1.5 text-sm font-bold text-secondary hover:gap-2.5">
 								View all users <ArrowRight className="size-4" aria-hidden="true" />
 							</Link>
