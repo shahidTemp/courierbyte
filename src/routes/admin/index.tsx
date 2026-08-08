@@ -3,14 +3,25 @@ import { queryOptions, useQuery } from "@tanstack/react-query";
 import { createFileRoute, Link } from "@tanstack/react-router";
 import {
 	Activity,
+	AlertTriangle,
+	ArrowDownRight,
 	ArrowRight,
+	ArrowUpRight,
+	CalendarDays,
 	Clock3,
+	Database,
+	Hourglass,
+	KeyRound,
+	Landmark,
+	Receipt,
 	RefreshCw,
 	ShieldCheck,
+	TrendingUp,
 	UserCheck,
 	UserPlus,
 	Users,
 	UsersRound,
+	Wallet,
 } from "lucide-react";
 import { useState } from "react";
 import { Loader } from "@/components/common/loader";
@@ -45,6 +56,36 @@ const formatDay = (date) =>
 		month: "short",
 		day: "numeric",
 	});
+
+const formatMoney = (value) => `৳${Number(value ?? 0).toLocaleString("en-US")}`;
+
+function GrowthBadge({ growth }) {
+	if (growth === null) {
+		return (
+			<span className="inline-flex items-center gap-1 rounded-full bg-emerald-50 px-2 py-0.5 text-[11px] font-bold text-emerald-700 ring-1 ring-emerald-200">
+				First revenue this month
+			</span>
+		);
+	}
+	if (growth === 0) {
+		return (
+			<span className="inline-flex items-center gap-1 rounded-full bg-slate-100 px-2 py-0.5 text-[11px] font-bold text-slate-600 ring-1 ring-slate-200">
+				No change vs last month
+			</span>
+		);
+	}
+	const isUp = growth > 0;
+	const Icon = isUp ? ArrowUpRight : ArrowDownRight;
+	return (
+		<span
+			className={`inline-flex items-center gap-0.5 rounded-full px-2 py-0.5 text-[11px] font-bold ring-1 ${isUp ? "bg-emerald-50 text-emerald-700 ring-emerald-200" : "bg-rose-50 text-rose-700 ring-rose-200"}`}
+		>
+			<Icon className="size-3" aria-hidden="true" />
+			{isUp ? "+" : ""}
+			{growth}% vs last month
+		</span>
+	);
+}
 
 const statStyles = {
 	blue: {
@@ -90,7 +131,7 @@ function StatCard({ icon: Icon, label, value, detail, tone, href }) {
 					<Icon className="size-4" aria-hidden="true" />
 				</span>
 			</div>
-			<p className="mt-2 truncate text-xs font-semibold text-slate-500">
+			<p className="mt-2 flex flex-wrap items-center gap-1.5 text-xs font-semibold text-slate-500">
 				{detail}
 			</p>
 		</div>
@@ -277,9 +318,281 @@ function CompositionDonut({ total, newUsers, olderUsers }) {
 	);
 }
 
+function RevenueChart({ monthlyTrend = [], selectedMonth, onSelectMonth }) {
+	const points = monthlyTrend.slice(-6);
+	const maxRevenue = Math.max(...points.map((item) => item.revenue), 1);
+	const hasRevenue = points.some((item) => item.revenue > 0);
+
+	if (!points.length || !hasRevenue) {
+		return (
+			<div className="mt-4 flex h-44 items-center justify-center rounded-lg border border-dashed border-slate-200 text-xs font-semibold text-slate-400">
+				No confirmed payments in the last 6 months
+			</div>
+		);
+	}
+
+	const selected = points.find((item) => item.month === selectedMonth);
+	const totalRevenue = points.reduce((sum, item) => sum + item.revenue, 0);
+	const totalOrders = points.reduce((sum, item) => sum + item.orders, 0);
+
+	return (
+		<div>
+			<div className="flex h-44 items-end gap-2 border-b border-slate-100 pb-0.5 sm:gap-3">
+				{points.map((item) => {
+					const height = Math.max(4, (item.revenue / maxRevenue) * 100);
+					const isSelected = selectedMonth === item.month;
+					return (
+						<button
+							key={item.month}
+							type="button"
+							onClick={() => onSelectMonth(isSelected ? null : item.month)}
+							aria-label={`${item.label} ${item.month.slice(0, 4)}: ${formatMoney(item.revenue)} from ${item.orders} order(s). ${isSelected ? "Selected" : "Select this month"}`}
+							aria-pressed={isSelected}
+							className={`group flex h-full min-w-0 flex-1 flex-col justify-end rounded-md px-0.5 focus:outline-none focus-visible:ring-2 focus-visible:ring-secondary/50 focus-visible:ring-offset-2 ${isSelected ? "bg-slate-100" : ""}`}
+						>
+							<div className="relative flex min-h-0 flex-1 items-end">
+								<div
+									className={`w-full rounded-t transition-all group-hover:opacity-90 ${isSelected ? "bg-emerald-600 ring-2 ring-emerald-900 ring-offset-1" : item.isCurrent ? "bg-emerald-500" : "bg-emerald-400/70 group-hover:bg-emerald-500"}`}
+									style={{ height: `${height}%` }}
+								/>
+							</div>
+							<p
+								className={`mt-2 truncate text-center text-[10px] font-semibold ${isSelected ? "text-slate-900" : item.isCurrent ? "text-emerald-700" : "text-slate-400"}`}
+							>
+								{item.label}
+								{item.isCurrent && (
+									<span
+										className="ml-1 inline-block size-1.5 rounded-full bg-emerald-600 align-middle"
+										aria-hidden="true"
+									/>
+								)}
+							</p>
+						</button>
+					);
+				})}
+			</div>
+			<div className="mt-4 flex flex-wrap items-center justify-between gap-3 rounded-lg bg-emerald-50/70 px-4 py-3 ring-1 ring-emerald-100">
+				<div>
+					<p className="text-[11px] font-bold uppercase tracking-wide text-emerald-700">
+						{selected
+							? `${selected.label} ${selected.month.slice(0, 4)}`
+							: "Last 6 months"}
+					</p>
+					<p className="mt-0.5 text-xl font-extrabold text-emerald-900">
+						{selected
+							? formatMoney(selected.revenue)
+							: formatMoney(totalRevenue)}
+					</p>
+				</div>
+				<p className="text-xs font-semibold text-emerald-700">
+					{selected
+						? `${selected.orders} order(s)`
+						: `${formatNumber(totalOrders)} orders`}
+				</p>
+			</div>
+		</div>
+	);
+}
+
+function TopPackages({ packages = [] }) {
+	if (!packages.length) {
+		return (
+			<div className="mt-5 flex h-40 items-center justify-center rounded-lg border border-dashed border-slate-200 text-xs font-semibold text-slate-400">
+				No confirmed payments yet
+			</div>
+		);
+	}
+
+	return (
+		<ul className="mt-5 space-y-4">
+			{packages.map((item, index) => (
+				<li key={item.name} className="flex items-center gap-3">
+					<span className="w-5 shrink-0 text-center text-xs font-extrabold text-slate-400">
+						{index + 1}
+					</span>
+					<div className="min-w-0 flex-1">
+						<div className="flex items-baseline justify-between gap-3">
+							<p className="truncate text-sm font-bold text-slate-800">
+								{item.name}
+							</p>
+							<p className="shrink-0 text-sm font-extrabold text-slate-900">
+								{formatMoney(item.revenue)}
+							</p>
+						</div>
+						<div className="mt-1.5 h-2 w-full overflow-hidden rounded-full bg-slate-100">
+							<div
+								className="h-full rounded-full bg-gradient-to-r from-violet-600 to-violet-400 transition-all"
+								style={{ width: `${Math.max(2, item.share)}%` }}
+							/>
+						</div>
+						<div className="mt-1 flex items-center justify-between text-[10px] font-semibold text-slate-400">
+							<span>{item.orders} order(s)</span>
+							<span>{item.share}% of revenue</span>
+						</div>
+					</div>
+				</li>
+			))}
+		</ul>
+	);
+}
+
+function PlanMix({ mix }) {
+	const monthly = Number(mix?.monthly ?? 0);
+	const yearly = Number(mix?.yearly ?? 0);
+	const total = monthly + yearly;
+	const monthlyPct = total ? Math.round((monthly / total) * 100) : 0;
+
+	return (
+		<div className="mt-4 rounded-xl border border-slate-200 p-4">
+			<div className="flex items-center justify-between">
+				<p className="text-xs font-bold uppercase tracking-wide text-slate-500">
+					Active plan mix
+				</p>
+				<span className="text-xs font-semibold text-slate-400">
+					{formatNumber(total)} active
+				</span>
+			</div>
+			<div className="mt-3 flex h-2.5 w-full overflow-hidden rounded-full bg-slate-100">
+				<div
+					className="bg-violet-500 transition-all"
+					style={{ width: `${monthlyPct}%` }}
+				/>
+				<div
+					className="bg-amber-500 transition-all"
+					style={{ width: `${100 - monthlyPct}%` }}
+				/>
+			</div>
+			<div className="mt-3 flex items-center justify-between gap-3 text-sm">
+				<span className="flex items-center gap-2 font-semibold text-slate-600">
+					<span
+						className="size-2.5 rounded-full bg-violet-500"
+						aria-hidden="true"
+					/>{" "}
+					Monthly
+				</span>
+				<span className="font-extrabold text-slate-900">
+					{formatNumber(monthly)}
+				</span>
+			</div>
+			<div className="mt-2 flex items-center justify-between gap-3 text-sm">
+				<span className="flex items-center gap-2 font-semibold text-slate-600">
+					<span
+						className="size-2.5 rounded-full bg-amber-500"
+						aria-hidden="true"
+					/>{" "}
+					Yearly
+				</span>
+				<span className="font-extrabold text-slate-900">
+					{formatNumber(yearly)}
+				</span>
+			</div>
+		</div>
+	);
+}
+
+const healthTones = {
+	blue: "border-sky-200 bg-sky-50 text-sky-700",
+	green: "border-emerald-200 bg-emerald-50 text-emerald-700",
+	violet: "border-violet-200 bg-violet-50 text-violet-700",
+	amber: "border-amber-200 bg-amber-50 text-amber-700",
+	rose: "border-rose-200 bg-rose-50 text-rose-700",
+};
+
+function SystemHealth({ api = {}, errors = {}, keys = {} }) {
+	const tiles = [
+		{
+			label: "Total API calls",
+			value: formatNumber(api.totalCalls),
+			tone: "blue",
+			icon: Database,
+		},
+		{
+			label: "API calls this year",
+			value: formatNumber(api.callsThisYear),
+			tone: "violet",
+			icon: TrendingUp,
+		},
+		{
+			label: "Courier numbers checked",
+			value: formatNumber(api.courierChecks),
+			tone: "amber",
+			icon: Receipt,
+		},
+		{
+			label: "Active keys",
+			value: formatNumber(keys.active),
+			tone: "green",
+			icon: KeyRound,
+		},
+		{
+			label: "Inactive keys",
+			value: formatNumber(keys.inactive),
+			tone: "rose",
+			icon: KeyRound,
+		},
+		{
+			label: "Errors · last 7 days",
+			value: formatNumber(errors.last7Days),
+			tone: (errors.last7Days ?? 0) > 0 ? "rose" : "green",
+			icon: AlertTriangle,
+		},
+	];
+
+	return (
+		<div className="mt-5 space-y-5">
+			<div className="grid grid-cols-2 gap-3 sm:grid-cols-3">
+				{tiles.map((tile) => {
+					const Icon = tile.icon;
+					return (
+						<div
+							key={tile.label}
+							className={`rounded-xl border p-3 ${healthTones[tile.tone]}`}
+						>
+							<Icon className="size-4" aria-hidden="true" />
+							<p className="mt-2 text-lg font-extrabold text-slate-900">
+								{tile.value}
+							</p>
+							<p className="mt-0.5 text-[11px] font-bold leading-tight">
+								{tile.label}
+							</p>
+						</div>
+					);
+				})}
+			</div>
+			{Boolean(errors.categories?.length) && (
+				<div>
+					<p className="text-xs font-bold uppercase tracking-wide text-slate-500">
+						Error categories · last 7 days
+					</p>
+					<ul className="mt-2 divide-y divide-slate-100">
+						{errors.categories.map((item) => (
+							<li
+								key={item.category}
+								className="flex items-center justify-between gap-3 py-2 text-sm"
+							>
+								<span className="flex items-center gap-2 font-semibold text-slate-600">
+									<span
+										className="size-2 rounded-full bg-rose-400"
+										aria-hidden="true"
+									/>
+									{item.category}
+								</span>
+								<span className="font-extrabold text-slate-900">
+									{formatNumber(item.count)}
+								</span>
+							</li>
+						))}
+					</ul>
+				</div>
+			)}
+		</div>
+	);
+}
+
 function RouteComponent() {
 	const { user, isLoading: isAuthLoading, error: authError } = useAuth();
 	const [selectedRequestDate, setSelectedRequestDate] = useState(null);
+	const [selectedRevenueMonth, setSelectedRevenueMonth] = useState(null);
 	const {
 		data: stats,
 		isLoading: isStatsLoading,
@@ -336,6 +649,16 @@ function RouteComponent() {
 	const subscriptionRate = stats.users.total
 		? Math.round((stats.activeSubscribers / stats.users.total) * 100)
 		: 0;
+	const revenueMonthGrowth =
+		stats.revenue.lastMonth > 0
+			? Math.round(
+					((stats.revenue.currentMonth - stats.revenue.lastMonth) /
+						stats.revenue.lastMonth) *
+						100,
+				)
+			: stats.revenue.currentMonth > 0
+				? null
+				: 0;
 	const selectedRequest = stats.dailyRequests?.find(
 		(item) => item.date === selectedRequestDate,
 	);
@@ -367,6 +690,128 @@ function RouteComponent() {
 						</button>
 					</div>
 				</header>
+
+				<section
+					className="grid gap-3 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-5"
+					aria-label="Revenue metrics"
+				>
+					<StatCard
+						icon={Wallet}
+						label="Revenue this month"
+						value={formatMoney(stats.revenue.currentMonth)}
+						detail={
+							<>
+								<span>{stats.revenue.currentMonthOrders} order(s)</span>
+								<GrowthBadge growth={revenueMonthGrowth} />
+							</>
+						}
+						tone="green"
+					/>
+					<StatCard
+						icon={CalendarDays}
+						label="Last month"
+						value={formatMoney(stats.revenue.lastMonth)}
+						detail={`${stats.revenue.lastMonthOrders} order(s) confirmed`}
+						tone="blue"
+					/>
+					<StatCard
+						icon={TrendingUp}
+						label="Revenue this year"
+						value={formatMoney(stats.revenue.currentYear)}
+						detail="Confirmed payments so far"
+						tone="violet"
+					/>
+					<StatCard
+						icon={Landmark}
+						label="Total revenue"
+						value={formatMoney(stats.revenue.total)}
+						detail="All-time confirmed payments"
+						tone="amber"
+					/>
+					<StatCard
+						icon={Hourglass}
+						label="Pending payments"
+						value={formatMoney(stats.revenue.pending)}
+						detail={`${stats.revenue.pendingOrders} awaiting verification`}
+						tone="rose"
+						href="/admin/subscription/all"
+					/>
+				</section>
+
+				<section className="grid gap-5 xl:grid-cols-[1.45fr_0.75fr]">
+					<div className="rounded-xl border border-slate-200 bg-white p-5 shadow-sm sm:p-6">
+						<PanelHeader
+							title="Revenue trend"
+							detail="Confirmed payments by month"
+							action={
+								<span className="text-xs font-semibold text-slate-400">
+									Current month in progress
+								</span>
+							}
+						/>
+						<div className="mt-4">
+							<RevenueChart
+								monthlyTrend={stats.revenue.monthlyTrend}
+								selectedMonth={selectedRevenueMonth}
+								onSelectMonth={setSelectedRevenueMonth}
+							/>
+						</div>
+					</div>
+
+					<div className="rounded-xl border border-slate-200 bg-white p-5 shadow-sm sm:p-6">
+						<PanelHeader
+							title="Revenue insights"
+							detail="Recurring value and order economics"
+						/>
+						<div className="mt-4 grid grid-cols-2 gap-3">
+							<div className="rounded-xl border border-emerald-200 bg-emerald-50/70 p-4">
+								<p className="text-[11px] font-bold uppercase tracking-wide text-emerald-700">
+									MRR
+								</p>
+								<p className="mt-1 text-lg font-extrabold text-emerald-900">
+									{formatMoney(stats.revenue.mrr)}
+								</p>
+								<p className="mt-0.5 text-[11px] font-semibold text-emerald-700/80">
+									Est. from active plans
+								</p>
+							</div>
+							<div className="rounded-xl border border-violet-200 bg-violet-50/70 p-4">
+								<p className="text-[11px] font-bold uppercase tracking-wide text-violet-700">
+									Avg order value
+								</p>
+								<p className="mt-1 text-lg font-extrabold text-violet-900">
+									{formatMoney(stats.revenue.averageOrderValue)}
+								</p>
+								<p className="mt-0.5 text-[11px] font-semibold text-violet-700/80">
+									Per confirmed payment
+								</p>
+							</div>
+							<div className="rounded-xl border border-sky-200 bg-sky-50/70 p-4">
+								<p className="text-[11px] font-bold uppercase tracking-wide text-sky-700">
+									Confirmed orders
+								</p>
+								<p className="mt-1 text-lg font-extrabold text-sky-900">
+									{formatNumber(stats.revenue.totalOrders)}
+								</p>
+								<p className="mt-0.5 text-[11px] font-semibold text-sky-700/80">
+									All time
+								</p>
+							</div>
+							<div className="rounded-xl border border-amber-200 bg-amber-50/70 p-4">
+								<p className="text-[11px] font-bold uppercase tracking-wide text-amber-700">
+									Awaiting verification
+								</p>
+								<p className="mt-1 text-lg font-extrabold text-amber-900">
+									{formatNumber(stats.revenue.pendingOrders)}
+								</p>
+								<p className="mt-0.5 text-[11px] font-semibold text-amber-700/80">
+									{formatMoney(stats.revenue.pending)} total
+								</p>
+							</div>
+						</div>
+						<PlanMix mix={stats.planMix} />
+					</div>
+				</section>
 
 				<section
 					className="grid gap-3 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-5"
@@ -506,6 +951,37 @@ function RouteComponent() {
 								<ArrowRight className="size-4" aria-hidden="true" />
 							</Link>
 						</div>
+					</div>
+				</section>
+
+				<section className="grid gap-5 xl:grid-cols-2">
+					<div className="rounded-xl border border-slate-200 bg-white p-5 shadow-sm sm:p-6">
+						<PanelHeader
+							title="Top packages by revenue"
+							detail="Ranked by confirmed payments"
+							action={
+								<Link
+									to="/admin/package/all"
+									className="inline-flex items-center gap-1.5 text-sm font-bold text-secondary hover:gap-2.5"
+								>
+									Manage packages{" "}
+									<ArrowRight className="size-4" aria-hidden="true" />
+								</Link>
+							}
+						/>
+						<TopPackages packages={stats.revenue.topPackages} />
+					</div>
+
+					<div className="rounded-xl border border-slate-200 bg-white p-5 shadow-sm sm:p-6">
+						<PanelHeader
+							title="System health"
+							detail="Usage, reliability and the courier key pool"
+						/>
+						<SystemHealth
+							api={stats.api}
+							errors={stats.errors}
+							keys={stats.keys}
+						/>
 					</div>
 				</section>
 			</div>
