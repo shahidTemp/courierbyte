@@ -5,6 +5,19 @@ import { authMiddleware, requireRole } from "@/server/middleware";
 import { PackageModel } from "@/server/models/package.model";
 import { userSubscription } from "@/server/models/subscription.model";
 
+/**
+ * Subscription length depends on the billing cycle:
+ * - monthly → the package's monthly duration (duration_in_days)
+ * - yearly  → a full calendar year (365 days)
+ *
+ * The yearly price buys a year of access, so its length is fixed at 365 days
+ * instead of being derived from the monthly duration (30 × 12 = 360 days).
+ */
+const YEARLY_DURATION_DAYS = 365;
+
+const getDurationDays = (planType: string, monthlyDays: number) =>
+	planType === "yearly" ? YEARLY_DURATION_DAYS : monthlyDays;
+
 const createSubscriptionSchema = z.object({
 	packageId: z.string().regex(/^[a-f\d]{24}$/i, "Invalid package ID"),
 	planType: z.enum(["monthly", "yearly"]),
@@ -57,7 +70,12 @@ export const updateSubscriptionStatus = createServerFn({ method: "POST" })
 
 			update.verifiedBy = context.actor._id;
 			update.end_date = new Date(
-				Date.now() + packageItem.duration_in_days * 24 * 60 * 60 * 1000,
+				Date.now() +
+					getDurationDays(subscription.planType, packageItem.duration_in_days) *
+						24 *
+						60 *
+						60 *
+						1000,
 			);
 		}
 
@@ -128,7 +146,12 @@ export const createSubscription = createServerFn({ method: "POST" })
 		}
 
 		const endDate = new Date(
-			Date.now() + packageItem.duration_in_days * 24 * 60 * 60 * 1000,
+			Date.now() +
+				getDurationDays(data.planType, packageItem.duration_in_days) *
+					24 *
+					60 *
+					60 *
+					1000,
 		);
 
 		try {
