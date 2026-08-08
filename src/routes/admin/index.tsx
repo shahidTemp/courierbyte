@@ -7,20 +7,15 @@ import {
 	ArrowDownRight,
 	ArrowRight,
 	ArrowUpRight,
-	CalendarDays,
 	Clock3,
 	Database,
 	Hourglass,
 	KeyRound,
-	Landmark,
 	Receipt,
 	RefreshCw,
 	ShieldCheck,
 	TrendingUp,
-	UserCheck,
 	UserPlus,
-	Users,
-	UsersRound,
 	Wallet,
 } from "lucide-react";
 import { useState } from "react";
@@ -589,6 +584,58 @@ function SystemHealth({ api = {}, errors = {}, keys = {} }) {
 	);
 }
 
+function SectionLabel({ children }) {
+	return (
+		<p className="flex items-center gap-2 text-[11px] font-extrabold uppercase tracking-[0.14em] text-slate-400">
+			<span className="h-px w-4 bg-slate-300" aria-hidden="true" />
+			{children}
+		</p>
+	);
+}
+
+const attentionTones = {
+	amber: "border-l-amber-500",
+	rose: "border-l-rose-500",
+};
+
+function AttentionCard({ icon: Icon, label, value, detail, tone, href }) {
+	const content = (
+		<div
+			className={`group h-full rounded-xl border border-slate-200 border-l-4 bg-white p-4 shadow-sm transition hover:border-slate-300 hover:shadow-md ${attentionTones[tone]}`}
+		>
+			<div className="flex items-start justify-between gap-3">
+				<div className="min-w-0">
+					<p className="truncate text-xs font-bold uppercase tracking-wide text-slate-500">
+						{label}
+					</p>
+					<p className="mt-1 text-xl font-extrabold tracking-tight text-slate-900">
+						{value}
+					</p>
+				</div>
+				<span
+					className={`flex size-8 shrink-0 items-center justify-center rounded-lg ${tone === "rose" ? "bg-rose-100 text-rose-700" : "bg-amber-100 text-amber-700"}`}
+				>
+					<Icon className="size-4" aria-hidden="true" />
+				</span>
+			</div>
+			<p className="mt-2 truncate text-xs font-semibold text-slate-500">
+				{detail}
+			</p>
+		</div>
+	);
+
+	return href ? (
+		<Link
+			to={href}
+			className="block h-full focus:outline-none focus-visible:ring-2 focus-visible:ring-secondary/40"
+		>
+			{content}
+		</Link>
+	) : (
+		content
+	);
+}
+
 function RouteComponent() {
 	const { user, isLoading: isAuthLoading, error: authError } = useAuth();
 	const [selectedRequestDate, setSelectedRequestDate] = useState(null);
@@ -643,9 +690,6 @@ function RouteComponent() {
 		);
 	}
 
-	const activeRate = stats.users.total
-		? Math.round((stats.users.active / stats.users.total) * 100)
-		: 0;
 	const subscriptionRate = stats.users.total
 		? Math.round((stats.activeSubscribers / stats.users.total) * 100)
 		: 0;
@@ -659,6 +703,59 @@ function RouteComponent() {
 			: stats.revenue.currentMonth > 0
 				? null
 				: 0;
+	const hour = Number(
+		new Intl.DateTimeFormat("en-US", {
+			timeZone: "Asia/Dhaka",
+			hour: "numeric",
+			hour12: false,
+		}).format(new Date()),
+	);
+	const greeting =
+		hour < 12 ? "Good morning" : hour < 17 ? "Good afternoon" : "Good evening";
+	const todayLabel = new Intl.DateTimeFormat("en-US", {
+		timeZone: "Asia/Dhaka",
+		weekday: "long",
+		month: "long",
+		day: "numeric",
+	}).format(new Date());
+	const attentionItems = [
+		{
+			icon: Hourglass,
+			label: "Pending payments",
+			value: formatMoney(stats.revenue.pending),
+			detail: `${stats.revenue.pendingOrders} awaiting verification`,
+			tone: "amber",
+			href: "/admin/subscription/all",
+		},
+		{
+			icon: Clock3,
+			label: "Expiring soon",
+			value: formatNumber(stats.expiringSoon),
+			detail: "Active plans ending within 7 days",
+			tone: "amber",
+			href: "/admin/subscription/all",
+		},
+	];
+	if (user?.role === "super_admin") {
+		attentionItems.push(
+			{
+				icon: KeyRound,
+				label: "Inactive keys",
+				value: formatNumber(stats.keys.inactive),
+				detail: "Courier keys currently revoked",
+				tone: "rose",
+				href: "/admin/keys/all",
+			},
+			{
+				icon: AlertTriangle,
+				label: "Errors · 7 days",
+				value: formatNumber(stats.errors.last7Days),
+				detail: "Failed courier checks this week",
+				tone: "rose",
+				href: "/admin/keys/errors",
+			},
+		);
+	}
 	const selectedRequest = stats.dailyRequests?.find(
 		(item) => item.date === selectedRequestDate,
 	);
@@ -668,9 +765,18 @@ function RouteComponent() {
 		<main className="min-h-screen bg-slate-100/70 px-4 py-5 sm:px-6 lg:px-8">
 			<div className="mx-auto max-w-[1500px] space-y-5">
 				<header className="flex flex-col gap-3 border-b border-slate-200 pb-4 sm:flex-row sm:items-center sm:justify-between">
-					<h1 className="text-2xl font-extrabold tracking-tight text-secondary-dark">
-						Dashboard
-					</h1>
+					<div>
+						<h1 className="text-2xl font-extrabold tracking-tight text-secondary-dark">
+							Dashboard
+						</h1>
+						<p className="mt-1 text-sm font-semibold text-slate-500">
+							{greeting}, {user?.name ?? "Admin"}
+							<span className="mx-2 text-slate-300" aria-hidden="true">
+								·
+							</span>
+							{todayLabel}
+						</p>
+					</div>
 					<div className="flex items-center gap-3">
 						<span className="hidden items-center gap-1.5 text-xs font-semibold text-slate-400 sm:inline-flex">
 							<Clock3 className="size-3.5" aria-hidden="true" /> Updated{" "}
@@ -691,299 +797,299 @@ function RouteComponent() {
 					</div>
 				</header>
 
-				<section
-					className="grid gap-3 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-5"
-					aria-label="Revenue metrics"
-				>
-					<StatCard
-						icon={Wallet}
-						label="Revenue this month"
-						value={formatMoney(stats.revenue.currentMonth)}
-						detail={
-							<>
-								<span>{stats.revenue.currentMonthOrders} order(s)</span>
-								<GrowthBadge growth={revenueMonthGrowth} />
-							</>
-						}
-						tone="green"
-					/>
-					<StatCard
-						icon={CalendarDays}
-						label="Last month"
-						value={formatMoney(stats.revenue.lastMonth)}
-						detail={`${stats.revenue.lastMonthOrders} order(s) confirmed`}
-						tone="blue"
-					/>
-					<StatCard
-						icon={TrendingUp}
-						label="Revenue this year"
-						value={formatMoney(stats.revenue.currentYear)}
-						detail="Confirmed payments so far"
-						tone="violet"
-					/>
-					<StatCard
-						icon={Landmark}
-						label="Total revenue"
-						value={formatMoney(stats.revenue.total)}
-						detail="All-time confirmed payments"
-						tone="amber"
-					/>
-					<StatCard
-						icon={Hourglass}
-						label="Pending payments"
-						value={formatMoney(stats.revenue.pending)}
-						detail={`${stats.revenue.pendingOrders} awaiting verification`}
-						tone="rose"
-						href="/admin/subscription/all"
-					/>
-				</section>
-
-				<section className="grid gap-5 xl:grid-cols-[1.45fr_0.75fr]">
-					<div className="rounded-xl border border-slate-200 bg-white p-5 shadow-sm sm:p-6">
-						<PanelHeader
-							title="Revenue trend"
-							detail="Confirmed payments by month"
-							action={
-								<span className="text-xs font-semibold text-slate-400">
-									Current month in progress
-								</span>
+				<div className="space-y-3">
+					<SectionLabel>Overview</SectionLabel>
+					<section
+						className="grid gap-3 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-5"
+						aria-label="Overview metrics"
+					>
+						<StatCard
+							icon={Wallet}
+							label="Revenue this month"
+							value={formatMoney(stats.revenue.currentMonth)}
+							detail={
+								<>
+									<GrowthBadge growth={revenueMonthGrowth} />
+									<span>
+										{stats.revenue.currentMonthOrders} order(s) ·{" "}
+										{formatMoney(stats.revenue.lastMonth)} last month
+									</span>
+								</>
 							}
+							tone="green"
 						/>
-						<div className="mt-4">
-							<RevenueChart
-								monthlyTrend={stats.revenue.monthlyTrend}
-								selectedMonth={selectedRevenueMonth}
-								onSelectMonth={setSelectedRevenueMonth}
+						<StatCard
+							icon={ShieldCheck}
+							label="Active subscribers"
+							value={formatNumber(stats.activeSubscribers)}
+							detail={`${subscriptionRate}% of users covered`}
+							tone="violet"
+							href="/admin/subscription/all"
+						/>
+						<StatCard
+							icon={Activity}
+							label="Requests today"
+							value={formatNumber(stats.requests.today)}
+							detail="Successful checks · BD time"
+							tone="blue"
+						/>
+						<StatCard
+							icon={UserPlus}
+							label="New users"
+							value={formatNumber(stats.users.new)}
+							detail="Registered in the last 30 days"
+							tone="amber"
+							href="/admin/user/all"
+						/>
+						<StatCard
+							icon={Hourglass}
+							label="Pending payments"
+							value={formatMoney(stats.revenue.pending)}
+							detail={`${stats.revenue.pendingOrders} awaiting verification`}
+							tone="rose"
+							href="/admin/subscription/all"
+						/>
+					</section>
+				</div>
+
+				<div className="space-y-3">
+					<SectionLabel>Needs attention</SectionLabel>
+					<section
+						className={`grid gap-3 sm:grid-cols-2 ${attentionItems.length > 2 ? "xl:grid-cols-4" : "xl:grid-cols-2"}`}
+						aria-label="Items needing action"
+					>
+						{attentionItems.map((item) => (
+							<AttentionCard key={item.label} {...item} />
+						))}
+					</section>
+				</div>
+
+				<div className="space-y-5">
+					<SectionLabel>Analytics</SectionLabel>
+					<section className="grid gap-5 xl:grid-cols-[1.45fr_0.75fr]">
+						<div className="rounded-xl border border-slate-200 bg-white p-5 shadow-sm sm:p-6">
+							<PanelHeader
+								title="Revenue trend"
+								detail="Confirmed payments by month"
+								action={
+									<span className="text-xs font-semibold text-slate-400">
+										Current month in progress
+									</span>
+								}
 							/>
-						</div>
-					</div>
-
-					<div className="rounded-xl border border-slate-200 bg-white p-5 shadow-sm sm:p-6">
-						<PanelHeader
-							title="Revenue insights"
-							detail="Recurring value and order economics"
-						/>
-						<div className="mt-4 grid grid-cols-2 gap-3">
-							<div className="rounded-xl border border-emerald-200 bg-emerald-50/70 p-4">
-								<p className="text-[11px] font-bold uppercase tracking-wide text-emerald-700">
-									MRR
-								</p>
-								<p className="mt-1 text-lg font-extrabold text-emerald-900">
-									{formatMoney(stats.revenue.mrr)}
-								</p>
-								<p className="mt-0.5 text-[11px] font-semibold text-emerald-700/80">
-									Est. from active plans
-								</p>
-							</div>
-							<div className="rounded-xl border border-violet-200 bg-violet-50/70 p-4">
-								<p className="text-[11px] font-bold uppercase tracking-wide text-violet-700">
-									Avg order value
-								</p>
-								<p className="mt-1 text-lg font-extrabold text-violet-900">
-									{formatMoney(stats.revenue.averageOrderValue)}
-								</p>
-								<p className="mt-0.5 text-[11px] font-semibold text-violet-700/80">
-									Per confirmed payment
-								</p>
-							</div>
-							<div className="rounded-xl border border-sky-200 bg-sky-50/70 p-4">
-								<p className="text-[11px] font-bold uppercase tracking-wide text-sky-700">
-									Confirmed orders
-								</p>
-								<p className="mt-1 text-lg font-extrabold text-sky-900">
-									{formatNumber(stats.revenue.totalOrders)}
-								</p>
-								<p className="mt-0.5 text-[11px] font-semibold text-sky-700/80">
-									All time
-								</p>
-							</div>
-							<div className="rounded-xl border border-amber-200 bg-amber-50/70 p-4">
-								<p className="text-[11px] font-bold uppercase tracking-wide text-amber-700">
-									Awaiting verification
-								</p>
-								<p className="mt-1 text-lg font-extrabold text-amber-900">
-									{formatNumber(stats.revenue.pendingOrders)}
-								</p>
-								<p className="mt-0.5 text-[11px] font-semibold text-amber-700/80">
-									{formatMoney(stats.revenue.pending)} total
+							<div className="mt-4">
+								<RevenueChart
+									monthlyTrend={stats.revenue.monthlyTrend}
+									selectedMonth={selectedRevenueMonth}
+									onSelectMonth={setSelectedRevenueMonth}
+								/>
+								<p className="mt-3 flex items-center justify-between text-xs font-semibold text-slate-400">
+									<span>All-time confirmed revenue</span>
+									<span className="font-extrabold text-slate-600">
+										{formatMoney(stats.revenue.total)}
+									</span>
 								</p>
 							</div>
 						</div>
-						<PlanMix mix={stats.planMix} />
-					</div>
-				</section>
 
-				<section
-					className="grid gap-3 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-5"
-					aria-label="User metrics"
-				>
-					<StatCard
-						icon={UsersRound}
-						label="Total users"
-						value={formatNumber(stats.users.total)}
-						detail="Registered user accounts"
-						tone="blue"
-						href="/admin/user/all"
-					/>
-					<StatCard
-						icon={UserCheck}
-						label="Active users"
-						value={formatNumber(stats.users.active)}
-						detail={`${activeRate}% of users enabled`}
-						tone="green"
-						href="/admin/user/all"
-					/>
-					<StatCard
-						icon={ShieldCheck}
-						label="Active subscribers"
-						value={formatNumber(stats.activeSubscribers)}
-						detail={`${subscriptionRate}% of users covered`}
-						tone="violet"
-						href="/admin/subscription/all"
-					/>
-					<StatCard
-						icon={UserPlus}
-						label="New users"
-						value={formatNumber(stats.users.new)}
-						detail="Created in the last 30 days"
-						tone="amber"
-						href="/admin/user/all"
-					/>
-					<StatCard
-						icon={Users}
-						label="Older users"
-						value={formatNumber(stats.users.old)}
-						detail="Created over 30 days ago"
-						tone="rose"
-						href="/admin/user/all"
-					/>
-				</section>
-
-				<section className="grid gap-5 xl:grid-cols-[1.45fr_0.75fr]">
-					<div className="rounded-xl border border-slate-200 bg-white p-5 shadow-sm sm:p-6">
-						<PanelHeader
-							title="Request activity"
-							detail="Successful platform requests by period"
-							action={
-								<span className="text-xs font-semibold text-slate-400">
-									Current month is in progress
-								</span>
-							}
-						/>
-						<div className="mt-4 overflow-hidden rounded-lg border border-slate-200">
-							<div className="grid grid-cols-3 divide-x divide-slate-200 bg-white">
-								<div className="border-t-4 border-sky-500 bg-sky-50/70 p-4">
-									<p className="text-xs font-bold uppercase tracking-wide text-sky-700">
-										{selectedRequest
-											? formatDay(selectedRequest.date)
-											: "Today"}
+						<div className="rounded-xl border border-slate-200 bg-white p-5 shadow-sm sm:p-6">
+							<PanelHeader
+								title="Revenue insights"
+								detail="Recurring value and order economics"
+							/>
+							<div className="mt-4 grid grid-cols-2 gap-3">
+								<div className="rounded-xl border border-emerald-200 bg-emerald-50/70 p-4">
+									<p className="text-[11px] font-bold uppercase tracking-wide text-emerald-700">
+										MRR
 									</p>
-									<p className="mt-1 text-2xl font-extrabold text-slate-900">
-										{formatNumber(displayedTodayRequests)}
+									<p className="mt-1 text-lg font-extrabold text-emerald-900">
+										{formatMoney(stats.revenue.mrr)}
 									</p>
-									<p className="mt-1 text-xs font-semibold text-slate-500">
-										{selectedRequest ? "Selected day" : "Bangladesh time"}
+									<p className="mt-0.5 text-[11px] font-semibold text-emerald-700/80">
+										Est. from active plans
 									</p>
 								</div>
-								<div className="border-t-4 border-violet-500 bg-violet-50/70 p-4">
-									<p className="text-xs font-bold uppercase tracking-wide text-violet-700">
-										This month
+								<div className="rounded-xl border border-violet-200 bg-violet-50/70 p-4">
+									<p className="text-[11px] font-bold uppercase tracking-wide text-violet-700">
+										Avg order value
 									</p>
-									<p className="mt-1 text-2xl font-extrabold text-slate-900">
-										{formatNumber(stats.requests.currentMonth)}
+									<p className="mt-1 text-lg font-extrabold text-violet-900">
+										{formatMoney(stats.revenue.averageOrderValue)}
+									</p>
+									<p className="mt-0.5 text-[11px] font-semibold text-violet-700/80">
+										Per confirmed payment
 									</p>
 								</div>
-								<div className="border-t-4 border-amber-500 bg-amber-50/70 p-4">
-									<p className="text-xs font-bold uppercase tracking-wide text-amber-700">
-										Last month
+								<div className="rounded-xl border border-sky-200 bg-sky-50/70 p-4">
+									<p className="text-[11px] font-bold uppercase tracking-wide text-sky-700">
+										Confirmed orders
 									</p>
-									<p className="mt-1 text-2xl font-extrabold text-slate-900">
-										{formatNumber(stats.requests.lastMonth)}
+									<p className="mt-1 text-lg font-extrabold text-sky-900">
+										{formatNumber(stats.revenue.totalOrders)}
+									</p>
+									<p className="mt-0.5 text-[11px] font-semibold text-sky-700/80">
+										All time
+									</p>
+								</div>
+								<div className="rounded-xl border border-amber-200 bg-amber-50/70 p-4">
+									<p className="text-[11px] font-bold uppercase tracking-wide text-amber-700">
+										Revenue this year
+									</p>
+									<p className="mt-1 text-lg font-extrabold text-amber-900">
+										{formatMoney(stats.revenue.currentYear)}
+									</p>
+									<p className="mt-0.5 text-[11px] font-semibold text-amber-700/80">
+										Confirmed payments so far
 									</p>
 								</div>
 							</div>
-							<div className="border-t border-slate-200 p-4 sm:p-5">
-								<RequestChart
-									dailyRequests={stats.dailyRequests}
-									selectedDate={selectedRequestDate}
-									onSelectDate={setSelectedRequestDate}
+							<PlanMix mix={stats.planMix} />
+						</div>
+					</section>
+
+					<section className="grid gap-5 xl:grid-cols-[1.45fr_0.75fr]">
+						<div className="rounded-xl border border-slate-200 bg-white p-5 shadow-sm sm:p-6">
+							<PanelHeader
+								title="Request activity"
+								detail="Successful platform requests by period"
+								action={
+									<span className="text-xs font-semibold text-slate-400">
+										Current month is in progress
+									</span>
+								}
+							/>
+							<div className="mt-4 overflow-hidden rounded-lg border border-slate-200">
+								<div className="grid grid-cols-3 divide-x divide-slate-200 bg-white">
+									<div className="border-t-4 border-sky-500 bg-sky-50/70 p-4">
+										<p className="text-xs font-bold uppercase tracking-wide text-sky-700">
+											{selectedRequest
+												? formatDay(selectedRequest.date)
+												: "Today"}
+										</p>
+										<p className="mt-1 text-2xl font-extrabold text-slate-900">
+											{formatNumber(displayedTodayRequests)}
+										</p>
+										<p className="mt-1 text-xs font-semibold text-slate-500">
+											{selectedRequest ? "Selected day" : "Bangladesh time"}
+										</p>
+									</div>
+									<div className="border-t-4 border-violet-500 bg-violet-50/70 p-4">
+										<p className="text-xs font-bold uppercase tracking-wide text-violet-700">
+											This month
+										</p>
+										<p className="mt-1 text-2xl font-extrabold text-slate-900">
+											{formatNumber(stats.requests.currentMonth)}
+										</p>
+									</div>
+									<div className="border-t-4 border-amber-500 bg-amber-50/70 p-4">
+										<p className="text-xs font-bold uppercase tracking-wide text-amber-700">
+											Last month
+										</p>
+										<p className="mt-1 text-2xl font-extrabold text-slate-900">
+											{formatNumber(stats.requests.lastMonth)}
+										</p>
+									</div>
+								</div>
+								<div className="border-t border-slate-200 p-4 sm:p-5">
+									<RequestChart
+										dailyRequests={stats.dailyRequests}
+										selectedDate={selectedRequestDate}
+										onSelectDate={setSelectedRequestDate}
+									/>
+								</div>
+							</div>
+						</div>
+
+						<div className="rounded-xl border border-slate-200 bg-white p-5 shadow-sm sm:p-6">
+							<PanelHeader
+								title="User composition"
+								detail="New versus older accounts"
+							/>
+							<div className="mt-5">
+								<CompositionDonut
+									total={stats.users.total}
+									newUsers={stats.users.new}
+									olderUsers={stats.users.old}
 								/>
 							</div>
-						</div>
-					</div>
-
-					<div className="rounded-xl border border-slate-200 bg-white p-5 shadow-sm sm:p-6">
-						<PanelHeader
-							title="User composition"
-							detail="New versus older accounts"
-						/>
-						<div className="mt-5">
-							<CompositionDonut
-								total={stats.users.total}
-								newUsers={stats.users.new}
-								olderUsers={stats.users.old}
-							/>
-						</div>
-						<div className="mt-5 grid grid-cols-2 gap-2 border-t border-slate-100 pt-4">
-							<div className="rounded-lg bg-emerald-50 p-3">
-								<p className="text-xs font-semibold text-emerald-700">
-									Active users
-								</p>
-								<p className="mt-1 text-lg font-extrabold text-emerald-800">
-									{formatNumber(stats.users.active)}
-								</p>
+							<div className="mt-5 grid grid-cols-2 gap-2 border-t border-slate-100 pt-4">
+								<div className="rounded-lg bg-slate-50 p-3">
+									<p className="text-xs font-semibold text-slate-600">
+										Total users
+									</p>
+									<p className="mt-1 text-lg font-extrabold text-slate-900">
+										{formatNumber(stats.users.total)}
+									</p>
+								</div>
+								<div className="rounded-lg bg-emerald-50 p-3">
+									<p className="text-xs font-semibold text-emerald-700">
+										Active users
+									</p>
+									<p className="mt-1 text-lg font-extrabold text-emerald-800">
+										{formatNumber(stats.users.active)}
+									</p>
+								</div>
+								<div className="rounded-lg bg-amber-50 p-3">
+									<p className="text-xs font-semibold text-amber-700">
+										New · 30 days
+									</p>
+									<p className="mt-1 text-lg font-extrabold text-amber-800">
+										{formatNumber(stats.users.new)}
+									</p>
+								</div>
+								<div className="rounded-lg bg-rose-50 p-3">
+									<p className="text-xs font-semibold text-rose-700">Older</p>
+									<p className="mt-1 text-lg font-extrabold text-rose-800">
+										{formatNumber(stats.users.old)}
+									</p>
+								</div>
 							</div>
-							<div className="rounded-lg bg-violet-50 p-3">
-								<p className="text-xs font-semibold text-violet-700">
-									Active subscribers
-								</p>
-								<p className="mt-1 text-lg font-extrabold text-violet-800">
-									{formatNumber(stats.activeSubscribers)}
-								</p>
-							</div>
-						</div>
-						<div className="mt-4">
-							<Link
-								to="/admin/user/all"
-								className="inline-flex items-center gap-1.5 text-sm font-bold text-secondary hover:gap-2.5"
-							>
-								View all users{" "}
-								<ArrowRight className="size-4" aria-hidden="true" />
-							</Link>
-						</div>
-					</div>
-				</section>
-
-				<section className="grid gap-5 xl:grid-cols-2">
-					<div className="rounded-xl border border-slate-200 bg-white p-5 shadow-sm sm:p-6">
-						<PanelHeader
-							title="Top packages by revenue"
-							detail="Ranked by confirmed payments"
-							action={
+							<div className="mt-4">
 								<Link
-									to="/admin/package/all"
+									to="/admin/user/all"
 									className="inline-flex items-center gap-1.5 text-sm font-bold text-secondary hover:gap-2.5"
 								>
-									Manage packages{" "}
+									View all users{" "}
 									<ArrowRight className="size-4" aria-hidden="true" />
 								</Link>
-							}
-						/>
-						<TopPackages packages={stats.revenue.topPackages} />
-					</div>
+							</div>
+						</div>
+					</section>
+				</div>
 
-					<div className="rounded-xl border border-slate-200 bg-white p-5 shadow-sm sm:p-6">
-						<PanelHeader
-							title="System health"
-							detail="Usage, reliability and the courier key pool"
-						/>
-						<SystemHealth
-							api={stats.api}
-							errors={stats.errors}
-							keys={stats.keys}
-						/>
-					</div>
-				</section>
+				<div className="space-y-3">
+					<SectionLabel>Operations</SectionLabel>
+					<section className="grid gap-5 xl:grid-cols-2">
+						<div className="rounded-xl border border-slate-200 bg-white p-5 shadow-sm sm:p-6">
+							<PanelHeader
+								title="Top packages by revenue"
+								detail="Ranked by confirmed payments"
+								action={
+									<Link
+										to="/admin/package/all"
+										className="inline-flex items-center gap-1.5 text-sm font-bold text-secondary hover:gap-2.5"
+									>
+										Manage packages{" "}
+										<ArrowRight className="size-4" aria-hidden="true" />
+									</Link>
+								}
+							/>
+							<TopPackages packages={stats.revenue.topPackages} />
+						</div>
+
+						<div className="rounded-xl border border-slate-200 bg-white p-5 shadow-sm sm:p-6">
+							<PanelHeader
+								title="System health"
+								detail="Usage, reliability and the courier key pool"
+							/>
+							<SystemHealth
+								api={stats.api}
+								errors={stats.errors}
+								keys={stats.keys}
+							/>
+						</div>
+					</section>
+				</div>
 			</div>
 		</main>
 	);

@@ -159,6 +159,7 @@ export const getAdminDashboardStats = createServerFn({ method: "GET" })
 			totalCourierChecks,
 			activeKeys,
 			inactiveKeys,
+			expiringSoon,
 			errorCategoryRows,
 		] = await Promise.all([
 			userSubscription.aggregate([
@@ -221,6 +222,10 @@ export const getAdminDashboardStats = createServerFn({ method: "GET" })
 			CourierCheck.countDocuments({}),
 			CourierKey.countDocuments({ status: "active" }),
 			CourierKey.countDocuments({ status: "inactive" }),
+			userSubscription.countDocuments({
+				status: "active",
+				end_date: { $gte: now, $lte: new Date(now.getTime() + 7 * DAY_MS) },
+			}),
 			CourierErrorLog.aggregate([
 				{
 					$match: { createdAt: { $gte: sevenDaysAgo, $lt: now } },
@@ -339,7 +344,6 @@ export const getAdminDashboardStats = createServerFn({ method: "GET" })
 					currentMonth: currentMonthRevenue.revenue,
 					currentMonthOrders: currentMonthRevenue.orders,
 					lastMonth: lastMonthRevenue.revenue,
-					lastMonthOrders: lastMonthRevenue.orders,
 					currentYear: currentYearRevenue,
 					total: totalRevenue,
 					totalOrders: totalPaidOrders,
@@ -363,6 +367,7 @@ export const getAdminDashboardStats = createServerFn({ method: "GET" })
 					active: activeKeys,
 					inactive: inactiveKeys,
 				},
+				expiringSoon,
 				planMix,
 			}),
 		);
