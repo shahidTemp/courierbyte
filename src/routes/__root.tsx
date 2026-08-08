@@ -15,28 +15,17 @@ interface MyRouterContext {
 	queryClient: QueryClient;
 }
 
-// Configure VITE_SITE_URL in production (for example, https://example.com) so
-// canonical and social URLs are absolute without hard-coding an unverified domain.
-const SITE_URL = import.meta.env.VITE_SITE_URL?.replace(/\/+$/, "");
+// VITE_SITE_URL can override the production hostname for staging or a future
+// domain. Keep a real absolute fallback so canonical and social URLs are never
+// emitted as relative URLs in production builds.
+const SITE_URL = (
+	import.meta.env.VITE_SITE_URL || "https://courierbyte.appbyte.net"
+).replace(/\/+$/, "");
 const SITE_NAME = "কুরিয়ারবাইট (CourierByte)";
-const SITE_TITLE = "কুরিয়ারবাইট | বাংলাদেশে রিয়েল-টাইম কুরিয়ার হিস্ট্রি চেক";
+const SITE_TITLE = "কুরিয়ার ফ্রড চেকার | ফ্রি কুরিয়ার হিস্ট্রি চেক — কুরিয়ারবাইট";
 const SITE_DESCRIPTION =
-	"বাংলাদেশের ই-কমার্স ব্যবসার জন্য রিয়েল-টাইম কুরিয়ার হিস্ট্রি চেক। কাস্টমারের মোবাইল নম্বর দিয়ে ডেলিভারি, রিটার্ন ও সাকসেস রেশিও দেখে COD ঝুঁকি কমান।";
-
-// These describe real topics covered by the public homepage. Google ignores the
-// old meta-keywords tag, so keep them in meaningful structured data instead.
-const SEARCH_TOPICS = [
-	"courier check Bangladesh",
-	"customer courier history check",
-	"COD risk checker Bangladesh",
-	"parcel delivery history",
-	"কুরিয়ার হিস্ট্রি চেক",
-	"কাস্টমার নাম্বার চেক",
-	"ডেলিভারি হিস্ট্রি যাচাই",
-	"ক্যাশ অন ডেলিভারি ঝুঁকি কমানো",
-	"ই-কমার্স অর্ডার যাচাই",
-	"রিটার্ন কমানোর টুল",
-];
+	"বাংলাদেশের ই-কমার্স ব্যবসার জন্য ফ্রি কুরিয়ার ফ্রড চেকার। কাস্টমারের মোবাইল নম্বর দিয়ে ডেলিভারি, রিটার্ন ও সাকসেস রেশিও দেখে COD ঝুঁকি কমান।";
+const SOCIAL_IMAGE = `${SITE_URL}/logo.png`;
 
 const NON_INDEXABLE_ROUTE_PATTERN =
 	/^\/(admin|panel|subscription|login|api)(\/|$)/;
@@ -44,33 +33,46 @@ const NON_INDEXABLE_ROUTE_PATTERN =
 export const Route = createRootRouteWithContext<MyRouterContext>()({
 	head: ({ match }) => {
 		const pathname = match.pathname;
+		const isHomePage = pathname === "/";
 		const isNonIndexableRoute = NON_INDEXABLE_ROUTE_PATTERN.test(pathname);
-		const canonicalUrl = SITE_URL
-			? `${SITE_URL}${pathname === "/" ? "/" : pathname}`
-			: undefined;
+		const canonicalUrl = isNonIndexableRoute
+			? undefined
+			: new URL(pathname || "/", `${SITE_URL}/`).toString();
 		const structuredData = {
 			"@context": "https://schema.org",
 			"@graph": [
 				{
 					"@type": "Organization",
-					"@id": canonicalUrl ? `${SITE_URL}/#organization` : undefined,
+					"@id": `${SITE_URL}/#organization`,
 					name: SITE_NAME,
 					alternateName: "CourierByte",
+					url: SITE_URL,
+					logo: SOCIAL_IMAGE,
+					image: SOCIAL_IMAGE,
 					description: SITE_DESCRIPTION,
 					areaServed: {
 						"@type": "Country",
 						name: "Bangladesh",
 					},
-					knowsAbout: SEARCH_TOPICS,
-					...(canonicalUrl ? { url: SITE_URL } : {}),
 				},
 				{
 					"@type": "WebSite",
-					"@id": canonicalUrl ? `${SITE_URL}/#website` : undefined,
+					"@id": `${SITE_URL}/#website`,
+					url: SITE_URL,
 					name: SITE_NAME,
 					description: SITE_DESCRIPTION,
 					inLanguage: "bn-BD",
-					...(canonicalUrl ? { url: SITE_URL } : {}),
+				},
+				{
+					"@type": "WebApplication",
+					"@id": `${SITE_URL}/#application`,
+					name: SITE_NAME,
+					url: SITE_URL,
+					image: SOCIAL_IMAGE,
+					description: SITE_DESCRIPTION,
+					applicationCategory: "BusinessApplication",
+					operatingSystem: "Web",
+					inLanguage: "bn-BD",
 				},
 			],
 		};
@@ -93,44 +95,60 @@ export const Route = createRootRouteWithContext<MyRouterContext>()({
 					name: "robots",
 					content: isNonIndexableRoute
 						? "noindex, nofollow"
-						: "index, follow, max-image-preview:large",
+						: "index, follow, max-snippet:-1, max-image-preview:large, max-video-preview:-1",
 				},
 				{
 					name: "googlebot",
 					content: isNonIndexableRoute
 						? "noindex, nofollow"
-						: "index, follow, max-image-preview:large",
+						: "index, follow, max-snippet:-1, max-image-preview:large, max-video-preview:-1",
 				},
 				{ name: "author", content: SITE_NAME },
 				{ name: "application-name", content: SITE_NAME },
 				{ name: "theme-color", content: "#0f6b4d" },
+				{ name: "referrer", content: "origin-when-cross-origin" },
 				{ property: "og:locale", content: "bn_BD" },
 				{ property: "og:type", content: "website" },
 				{ property: "og:site_name", content: SITE_NAME },
 				{ property: "og:title", content: SITE_TITLE },
 				{ property: "og:description", content: SITE_DESCRIPTION },
+				{ property: "og:image", content: SOCIAL_IMAGE },
+				{ property: "og:image:secure_url", content: SOCIAL_IMAGE },
+				{ property: "og:image:type", content: "image/png" },
+				{ property: "og:image:width", content: "1254" },
+				{ property: "og:image:height", content: "1254" },
+				{
+					property: "og:image:alt",
+					content: "কুরিয়ারবাইট — কুরিয়ার ফ্রড চেকার",
+				},
 				...(canonicalUrl
 					? [{ property: "og:url" as const, content: canonicalUrl }]
 					: []),
-				{ name: "twitter:card", content: "summary" },
+				{ name: "twitter:card", content: "summary_large_image" },
 				{ name: "twitter:title", content: SITE_TITLE },
 				{ name: "twitter:description", content: SITE_DESCRIPTION },
+				{ name: "twitter:image", content: SOCIAL_IMAGE },
+				{
+					name: "twitter:image:alt",
+					content: "কুরিয়ারবাইট — কুরিয়ার ফ্রড চেকার",
+				},
 			],
 			links: [
 				{ rel: "stylesheet", href: appCss },
 				{ rel: "icon", type: "image/png", href: "/logo.png" },
+				{ rel: "manifest", href: "/manifest.json" },
 				...(canonicalUrl
 					? [{ rel: "canonical" as const, href: canonicalUrl }]
 					: []),
 			],
-			scripts: isNonIndexableRoute
-				? []
-				: [
+			scripts: isHomePage
+				? [
 						{
 							type: "application/ld+json",
 							children: JSON.stringify(structuredData),
 						},
-					],
+					]
+				: [],
 		};
 	},
 	component: RootComponent,
