@@ -769,13 +769,6 @@ function RouteComponent() {
 						<h1 className="text-2xl font-extrabold tracking-tight text-secondary-dark">
 							Dashboard
 						</h1>
-						<p className="mt-1 text-sm font-semibold text-slate-500">
-							{greeting}, {user?.name ?? "Admin"}
-							<span className="mx-2 text-slate-300" aria-hidden="true">
-								·
-							</span>
-							{todayLabel}
-						</p>
 					</div>
 					<div className="flex items-center gap-3">
 						<span className="hidden items-center gap-1.5 text-xs font-semibold text-slate-400 sm:inline-flex">
