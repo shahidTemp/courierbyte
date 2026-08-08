@@ -7,7 +7,6 @@ import {
 	LogOut,
 	Menu,
 	MessageSquare,
-	PackageSearch,
 	Receipt,
 	ShieldCheck,
 	UserRound,
@@ -51,9 +50,11 @@ function NavItemLink({ item, onNavigate }) {
 function Brand({ onClick }) {
 	return (
 		<Link to="/" onClick={onClick} className="flex items-center gap-3">
-			<span className="flex h-10 w-10 shrink-0 items-center justify-center rounded-xl bg-gradient-to-br from-secondary to-secondary-dark text-white shadow-md shadow-secondary/25">
-				<PackageSearch className="h-5 w-5" />
-			</span>
+			<img
+				src="/logo.png"
+				alt="কুরিয়ারবাইট"
+				className="h-10 w-10 shrink-0 rounded-xl object-contain"
+			/>
 			<span className="flex flex-col leading-tight">
 				<span className="text-lg font-extrabold tracking-tight text-secondary-dark">
 					কুরিয়ারবাইট
