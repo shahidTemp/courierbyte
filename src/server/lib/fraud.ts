@@ -275,7 +275,7 @@ export async function executeFraudCheck(
 					},
 				},
 			],
-			{ new: true },
+			{ new: true, updatePipeline: true },
 		)
 		.select("_id")
 		.lean();
