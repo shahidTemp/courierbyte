@@ -9,6 +9,9 @@ const PROVIDER_URL = "https://api.bdcourier.com/courier-check";
 // const REVIEWS_URL = "https://checkreviewsbd.com/customer-reviews";
 const REVIEWS_URL = "https://fraudshield.bd/customer-reviews";
 
+/** Maximum time allowed for the main courier provider request. */
+const COURIER_TIMEOUT_MS = 30_000;
+
 /** How long to wait for the optional reviews lookup before giving up. */
 const REVIEWS_TIMEOUT_MS = 10_000;
 
@@ -48,15 +51,37 @@ export async function checkCourier(phoneNumber: string) {
 				"Content-Type": "application/json",
 			},
 			body: JSON.stringify({ phone: phoneNumber }),
+			signal: AbortSignal.timeout(COURIER_TIMEOUT_MS),
 		});
 	} catch (error) {
-		await reportFailure(key.id, {
-			category: "NETWORK_ERROR",
-			message: "Courier provider is unreachable",
-			detail: error instanceof Error ? error.message : "Unknown network error",
-			stack: error instanceof Error ? error.stack : undefined,
-			phone: phoneNumber,
-		});
+		const isTimeout =
+			error instanceof Error &&
+			(error.name === "TimeoutError" || error.name === "AbortError");
+		const errorMessage =
+			error instanceof Error ? error.message : "Unknown network error";
+
+		if (isTimeout) {
+			// A slow provider response is not evidence that this credential is
+			// invalid. Log it for visibility, but do not consume the key's
+			// consecutive-failure budget or deactivate a healthy key.
+			await logCourierError({
+				category: "NETWORK_ERROR",
+				message: "Courier provider request timed out",
+				detail: errorMessage,
+				stack: error instanceof Error ? error.stack : undefined,
+				phone: phoneNumber,
+				keyId: key.id,
+			});
+		} else {
+			await reportFailure(key.id, {
+				category: "NETWORK_ERROR",
+				message: "Courier provider is unreachable",
+				detail: errorMessage,
+				stack: error instanceof Error ? error.stack : undefined,
+				phone: phoneNumber,
+			});
+		}
+
 		throw error;
 	}
 

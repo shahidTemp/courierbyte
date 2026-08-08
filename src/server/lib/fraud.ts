@@ -2,12 +2,11 @@ import crypto from "node:crypto";
 import { Types } from "mongoose";
 import { z } from "zod";
 import { checkCourier, checkReviews } from "@/server/functions/service.fn";
+import { PENDING_RESERVATION_TTL_MS } from "@/server/lib/constants";
 import { getCachedCheck, setCachedCheck } from "@/server/lib/courierCache";
 import { CourierCheck } from "@/server/models/courierData.model";
 import { SearchUsage } from "@/server/models/searchUsage.model";
 import { userSubscription } from "@/server/models/subscription.model";
-
-export const PENDING_RESERVATION_TTL_MS = 10 * 60 * 1000;
 
 /** Cached courier results older than this are served stale and refreshed in the background. */
 const CACHE_STALE_AFTER_MS = 90 * 24 * 60 * 60 * 1000;
@@ -78,16 +77,11 @@ async function settleReservation(
 			},
 		);
 
-		// If a very slow request outlived the stale-reservation cleanup, the
-		// search still succeeded and must count against the quota.
+		// A missing reservation means cleanup already removed it or this
+		// completion was already settled. Do not guess by incrementing usage:
+		// a retry could otherwise charge the same request more than once.
 		if (settled.modifiedCount === 0) {
-			const fallback = await userSubscription.updateOne(
-				{ _id: subscriptionId },
-				{ $inc: { api_calls_used: 1 } },
-			);
-			if (fallback.matchedCount === 0) {
-				throw new Error("Subscription usage could not be recorded");
-			}
+			throw new Error("Reservation is no longer available for settlement");
 		}
 	} catch {
 		throw new FraudError(

@@ -1,4 +1,5 @@
 import { createServerFn } from "@tanstack/react-start";
+import { PENDING_RESERVATION_TTL_MS } from "@/server/lib/constants";
 import { expireSubscriptions } from "@/server/lib/subscription";
 import { authMiddleware, requireRole } from "@/server/middleware";
 import { CourierCheck } from "@/server/models/courierData.model";
@@ -383,7 +384,7 @@ export const getDashboardStats = createServerFn({ method: "GET" })
 				$pull: {
 					api_calls_pending: {
 						createdAt: {
-							$lt: new Date(Date.now() - 10 * 60 * 1000),
+							$lt: new Date(Date.now() - PENDING_RESERVATION_TTL_MS),
 						},
 					},
 				},
