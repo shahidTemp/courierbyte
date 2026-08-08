@@ -73,7 +73,11 @@ const userSubscriptionSchema = new Schema(
 	},
 );
 
-userSubscriptionSchema.index({ userId: 1, status: 1 });
+// Fast lookup of a user's active subscription (end_date filter included).
+userSubscriptionSchema.index({ userId: 1, status: 1, end_date: 1 });
+
+// Collection-wide expiry sweep run hourly by the Nitro plugin.
+userSubscriptionSchema.index({ status: 1, end_date: 1 });
 
 export const userSubscription =
 	mongoose.models?.userSubscription ||

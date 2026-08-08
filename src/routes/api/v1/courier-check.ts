@@ -28,7 +28,7 @@ export const Route = createFileRoute("/api/v1/courier-check")({
 				const user = await User.findOne({
 					apiKey,
 					isActive: true,
-				}).select("+apiKey _id");
+				}).select("+apiKey _id isActive");
 
 				if (!user) {
 					return json(
@@ -60,7 +60,10 @@ export const Route = createFileRoute("/api/v1/courier-check")({
 
 				try {
 					const result = await executeFraudCheck(
-						String(user._id),
+						{
+							_id: String(user._id),
+							isActive: user.isActive === true,
+						},
 						parsed.data.phone,
 					);
 					return json({ success: true, data: result });
