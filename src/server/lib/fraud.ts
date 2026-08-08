@@ -1,7 +1,9 @@
 import crypto from "node:crypto";
+import type { Types } from "mongoose";
 import { z } from "zod";
 import { checkCourier, checkReviews } from "@/server/functions/service.fn";
 import { expireSubscriptions } from "@/server/lib/subscription";
+import { CourierCheck } from "@/server/models/courierData.model";
 import { SearchUsage } from "@/server/models/searchUsage.model";
 import { userSubscription } from "@/server/models/subscription.model";
 import { User } from "@/server/models/user.model";
@@ -39,10 +41,62 @@ export class FraudError extends Error {
 	}
 }
 
+/** Best-effort log of a paid search; a logging failure must not break the check. */
+async function recordSearchUsage(
+	userId: Types.ObjectId,
+	subscriptionId: Types.ObjectId,
+) {
+	try {
+		await SearchUsage.create({ userId, subscriptionId });
+	} catch (error) {
+		console.error("Search usage event could not be recorded:", error);
+	}
+}
+
+/**
+ * Finalize a reserved call: release the reservation slot and charge the quota.
+ * Throws USAGE_ACCOUNTING_FAILED if the charge could not be recorded.
+ */
+async function settleReservation(
+	subscriptionId: Types.ObjectId,
+	reservationId: string,
+) {
+	try {
+		const settled = await userSubscription.updateOne(
+			{ _id: subscriptionId, "api_calls_pending.id": reservationId },
+			{
+				$pull: { api_calls_pending: { id: reservationId } },
+				$inc: { api_calls_used: 1 },
+			},
+		);
+
+		// If a very slow request outlived the stale-reservation cleanup, the
+		// search still succeeded and must count against the quota.
+		if (settled.modifiedCount === 0) {
+			const fallback = await userSubscription.updateOne(
+				{ _id: subscriptionId },
+				{ $inc: { api_calls_used: 1 } },
+			);
+			if (fallback.matchedCount === 0) {
+				throw new Error("Subscription usage could not be recorded");
+			}
+		}
+	} catch {
+		throw new FraudError(
+			"USAGE_ACCOUNTING_FAILED",
+			"The search completed, but usage could not be recorded",
+			503,
+		);
+	}
+}
+
 /**
  * Validate the authenticated user, reserve one subscription call, and only
  * then call the shared courier provider service. A failed provider request
  * releases the reserved call so users are not charged for failed requests.
+ * Every search — cached or fresh — reserves and settles one quota unit.
+ * Previously checked numbers are served from the CourierCheck cache so
+ * repeat lookups never call the external providers.
  *
  * This module lives outside any `createServerFn` on purpose: nothing in it may
  * be referenced by client-reachable top-level code. If `executeFraudCheck`
@@ -150,6 +204,17 @@ export async function executeFraudCheck(userId: string, phone: unknown) {
 		);
 	}
 
+	// Cache hit: settle the reserved quota and serve the stored result without
+	// calling the external providers.
+	const cached = await CourierCheck.findOne({
+		phone: parsed.data.phone,
+	}).lean();
+	if (cached?.data && Object.keys(cached.data).length > 0) {
+		await settleReservation(reservedSubscription._id, reservationId);
+		await recordSearchUsage(user._id, reservedSubscription._id);
+		return { ...cached.data, reviews: cached.reports ?? [] };
+	}
+
 	let result: unknown;
 	try {
 		result = await checkCourier(parsed.data.phone);
@@ -169,49 +234,24 @@ export async function executeFraudCheck(userId: string, phone: unknown) {
 		);
 	}
 
-	try {
-		const settled = await userSubscription.updateOne(
-			{ _id: reservedSubscription._id, "api_calls_pending.id": reservationId },
-			{
-				$pull: { api_calls_pending: { id: reservationId } },
-				$inc: { api_calls_used: 1 },
-			},
-		);
-
-		// If a very slow request outlived the stale-reservation cleanup, the
-		// provider call still succeeded and must count against the quota.
-		if (settled.modifiedCount === 0) {
-			const fallback = await userSubscription.updateOne(
-				{ _id: reservedSubscription._id },
-				{ $inc: { api_calls_used: 1 } },
-			);
-			if (fallback.matchedCount === 0) {
-				throw new Error("Subscription usage could not be recorded");
-			}
-		}
-	} catch {
-		throw new FraudError(
-			"USAGE_ACCOUNTING_FAILED",
-			"The courier check completed, but usage could not be recorded",
-			503,
-		);
-	}
-
-	try {
-		await SearchUsage.create({
-			userId: user._id,
-			subscriptionId: reservedSubscription._id,
-		});
-	} catch (error) {
-		// The quota has already been settled. Keep the successful provider result
-		// successful, but surface the logging failure for server-side monitoring.
-		console.error("Search usage event could not be recorded:", error);
-	}
+	await settleReservation(reservedSubscription._id, reservationId);
+	await recordSearchUsage(user._id, reservedSubscription._id);
 
 	// Optional enrichment: the reviews lookup resolves to an empty array on any
 	// failure, so it can never affect the successful courier check result.
 	const reviews = await checkReviews(parsed.data.phone);
 	const courierData = (result ?? {}) as Record<string, unknown>;
+
+	// Best-effort cache: a storage failure must never fail the request.
+	try {
+		await CourierCheck.updateOne(
+			{ phone: parsed.data.phone },
+			{ $set: { data: courierData, reports: reviews } },
+			{ upsert: true },
+		);
+	} catch (error) {
+		console.error("Courier data could not be cached:", error);
+	}
 
 	return { ...courierData, reviews };
 }
