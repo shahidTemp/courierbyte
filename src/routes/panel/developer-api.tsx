@@ -19,7 +19,7 @@ export const Route = createFileRoute("/panel/developer-api")({
 	component: RouteComponent,
 });
 
-const API_ENDPOINT = "https://your-domain.com/api/v1/courier-check";
+const API_ENDPOINT = "https://courierbyte.appbyte.net/api/v1/courier-check";
 
 const examples = [
 	{
@@ -457,15 +457,6 @@ function RouteComponent() {
 							onCopy={() => copyCode(selectedExample.id, displayCode)}
 						/>
 					</div>
-					<p className="mt-4 flex items-start gap-2 text-xs leading-5 text-slate-400">
-						<ExternalLink
-							aria-hidden="true"
-							className="mt-0.5 size-3.5 shrink-0"
-						/>{" "}
-						Replace <code className="font-bold">https://your-domain.com</code>{" "}
-						with your deployed CourierByte domain. Keep{" "}
-						<code className="font-bold">YOUR_API_KEY</code> on your server.
-					</p>
 				</section>
 
 				<section className="grid gap-6 lg:grid-cols-2">
