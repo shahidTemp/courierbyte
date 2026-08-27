@@ -13,13 +13,74 @@ const NAV_ITEMS = [
 ];
 
 const linkClasses =
-	"text-sm font-medium text-white/70 transition-colors hover:text-accent";
+	"text-sm font-medium text-white/75 transition-colors hover:text-white";
 
 const authBtnClasses =
-	"inline-flex items-center gap-2 rounded-full bg-accent px-5 py-2.5 text-sm font-bold text-white shadow-lg shadow-accent/25 transition-all duration-300 hover:-translate-y-0.5 hover:bg-accent-strong hover:shadow-accent/40";
+	"inline-flex items-center gap-2 rounded-[10px] border border-[#3DDC97]/50 bg-gradient-to-b from-[#0F7A52] to-[#0A5138] px-5 py-2.5 text-sm font-bold text-white shadow-[0_0_18px_rgba(61,220,151,0.35)] transition-all duration-300 hover:-translate-y-0.5 hover:shadow-[0_0_28px_rgba(61,220,151,0.5)]";
 
 const loginLinkClasses =
-	"text-sm font-medium text-white/70 transition-colors hover:text-white";
+	"text-sm font-medium text-white/75 transition-colors hover:text-white";
+
+/* shield logo with gold parcel — custom SVG matching the courierByte brand */
+function ShieldLogo({ className = "" }) {
+	return (
+		<svg
+			viewBox="0 0 40 44"
+			className={className}
+			aria-hidden="true"
+			fill="none"
+		>
+			<defs>
+				<linearGradient id="cbShieldFill" x1="0" y1="0" x2="0" y2="1">
+					<stop offset="0" stopColor="#0E2C24" />
+					<stop offset="1" stopColor="#081A20" />
+				</linearGradient>
+				<linearGradient id="cbShieldStroke" x1="0" y1="0" x2="1" y2="1">
+					<stop offset="0" stopColor="#2FD28F" />
+					<stop offset="1" stopColor="#0F7D51" />
+				</linearGradient>
+			</defs>
+			<path
+				d="M20 2 36 8.2V22c0 10.8-6.9 17.6-16 19.8C10.9 39.6 4 32.8 4 22V8.2Z"
+				fill="url(#cbShieldFill)"
+				stroke="url(#cbShieldStroke)"
+				strokeWidth="2.4"
+				strokeLinejoin="round"
+			/>
+			<polygon
+				points="20,10 30,15 20,20 10,15"
+				fill="#F6C45B"
+				stroke="#F6C45B"
+				strokeWidth="1.4"
+				strokeLinejoin="round"
+			/>
+			<polygon
+				points="10,15 20,20 20,32 10,27"
+				fill="#E8A83B"
+				stroke="#E8A83B"
+				strokeWidth="1.4"
+				strokeLinejoin="round"
+			/>
+			<polygon
+				points="30,15 20,20 20,32 30,27"
+				fill="#C9862B"
+				stroke="#C9862B"
+				strokeWidth="1.4"
+				strokeLinejoin="round"
+			/>
+			<polygon points="10,21 20,26 20,28.4 10,23.4" fill="#B5761F" />
+			<polygon points="30,21 20,26 20,28.4 30,23.4" fill="#9C661A" />
+		</svg>
+	);
+}
+
+function Wordmark({ className = "" }) {
+	return (
+		<span className={`font-extrabold tracking-tight text-white ${className}`}>
+			courier<span className="text-accent">Byte</span>
+		</span>
+	);
+}
 
 function NavItemLink({ item, onSectionClick }) {
 	return (
@@ -106,14 +167,8 @@ const Header = () => {
 		<header className="border-b border-white/5 bg-night text-white">
 			<div className="maxw px-4 sm:px-6 lg:px-8 py-4 flex items-center justify-between gap-4">
 				<Link to="/" className="flex shrink-0 items-center gap-2.5">
-					<img
-						src="/logo.png"
-						alt="কুরিয়ারবাইট"
-						className="h-10 w-10 shrink-0 rounded-xl object-contain"
-					/>
-					<span className="text-xl font-extrabold tracking-tight text-white">
-						কুরিয়ার<span className="text-accent">বাইট</span>
-					</span>
+					<ShieldLogo className="h-10 w-10 shrink-0" />
+					<Wordmark className="text-[21px]" />
 				</Link>
 
 				<nav className="hidden md:flex items-center gap-6">
@@ -166,14 +221,8 @@ const Header = () => {
 						onClick={close}
 						className="flex shrink-0 items-center gap-2.5"
 					>
-						<img
-							src="/logo.png"
-							alt="কুরিয়ারবাইট"
-							className="h-9 w-9 shrink-0 rounded-lg object-contain"
-						/>
-						<span className="text-lg font-extrabold tracking-tight text-white">
-							কুরিয়ার<span className="text-accent">বাইট</span>
-						</span>
+						<ShieldLogo className="h-9 w-9 shrink-0" />
+						<Wordmark className="text-lg" />
 					</Link>
 					<button
 						type="button"
