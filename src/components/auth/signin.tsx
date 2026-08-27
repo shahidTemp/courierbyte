@@ -56,7 +56,7 @@ export default function SignIn({ onSignUp }) {
 		<section className="relative isolate flex min-h-[38rem] items-center justify-center overflow-hidden bg-night px-4 py-14 sm:px-6">
 			<div aria-hidden="true" className="pointer-events-none absolute -left-24 top-8 size-72 rounded-full bg-accent/10 blur-3xl" />
 			<div aria-hidden="true" className="pointer-events-none absolute -right-24 bottom-0 size-80 rounded-full bg-secondary/20 blur-3xl" />
-			<div className="relative w-full max-w-md rounded-3xl border border-emerald-200/70 bg-gradient-to-br from-emerald-50 via-green-50 to-white p-6 shadow-2xl shadow-black/20 sm:p-9">
+			<div className="relative w-full max-w-md rounded-3xl border border-emerald-200/70 bg-gradient-to-br from-emerald-100 via-green-100 to-emerald-50 p-6 shadow-2xl shadow-black/20 sm:p-9">
 				<div className="mb-8">
 					<h1 className="text-3xl font-extrabold tracking-tight text-secondary-dark">
 						লগইন করুন
