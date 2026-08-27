@@ -81,8 +81,10 @@ export default function SignUp({ onLogin }) {
 	};
 
 	return (
-		<section className="flex min-h-[38rem] items-center justify-center px-4 py-12 sm:px-6">
-			<div className="w-full max-w-md rounded-3xl border border-slate-200/80 bg-white p-6 shadow-2xl shadow-secondary/10 sm:p-9">
+		<section className="relative isolate flex min-h-[42rem] items-center justify-center overflow-hidden bg-gradient-to-br from-secondary-dark via-secondary to-emerald-700 px-4 py-14 sm:px-6">
+			<div aria-hidden="true" className="pointer-events-none absolute -left-24 top-8 size-72 rounded-full bg-emerald-300/20 blur-3xl" />
+			<div aria-hidden="true" className="pointer-events-none absolute -right-24 bottom-0 size-80 rounded-full bg-accent/20 blur-3xl" />
+			<div className="relative w-full max-w-md rounded-3xl border border-white/20 bg-white p-6 shadow-2xl shadow-black/20 sm:p-9">
 				<div className="mb-8">
 					{" "}
 					<h1 className="text-3xl font-extrabold tracking-tight text-slate-900">
@@ -122,7 +124,7 @@ export default function SignUp({ onLogin }) {
 									clearError();
 								}}
 								placeholder="আপনার পুরো নাম লিখুন"
-								className="h-14 w-full rounded-2xl border border-slate-200 bg-slate-50 pl-12 pr-4 text-base text-slate-900 outline-none transition focus:border-secondary focus:bg-white focus:ring-4 focus:ring-secondary/10"
+								className="h-14 w-full rounded-2xl border border-emerald-100 bg-emerald-50/60 pl-12 pr-4 text-base text-slate-900 outline-none transition focus:border-accent focus:bg-white focus:ring-4 focus:ring-accent/10"
 							/>
 						</div>
 					</div>
@@ -155,7 +157,7 @@ export default function SignUp({ onLogin }) {
 									clearError();
 								}}
 								placeholder="01XXXXXXXXX"
-								className="h-14 w-full rounded-2xl border border-slate-200 bg-slate-50 pl-12 pr-4 text-base font-semibold tracking-wide text-slate-900 outline-none transition focus:border-secondary focus:bg-white focus:ring-4 focus:ring-secondary/10"
+								className="h-14 w-full rounded-2xl border border-emerald-100 bg-emerald-50/60 pl-12 pr-4 text-base font-semibold tracking-wide text-slate-900 outline-none transition focus:border-accent focus:bg-white focus:ring-4 focus:ring-accent/10"
 							/>
 						</div>
 					</div>
@@ -187,7 +189,7 @@ export default function SignUp({ onLogin }) {
 									clearError();
 								}}
 								placeholder="একটি পাসওয়ার্ড তৈরি করুন"
-								className="h-14 w-full rounded-2xl border border-slate-200 bg-slate-50 pl-12 pr-12 text-base text-slate-900 outline-none transition focus:border-secondary focus:bg-white focus:ring-4 focus:ring-secondary/10"
+								className="h-14 w-full rounded-2xl border border-emerald-100 bg-emerald-50/60 pl-12 pr-12 text-base text-slate-900 outline-none transition focus:border-accent focus:bg-white focus:ring-4 focus:ring-accent/10"
 							/>
 							<button
 								type="button"
@@ -231,7 +233,7 @@ export default function SignUp({ onLogin }) {
 									clearError();
 								}}
 								placeholder="পাসওয়ার্ডটি আবার লিখুন"
-								className="h-14 w-full rounded-2xl border border-slate-200 bg-slate-50 pl-12 pr-12 text-base text-slate-900 outline-none transition focus:border-secondary focus:bg-white focus:ring-4 focus:ring-secondary/10"
+								className="h-14 w-full rounded-2xl border border-emerald-100 bg-emerald-50/60 pl-12 pr-12 text-base text-slate-900 outline-none transition focus:border-accent focus:bg-white focus:ring-4 focus:ring-accent/10"
 							/>
 							<button
 								type="button"
@@ -261,7 +263,7 @@ export default function SignUp({ onLogin }) {
 					<button
 						type="submit"
 						disabled={isSubmitting}
-						className="h-14 w-full rounded-2xl bg-secondary text-sm font-extrabold text-white shadow-lg shadow-secondary/20 transition hover:bg-secondary-dark focus:outline-none focus:ring-4 focus:ring-secondary/25 disabled:cursor-not-allowed disabled:opacity-60"
+						className="h-14 w-full rounded-2xl bg-accent text-sm font-extrabold text-white shadow-lg shadow-accent/25 transition hover:bg-accent-strong focus:outline-none focus:ring-4 focus:ring-accent/25 disabled:cursor-not-allowed disabled:opacity-60"
 					>
 						{isSubmitting ? "অ্যাকাউন্ট তৈরি হচ্ছে..." : "অ্যাকাউন্ট তৈরি করুন"}
 					</button>
