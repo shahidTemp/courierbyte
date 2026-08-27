@@ -75,7 +75,7 @@ export default function Hero() {
         />
       </div>
 
-      <div className="maxw relative z-10 px-4 pb-16 pt-10 sm:px-6 md:pb-24 lg:px-8">
+      <div className="maxw relative z-10 px-4 pb-16 pt-6 sm:px-6 md:pb-24 lg:px-8">
         <div className="grid gap-14 lg:grid-cols-2 lg:justify-between lg:gap-8">
           {/* ---------- left: headline + CTAs ---------- */}
           <div className="w-full">
@@ -111,7 +111,7 @@ export default function Hero() {
           </div>
 
           {/* ---------- right: seller dashboard mockup ---------- */}
-          <div className="mx-auto w-full max-w-md lg:max-w-[420px] lg:justify-self-end">
+          <div className="mx-auto w-full max-w-md lg:max-w-[480px] lg:justify-self-end">
             <img
               src="/images/dashboard.png"
               alt="কুরিয়ারবাইট সেলার ড্যাশবোর্ড প্রিভিউ"
@@ -122,7 +122,7 @@ export default function Hero() {
         </div>
 
         {/* ---------- highlights strip ---------- */}
-        <div className="mt-16 overflow-hidden rounded-2xl border border-white/10 bg-white/[0.03] backdrop-blur md:mt-20">
+        <div className="mt-4 overflow-hidden rounded-2xl border border-white/10 bg-white/[0.03] backdrop-blur md:mt-12">
           <div className="grid divide-y divide-white/10 md:grid-cols-3 md:divide-x md:divide-y-0">
             {highlights.map((item) => {
               const Icon = item.icon;
