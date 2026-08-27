@@ -72,7 +72,7 @@ const Footer = () => {
 	];
 
 	return (
-		<footer className="bg-secondary-dark text-white/60 font-sans">
+		<footer className="bg-night text-white/60 font-sans">
 			<div className="maxw px-4 sm:px-6 lg:px-8">
 				{/* Contact Section */}
 				<div className="border-b border-white/10 py-12">
@@ -232,7 +232,7 @@ const Footer = () => {
 			</div>
 
 			{/* Copyright Area */}
-			<div className="bg-secondary-dark/90 py-4 text-center">
+			<div className="border-t border-white/5 bg-night py-4 text-center">
 				<div className="max-w-7xl mx-auto px-4 flex flex-col sm:flex-row items-center justify-center gap-2 text-xs sm:text-sm">
 					<span>
 						&copy; {new Date().getFullYear()} কুরিয়ারবাইট (CourierByte). All rights
