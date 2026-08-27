@@ -113,7 +113,7 @@ export default function Hero() {
           {/* ---------- right: seller dashboard mockup ---------- */}
           <div className="mx-auto w-full max-w-md lg:max-w-[420px] lg:justify-self-end">
             <img
-              src="/images/dashboard1.png"
+              src="/images/dashboard.png"
               alt="কুরিয়ারবাইট সেলার ড্যাশবোর্ড প্রিভিউ"
               className="w-full rounded-2xl shadow-[0_30px_80px_rgba(0,0,0,0.5)]"
               loading="lazy"
