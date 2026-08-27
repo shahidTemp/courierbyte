@@ -103,7 +103,7 @@ const Header = () => {
 	};
 
 	return (
-		<header className="border-b border-emerald-400/20 bg-gradient-to-r from-secondary-dark via-secondary to-emerald-700 text-white shadow-lg shadow-secondary/10">
+		<header className="border-b border-white/5 bg-night text-white">
 			<div className="maxw px-4 sm:px-6 lg:px-8 py-4 flex items-center justify-between gap-4">
 				<Link to="/" className="flex shrink-0 items-center gap-2.5">
 					<img
