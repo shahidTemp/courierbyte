@@ -54,6 +54,13 @@ export async function checkCourier(phoneNumber: string) {
 			signal: AbortSignal.timeout(COURIER_TIMEOUT_MS),
 		});
 	} catch (error) {
+		console.error("Courier fetch failed:", error);
+		console.error("Error name:", error?.name);
+		console.error("Error message:", error?.message);
+		console.error("Error cause:", error?.cause);
+		console.error("Cause code:", error?.cause?.code);
+		console.error("Cause message:", error?.cause?.message);
+		console.error("Nested errors:", error?.cause?.errors);
 		const isTimeout =
 			error instanceof Error &&
 			(error.name === "TimeoutError" || error.name === "AbortError");
@@ -146,3 +153,5 @@ export async function checkReviews(phoneNumber: string): Promise<unknown[]> {
 		return [];
 	}
 }
+
+

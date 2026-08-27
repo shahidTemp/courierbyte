@@ -15,14 +15,13 @@
  */
 
 import mongoose from "mongoose";
-import { readFileSync } from "node:fs";
 
 // ─────────────────────────────────────────────────────────────
 // 1. CONFIGURATION (EDIT ME)
 // ─────────────────────────────────────────────────────────────
 
 // Your BD Courier API key (paste the real one here before running)
-const API_KEY = "REPLACE_WITH_YOUR_BDCOURIER_KEY";
+const API_KEY = "MkFzo6IozL1CMnuGKSQFu2Hk0jlAeRr2zy3q4l40GpwE4NIFueJhZSzvBMvP";
 
 const PROVIDER_URL = "https://api.bdcourier.com/courier-check";
 const REVIEWS_URL = "https://fraudshield.bd/customer-reviews";
@@ -37,38 +36,58 @@ const REVIEWS_TIMEOUT_MS = 10_000;
 // 50 Bangladeshi mobile numbers to test (format: 01[3-9] + 8 digits).
 // Replace with your own list if you have specific numbers in mind.
 const PHONES = [
-	"01712345678", "01823456789", "01934567890", "01645678901",
-	"01556789012", "01367890123", "01478901234", "01789012345",
-	"01890123456", "01901234567", "01612345670", "01523456781",
-	"01334567892", "01445678903", "01756789014", "01867890125",
-	"01978901236", "01689012347", "01590123458", "01301234569",
-	"01412345680", "01723456791", "01834567802", "01945678913",
-	"01656789024", "01567890135", "01378901246", "01489012357",
-	"01790123468", "01801234579", "01912345680", "01623456791",
-	"01534567802", "01345678913", "01456789024", "01767890135",
-	"01878901246", "01989012357", "01690123468", "01501234579",
-	"01312345680", "01423456791", "01734567802", "01845678913",
-	"01956789024", "01667890135", "01578901246", "01389012357",
-	"01490123468", "01901234579",
+  "01646240868",
+  "01581587833",
+  "01711584987",
+  "01779665842",
+  "01949421241",
+  "01836554365",
+  "01722846917",
+  "01755909298",
+  "01860006999",
+  "01402715439",
+  "01712600406",
+  "01767981016",
+  "01755418385",
+  "01533351833",
+  "01712325227",
+  "01711930935",
+  "01780059189",
+  "01715956276",
+  "01870233657",
+  "01712121684",
+  "01727337099",
+  "01618899329",
+  "01915699700",
+  "01917793714",
+  "01959361475",
+  "01816942779",
+  "01813659865",
+  "01557427955",
+  "01627966723",
+  "01706000684",
+  "01628331233",
+  "01714707686",
+  "01709332399",
+  "01713616474",
+  "01616728697",
+  "01617109582",
+  "01820654719",
+  "01737033559",
+  "01868889108",
+  "01754760234",
+  "01711576835",
+  "01848630178",
+  "01719582350",
+  "01711941863",
+  "01714636084",
+  "01976102649",
+  "01711749242",
+  "01749402786",
+  "01723586873",
 ];
 
-// ─────────────────────────────────────────────────────────────
-// 2. LOAD .env (so plain `node test.js` works — no --env-file flag)
-// ─────────────────────────────────────────────────────────────
 
-try {
-	process.loadEnvFile(".env");
-} catch {
-	try {
-		for (const line of readFileSync(".env", "utf8").split("\n")) {
-			const match = line.match(/^\s*([A-Z_][A-Z0-9_]*)\s*=\s*(.*)\s*$/);
-			if (match) process.env[match[1]] = match[2].replace(/^["']|["']$/g, "");
-		}
-	} catch {
-		console.error("❌ Could not load .env — MONGODB_URI is required.");
-		process.exit(1);
-	}
-}
 
 // ─────────────────────────────────────────────────────────────
 // 3. CourierCheck model (same schema as src/server/models/courierData.model.ts)
@@ -157,7 +176,7 @@ async function storeResult(phone, data, reports) {
 const startedAt = Date.now();
 const stats = { servedFromDb: 0, fetchedFresh: 0, failed: 0, failures: [] };
 
-await mongoose.connect(process.env.MONGODB_URI, { authSource: "admin" });
+await mongoose.connect("mongodb://127.0.0.1:27017/courierByte", { authSource: "admin" });
 console.log("✅ MongoDB connected");
 
 for (const phone of PHONES) {
@@ -179,8 +198,6 @@ for (const phone of PHONES) {
 		// 3) Persist for future user searches, then "respond" with the payload.
 		await storeResult(phone, data, reports);
 		stats.fetchedFresh += 1;
-		console.log(`[FRESH ] ${phone} → stored in DB ✅`);
-		console.log(JSON.stringify({ phone, data, reports }, null, 2));
 	} catch (error) {
 		stats.failed += 1;
 		stats.failures.push({ phone, error: error.message });
