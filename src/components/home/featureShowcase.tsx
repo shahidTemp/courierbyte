@@ -46,17 +46,17 @@ function SavingsBoard() {
 	return (
 		<div className="relative w-full max-w-[550px]">
 			<div className="absolute -inset-5 rounded-[2rem] bg-secondary/15 blur-2xl" />
-			<div className="relative overflow-hidden rounded-[1.35rem] border border-slate-200 bg-white p-5 shadow-2xl shadow-secondary/10 sm:p-6">
-				<div className="flex items-center justify-between border-b border-slate-100 pb-4">
+			<div className="relative overflow-hidden rounded-[1.35rem] border border-white/10 bg-night-soft p-5 shadow-2xl shadow-black/30 sm:p-6">
+				<div className="flex items-center justify-between border-b border-white/10 pb-4">
 					<div className="flex items-center gap-3">
 						<span className="flex h-10 w-10 items-center justify-center rounded-xl bg-secondary/10 text-secondary">
 							<WalletCards className="h-5 w-5" />
 						</span>
 						<div>
-							<p className="text-[10px] font-bold uppercase tracking-[0.16em] text-slate-400">
+							<p className="text-[10px] font-bold uppercase tracking-[0.16em] text-white/40">
 								ব্যবসার প্রভাব
 							</p>
-							<p className="mt-1 text-sm font-extrabold text-slate-900">
+							<p className="mt-1 text-sm font-extrabold text-white">
 								লাভের হিসাব
 							</p>
 						</div>
@@ -66,14 +66,14 @@ function SavingsBoard() {
 					</span>
 				</div>
 				<div className="mt-5 grid grid-cols-2 gap-3">
-					<div className="rounded-xl bg-slate-50 p-4">
-						<p className="text-[10px] font-semibold text-slate-400">
+					<div className="rounded-xl border border-white/10 bg-white/[0.04] p-4">
+						<p className="text-[10px] font-semibold text-white/40">
 							যাচাই না করলে
 						</p>
 						<p className="mt-2 text-2xl font-extrabold text-rose-500">-৳ ৩৫০</p>
-						<p className="mt-1 text-[10px] text-slate-500">সম্ভাব্য ফেরতের খরচ</p>
+						<p className="mt-1 text-[10px] text-white/45">সম্ভাব্য ফেরতের খরচ</p>
 					</div>
-					<div className="rounded-xl bg-secondary/10 p-4">
+					<div className="rounded-xl border border-accent/15 bg-accent/10 p-4">
 						<p className="text-[10px] font-semibold text-secondary/60">
 							যাচাই করলে
 						</p>
@@ -83,9 +83,9 @@ function SavingsBoard() {
 						<p className="mt-1 text-[10px] text-secondary/60">লাভ বাঁচানোর সুযোগ</p>
 					</div>
 				</div>
-				<div className="mt-5 rounded-xl border border-slate-100 p-4">
+				<div className="mt-5 rounded-xl border border-white/10 p-4">
 					<div className="flex items-center justify-between">
-						<p className="text-xs font-extrabold text-slate-800">
+						<p className="text-xs font-extrabold text-white">
 							মাসিক ফেরত কমানোর সম্ভাবনা
 						</p>
 						<TrendingDown className="h-4 w-4 text-secondary" />
@@ -100,7 +100,7 @@ function SavingsBoard() {
 									className={`w-full rounded-t-md ${bar.day === "শুক্র" ? "bg-secondary" : "bg-secondary/10"}`}
 									style={{ height: `${bar.height}%` }}
 								/>
-								<span className="text-[9px] font-medium text-slate-400">
+								<span className="text-[9px] font-medium text-white/40">
 									{bar.day}
 								</span>
 							</div>
