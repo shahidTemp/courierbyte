@@ -24,19 +24,19 @@ const faqs = [
 export default function Faq() {
 	const [open, setOpen] = useState(0);
 	return (
-		<section id="faq" className="section-pad">
+		<section id="faq" className="section-pad bg-night text-white">
 			<div className="maxw px-4 sm:px-6 lg:px-8">
 				<div className="grid gap-12 lg:grid-cols-[0.8fr_1.2fr]">
 					<div>
-						<p className="text-xs font-bold uppercase tracking-[0.2em] text-secondary">
+						<p className="text-xs font-bold uppercase tracking-[0.2em] text-accent">
 							প্রশ্ন থাকতেই পারে
 						</p>
-						<h2 className="mt-3 text-3xl font-extrabold tracking-tight text-slate-900 sm:text-4xl">
+						<h2 className="mt-3 text-3xl font-extrabold tracking-tight text-white sm:text-4xl">
 							শুরু করার আগে
 							<br />
 							সবকিছু জেনে নিন
 						</h2>
-						<p className="mt-4 text-base leading-relaxed text-slate-600">
+						<p className="mt-4 text-base leading-relaxed text-white/60">
 							বিনামূল্যে শুরু করা, ব্যবহারের সীমা এবং রিপোর্ট—সব নিয়ে সাধারণ প্রশ্নের উত্তর
 							এখানে।
 						</p>
@@ -47,7 +47,7 @@ export default function Faq() {
 							return (
 								<div
 									key={faq.q}
-									className={`overflow-hidden rounded-2xl border bg-white transition-all ${isOpen ? "border-secondary/20 shadow-md" : "border-slate-200/80 shadow-sm"}`}
+									className={`overflow-hidden rounded-2xl border bg-night-soft transition-all ${isOpen ? "border-accent/40 shadow-md shadow-accent/10" : "border-white/10 shadow-sm"}`}
 								>
 									{" "}
 									<button
@@ -57,11 +57,11 @@ export default function Faq() {
 										aria-controls={`faq-panel-${index}`}
 										className="flex w-full items-center justify-between gap-4 px-5 py-5 text-left"
 									>
-										<span className="text-sm font-extrabold text-slate-800">
+										<span className="text-sm font-extrabold text-white">
 											{faq.q}
 										</span>
 										<span
-											className={`flex h-8 w-8 shrink-0 items-center justify-center rounded-full transition-all ${isOpen ? "bg-secondary text-white" : "bg-secondary/10 text-secondary"}`}
+											className={`flex h-8 w-8 shrink-0 items-center justify-center rounded-full transition-all ${isOpen ? "bg-accent text-white" : "bg-accent/10 text-accent"}`}
 										>
 											<ChevronDown
 												className={`h-4 w-4 transition-transform ${isOpen ? "rotate-180" : ""}`}
@@ -73,7 +73,7 @@ export default function Faq() {
 										className={`grid transition-all duration-300 ${isOpen ? "grid-rows-[1fr] opacity-100" : "grid-rows-[0fr] opacity-0"}`}
 									>
 										<div className="overflow-hidden">
-											<p className="px-5 pb-5 text-sm leading-relaxed text-slate-500">
+											<p className="px-5 pb-5 text-sm leading-relaxed text-white/55">
 												{faq.a}
 											</p>
 										</div>

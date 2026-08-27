@@ -29,11 +29,11 @@ const outcomes = [
 
 export default function BusinessOutcome() {
 	return (
-		<section className="section-pad bg-secondary-dark text-white">
+		<section className="section-pad bg-night-soft text-white">
 			<div className="maxw px-4 sm:px-6 lg:px-8">
 				<div className="grid items-end gap-10 lg:grid-cols-[0.9fr_1.1fr]">
 					<div>
-						<p className="text-xs font-bold uppercase tracking-[0.2em] text-white/75">
+						<p className="text-xs font-bold uppercase tracking-[0.2em] text-accent">
 							লাভের হিসাবটা সহজ রাখুন
 						</p>
 						<h2 className="mt-4 max-w-xl text-3xl font-extrabold leading-tight sm:text-4xl">
@@ -45,7 +45,7 @@ export default function BusinessOutcome() {
 						</p>
 						<a
 							href="#pricing"
-							className="mt-8 inline-flex items-center gap-2 rounded-xl bg-white px-5 py-3.5 text-sm font-bold text-secondary transition hover:-translate-y-0.5 hover:bg-secondary/10"
+							className="mt-8 inline-flex items-center gap-2 rounded-xl bg-accent px-5 py-3.5 text-sm font-bold text-white transition hover:-translate-y-0.5 hover:bg-accent-strong"
 						>
 							কোন প্যাকেজটি আমার জন্য? <ArrowRight className="h-4 w-4" />
 						</a>

@@ -118,17 +118,17 @@ function SavingsBoard() {
 
 export default function FeatureShowcase() {
 	return (
-		<section id="features" className="section-pad bg-secondary/5">
+		<section id="features" className="section-pad bg-night text-white">
 			<div className="maxw px-4 sm:px-6 lg:px-8">
 				<div className="text-center">
-					<p className="text-xs font-bold uppercase tracking-[0.2em] text-secondary">
+					<p className="text-xs font-bold uppercase tracking-[0.2em] text-accent">
 						আপনার ব্যবসায় বাস্তব প্রভাব
 					</p>
-					<h2 className="mt-3 text-3xl font-extrabold tracking-tight text-slate-900 sm:text-4xl">
+					<h2 className="mt-3 text-3xl font-extrabold tracking-tight text-white sm:text-4xl">
 						শুধু ফিচার দেখানোর জন্য নয়,
 						<br className="hidden sm:block" /> সিদ্ধান্ত সহজ করার জন্য তৈরি
 					</h2>
-					<p className="mx-auto mt-4 max-w-2xl text-lg text-slate-600">
+					<p className="mx-auto mt-4 max-w-2xl text-lg text-white/60">
 						সুন্দর ড্যাশবোর্ডের পেছনে আছে আপনার সময়, পণ্য ও লাভ রক্ষার একটি বাস্তবসম্মত
 						প্রক্রিয়া।
 					</p>
@@ -142,22 +142,22 @@ export default function FeatureShowcase() {
 								className={`grid items-center gap-12 lg:grid-cols-2 ${index % 2 === 1 ? "lg:[&>div:first-child]:order-2" : ""}`}
 							>
 								<div>
-									<span className="inline-flex items-center gap-2 rounded-full bg-white px-3.5 py-2 text-xs font-bold text-secondary shadow-sm ring-1 ring-secondary/10">
+									<span className="inline-flex items-center gap-2 rounded-full border border-accent/30 bg-accent/10 px-3.5 py-2 text-xs font-bold text-accent shadow-sm">
 										<Icon className="h-3.5 w-3.5" /> {feature.tag}
 									</span>
-									<h3 className="mt-5 text-3xl font-extrabold leading-tight text-slate-900">
+									<h3 className="mt-5 text-3xl font-extrabold leading-tight text-white">
 										{feature.title}
 									</h3>
-									<p className="mt-4 max-w-lg text-base leading-relaxed text-slate-600">
+									<p className="mt-4 max-w-lg text-base leading-relaxed text-white/60">
 										{feature.desc}
 									</p>
 									<ul className="mt-7 space-y-3">
 										{feature.points.map((point) => (
 											<li
 												key={point}
-												className="flex items-center gap-2.5 text-sm font-semibold text-slate-700"
+												className="flex items-center gap-2.5 text-sm font-semibold text-white/75"
 											>
-												<CheckCircle2 className="h-5 w-5 text-secondary" />{" "}
+												<CheckCircle2 className="h-5 w-5 text-accent" />{" "}
 												{point}
 											</li>
 										))}

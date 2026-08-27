@@ -3,35 +3,35 @@ import { ArrowRight, Gauge, Lock, Sparkles } from "lucide-react";
 
 export default function FreemiumSection() {
 	return (
-		<section id="free" className="section-pad">
+		<section id="free" className="section-pad bg-night text-white">
 			<div className="maxw px-4 sm:px-6 lg:px-8">
-				<div className="overflow-hidden rounded-[2rem] border border-secondary/20 bg-white shadow-2xl shadow-secondary/10">
+				<div className="overflow-hidden rounded-[2rem] border border-white/10 bg-night-soft shadow-2xl shadow-black/30">
 					<div className="grid lg:grid-cols-[1fr_0.9fr]">
-						<div className="bg-gradient-to-br from-secondary/10 to-white p-7 sm:p-10 lg:p-14">
+						<div className="bg-gradient-to-br from-accent/10 to-night-soft p-7 sm:p-10 lg:p-14">
 							<span className="inline-flex items-center gap-2 rounded-full bg-secondary px-3.5 py-2 text-xs font-bold text-white shadow-lg shadow-secondary/20">
 								<Sparkles className="h-3.5 w-3.5" /> বিনামূল্যে শুরু করুন
 							</span>
-							<h2 className="mt-5 text-3xl font-extrabold leading-tight text-slate-900 sm:text-4xl">
+							<h2 className="mt-5 text-3xl font-extrabold leading-tight text-white sm:text-4xl">
 								আগে ব্যবহার করে দেখুন।
 								<br />
 								<span className="gradient-text">ভালো লাগলে আপগ্রেড করুন।</span>
 							</h2>
-							<p className="mt-5 max-w-lg text-base leading-relaxed text-slate-600">
+							<p className="mt-5 max-w-lg text-base leading-relaxed text-white/60">
 								প্রতিদিন ৫ জন গ্রাহকের তথ্য যাচাই সম্পূর্ণ বিনামূল্যে। কোনো কার্ড বা অগ্রিম পেমেন্ট লাগবে না।
 								আপনার ব্যবসায় এটি কতটা কাজে আসে, নিজেই দেখে নিন।
 							</p>
 							<div className="mt-8 grid gap-3 sm:grid-cols-2">
-								<div className="rounded-xl border border-secondary/10 bg-white p-4">
-									<p className="text-2xl font-extrabold text-secondary">
+								<div className="rounded-xl border border-white/10 bg-white/[0.04] p-4">
+									<p className="text-2xl font-extrabold text-accent">
 										৫টি
 									</p>
-									<p className="mt-1 text-xs font-semibold text-slate-500">
+									<p className="mt-1 text-xs font-semibold text-white/55">
 										প্রতিদিন ৫ জন গ্রাহকের তথ্য যাচাই
 									</p>
 								</div>
-								<div className="rounded-xl border border-secondary/10 bg-white p-4">
-									<p className="text-2xl font-extrabold text-secondary">৳০</p>
-									<p className="mt-1 text-xs font-semibold text-slate-500">
+								<div className="rounded-xl border border-white/10 bg-white/[0.04] p-4">
+									<p className="text-2xl font-extrabold text-accent">৳০</p>
+									<p className="mt-1 text-xs font-semibold text-white/55">
 										শুরুতে খরচ
 									</p>
 								</div>

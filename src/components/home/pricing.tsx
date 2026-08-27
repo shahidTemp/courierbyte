@@ -22,10 +22,10 @@ export default function Pricing() {
 	};
 
 	return (
-		<section id="pricing" className="section-pad bg-secondary/5">
+		<section id="pricing" className="section-pad bg-night text-white">
 			<div className="maxw px-4 sm:px-6 lg:px-8">
 				<div className="mx-auto max-w-2xl text-center">
-					<h2 className="mt-3 text-3xl font-extrabold tracking-tight text-slate-900 sm:text-4xl">
+					<h2 className="mt-3 text-3xl font-extrabold tracking-tight text-white sm:text-4xl">
 						আপনার প্রয়োজন অনুযায়ী প্যাকেজ বেছে নিন
 					</h2>
 				</div>
