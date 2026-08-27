@@ -56,9 +56,9 @@ export default function SignIn({ onSignUp }) {
 		<section className="relative isolate flex min-h-[38rem] items-center justify-center overflow-hidden bg-night px-4 py-14 sm:px-6">
 			<div aria-hidden="true" className="pointer-events-none absolute -left-24 top-8 size-72 rounded-full bg-accent/10 blur-3xl" />
 			<div aria-hidden="true" className="pointer-events-none absolute -right-24 bottom-0 size-80 rounded-full bg-secondary/20 blur-3xl" />
-			<div className="relative w-full max-w-md rounded-3xl border border-white/20 bg-white p-6 shadow-2xl shadow-black/20 sm:p-9">
+			<div className="relative w-full max-w-md rounded-3xl border border-emerald-200/70 bg-gradient-to-br from-emerald-50 via-green-50 to-white p-6 shadow-2xl shadow-black/20 sm:p-9">
 				<div className="mb-8">
-					<h1 className="text-3xl font-extrabold tracking-tight text-slate-900">
+					<h1 className="text-3xl font-extrabold tracking-tight text-secondary-dark">
 						লগইন করুন
 					</h1>
 					<p className="mt-2 text-sm text-slate-500">
@@ -70,7 +70,7 @@ export default function SignIn({ onSignUp }) {
 					<div>
 						<label
 							htmlFor="phone"
-							className="mb-2 block text-sm font-bold text-slate-700"
+							className="mb-2 block text-sm font-bold text-secondary-dark"
 						>
 							মোবাইল নাম্বার
 						</label>
@@ -99,7 +99,7 @@ export default function SignIn({ onSignUp }) {
 					<div>
 						<label
 							htmlFor="password"
-							className="mb-2 block text-sm font-bold text-slate-700"
+							className="mb-2 block text-sm font-bold text-secondary-dark"
 						>
 							পাসওয়ার্ড
 						</label>
