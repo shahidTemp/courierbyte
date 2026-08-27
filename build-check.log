@@ -1,0 +1,151 @@
+vite v8.2.0 building client environment for production...
+[2Ktransforming...
+[@tanstack/devtools-vite] Removed devtools code from: /src/routes/__root.tsx
+
+✓ 2070 modules transformed.
+rendering chunks...
+computing gzip size...
+.output/public/assets/styles-DGZbC0mg.css             110.31 kB │ gzip:  17.13 kB
+.output/public/assets/formateDate-BAlbXmq-.js           0.10 kB │ gzip:   0.11 kB
+.output/public/assets/x-DQ5aZils.js                     0.15 kB │ gzip:   0.15 kB
+.output/public/assets/useRouter-CEWpac_R.js             0.15 kB │ gzip:   0.14 kB
+.output/public/assets/matchContext-ByziqcO_.js          0.16 kB │ gzip:   0.14 kB
+.output/public/assets/search-DIETGL6f.js                0.17 kB │ gzip:   0.16 kB
+.output/public/assets/circle-check-BDrg9Aeq.js          0.17 kB │ gzip:   0.16 kB
+.output/public/assets/user-round-CsT1McfI.js            0.18 kB │ gzip:   0.17 kB
+.output/public/assets/circle-x-DYByhXpw.js              0.20 kB │ gzip:   0.17 kB
+.output/public/assets/credit-card-BGe5ptX_.js           0.20 kB │ gzip:   0.19 kB
+.output/public/assets/code-xml-DMUozEuH.js              0.20 kB │ gzip:   0.17 kB
+.output/public/assets/log-out-YlJ0bvHW.js               0.23 kB │ gzip:   0.19 kB
+.output/public/assets/message-square-BLsqAfaB.js        0.23 kB │ gzip:   0.20 kB
+.output/public/assets/message-circle-CJIB7YTX.js        0.24 kB │ gzip:   0.21 kB
+.output/public/assets/triangle-alert-5aelNLFx.js        0.26 kB │ gzip:   0.21 kB
+.output/public/assets/users-C-NlUi28.js                 0.30 kB │ gzip:   0.22 kB
+.output/public/assets/shield-check-CjcPjNiw.js          0.32 kB │ gzip:   0.25 kB
+.output/public/assets/phone-CqLzQQHs.js                 0.32 kB │ gzip:   0.23 kB
+.output/public/assets/gem-Df-CJpRl.js                   0.33 kB │ gzip:   0.24 kB
+.output/public/assets/shield-alert-CQuHoN1F.js          0.35 kB │ gzip:   0.26 kB
+.output/public/assets/key-round-D0OKFAq5.js             0.35 kB │ gzip:   0.26 kB
+.output/public/assets/package-Dggu7NH5.js               0.37 kB │ gzip:   0.25 kB
+.output/public/assets/zap-CiBm2wwT.js                   0.38 kB │ gzip:   0.26 kB
+.output/public/assets/useServerFn-Bldj_O0N.js           0.41 kB │ gzip:   0.28 kB
+.output/public/assets/package-search-BLCT-pzD.js        0.47 kB │ gzip:   0.30 kB
+.output/public/assets/menu-C1ds52zt.js                  0.48 kB │ gzip:   0.26 kB
+.output/public/assets/calendar-days-CXQNIBfh.js         0.49 kB │ gzip:   0.26 kB
+.output/public/assets/sparkles-BccLuI9u.js              0.49 kB │ gzip:   0.28 kB
+.output/public/assets/trending-up-B-A8JCm8.js           0.54 kB │ gzip:   0.33 kB
+.output/public/assets/utils-BdUFtWsu.js                 0.61 kB │ gzip:   0.36 kB
+.output/public/assets/trash-2-Bov_FjRB.js               0.64 kB │ gzip:   0.35 kB
+.output/public/assets/receipt-B2SQrGTI.js               0.65 kB │ gzip:   0.28 kB
+.output/public/assets/dashboard.fn-D4_KSb4-.js          0.67 kB │ gzip:   0.45 kB
+.output/public/assets/keys.fn-BWj0j53M.js               0.69 kB │ gzip:   0.39 kB
+.output/public/assets/lock-keyhole-D9YLwQfj.js          0.82 kB │ gzip:   0.43 kB
+.output/public/assets/subscription-plans-CSToPstb.js    1.31 kB │ gzip:   0.75 kB
+.output/public/assets/deleteModal-DUYY1Aeb.js           2.83 kB │ gzip:   1.38 kB
+.output/public/assets/billing-zX5zo4hu.js               4.11 kB │ gzip:   1.58 kB
+.output/public/assets/feedback-Cq9EmRdj.js              4.16 kB │ gzip:   1.79 kB
+.output/public/assets/subscription.all-C1Zb3dvw.js      8.44 kB │ gzip:   2.76 kB
+.output/public/assets/route-CRbd8N39.js                 9.12 kB │ gzip:   3.40 kB
+.output/public/assets/createLucideIcon-DxezZrQ2.js      9.56 kB │ gzip:   3.77 kB
+.output/public/assets/subscription-Co9GxtV9.js          9.87 kB │ gzip:   3.57 kB
+.output/public/assets/profile-CrH8qF7P.js               9.96 kB │ gzip:   2.62 kB
+.output/public/assets/route-CUknGx1x.js                12.03 kB │ gzip:   4.02 kB
+.output/public/assets/keys.errors-B-teE_SB.js          12.13 kB │ gzip:   3.93 kB
+.output/public/assets/panel-CtS2HHri.js                13.62 kB │ gzip:   4.32 kB
+.output/public/assets/package.all-BNAQvxga.js          14.82 kB │ gzip:   5.17 kB
+.output/public/assets/login-CwwZgBL1.js                15.39 kB │ gzip:   4.00 kB
+.output/public/assets/fraud-checker-b0baGEWh.js        15.67 kB │ gzip:   5.62 kB
+.output/public/assets/route-Bbl-oNK6.js                15.79 kB │ gzip:   5.41 kB
+.output/public/assets/admin.all-CkOB0MFg.js            15.88 kB │ gzip:   5.35 kB
+.output/public/assets/user.all-Cg8AKjK7.js             16.92 kB │ gzip:   5.34 kB
+.output/public/assets/keys.all-BK7zmDR2.js             17.46 kB │ gzip:   5.65 kB
+.output/public/assets/developer-api-DCXftS5S.js        21.05 kB │ gzip:   6.44 kB
+.output/public/assets/link-BOUzYXK3.js                 26.27 kB │ gzip:   9.67 kB
+.output/public/assets/middleware-DsrIIC5i.js           38.86 kB │ gzip:  12.11 kB
+.output/public/assets/admin-DEtSnLKn.js                46.36 kB │ gzip:  13.60 kB
+.output/public/assets/_website-_e2jPl0r.js             46.99 kB │ gzip:  10.88 kB
+.output/public/assets/index-DqzWkKZK.js               366.78 kB │ gzip: 113.10 kB
+
+[33m[PLUGIN_TIMINGS] [0mYour build spent significant time in plugins. Here is a breakdown:
+  - @tanstack/devtools:remove-devtools-on-build (39%)
+  - tanstack-start-core:import-protection (22%)
+  - vite:css-post (13%)
+  - vite:worker (10%)
+  - tanstack-start-core:import-protection-transform-cache (8%)
+See https://rolldown.rs/reference/InputOptions.checks#plugintimings for more details.
+
+✓ built in 56.23s
+vite v8.2.0 building ssr environment for production...
+[2Ktransforming...
+[@tanstack/devtools-vite] Removed devtools code from: /src/routes/__root.tsx
+
+✓ 169 modules transformed.
+rendering chunks...
+computing gzip size...
+node_modules/.nitro/vite/services/ssr/assets/styles-DGZbC0mg.css                     110.31 kB │ gzip: 17.13 kB
+node_modules/.nitro/vite/services/ssr/assets/start-5Z2QO8AU.js                         0.14 kB │ gzip:  0.13 kB
+node_modules/.nitro/vite/services/ssr/assets/empty-plugin-adapters-D9UWiqvJ.js         0.22 kB │ gzip:  0.16 kB
+node_modules/.nitro/vite/services/ssr/assets/formateDate-CiIv1JdI.js                   0.22 kB │ gzip:  0.17 kB
+node_modules/.nitro/vite/services/ssr/assets/package.all-00ttRX-6.js                   0.30 kB │ gzip:  0.22 kB
+node_modules/.nitro/vite/services/ssr/assets/subscription-DGbM9nCq.js                  0.35 kB │ gzip:  0.24 kB
+node_modules/.nitro/vite/services/ssr/assets/subscription.all-Cg5mLSO3.js              0.35 kB │ gzip:  0.23 kB
+node_modules/.nitro/vite/services/ssr/assets/createServerRpc-CN-evIEF.js               0.38 kB │ gzip:  0.26 kB
+node_modules/.nitro/vite/services/ssr/assets/keys.errors-Dydh0XJe.js                   0.47 kB │ gzip:  0.29 kB
+node_modules/.nitro/vite/services/ssr/assets/fraud-checker-D-LFVDxm.js                 0.48 kB │ gzip:  0.29 kB
+node_modules/.nitro/vite/services/ssr/assets/createSsrRpc-D75-wYbG.js                  0.52 kB │ gzip:  0.33 kB
+node_modules/.nitro/vite/services/ssr/assets/subscription--edb6FD8.js                  0.54 kB │ gzip:  0.31 kB
+node_modules/.nitro/vite/services/ssr/assets/useServerFn-CrZF2pjq.js                   0.63 kB │ gzip:  0.35 kB
+node_modules/.nitro/vite/services/ssr/assets/dashboard.fn-DWtK4CVj.js                  0.70 kB │ gzip:  0.39 kB
+node_modules/.nitro/vite/services/ssr/assets/package.model-B3yQRd4g.js                 0.84 kB │ gzip:  0.36 kB
+node_modules/.nitro/vite/services/ssr/assets/fraud.fn-CvrMA_BT.js                      1.06 kB │ gzip:  0.56 kB
+node_modules/.nitro/vite/services/ssr/assets/userContext-xcXOAvCi.js                   1.38 kB │ gzip:  0.61 kB
+node_modules/.nitro/vite/services/ssr/assets/searchUsage.model-LdU5zUry.js             1.44 kB │ gzip:  0.61 kB
+node_modules/.nitro/vite/services/ssr/assets/subscription-plans-HLSssrke.js            1.59 kB │ gzip:  0.76 kB
+node_modules/.nitro/vite/services/ssr/assets/package.fn-DuOZaJwE.js                    1.63 kB │ gzip:  0.74 kB
+node_modules/.nitro/vite/services/ssr/assets/subscription.model-06Gf5Pcc.js            1.75 kB │ gzip:  0.62 kB
+node_modules/.nitro/vite/services/ssr/assets/user.all-DA08Aweu.js                      1.92 kB │ gzip:  0.78 kB
+node_modules/.nitro/vite/services/ssr/assets/auth.fn-BAsIPDRj.js                       1.94 kB │ gzip:  0.79 kB
+node_modules/.nitro/vite/services/ssr/assets/keys.fn-CV3a5N2b.js                       1.95 kB │ gzip:  0.82 kB
+node_modules/.nitro/vite/services/ssr/assets/courierKey.model-DxYQKRhY.js              2.02 kB │ gzip:  0.72 kB
+node_modules/.nitro/vite/services/ssr/assets/subscription.fn-CMpQAQ25.js               2.08 kB │ gzip:  0.96 kB
+node_modules/.nitro/vite/services/ssr/assets/loader-CesTCsrN.js                        2.12 kB │ gzip:  0.55 kB
+node_modules/.nitro/vite/services/ssr/assets/middleware-eSvRqCQn.js                    2.62 kB │ gzip:  1.12 kB
+node_modules/.nitro/vite/services/ssr/assets/deleteModal-m5yycBBN.js                   2.74 kB │ gzip:  1.06 kB
+node_modules/.nitro/vite/services/ssr/assets/package.fn-B7hr5qoL.js                    3.77 kB │ gzip:  1.20 kB
+node_modules/.nitro/vite/services/ssr/assets/feedback-C4nQiEIk.js                      4.33 kB │ gzip:  1.47 kB
+node_modules/.nitro/vite/services/ssr/assets/courierKeyPool-DRz7r3kU.js                4.33 kB │ gzip:  1.86 kB
+node_modules/.nitro/vite/services/ssr/assets/admin.fn-ueW0Tl7f.js                      4.37 kB │ gzip:  1.36 kB
+node_modules/.nitro/vite/services/ssr/assets/user.fn-Ct51TPR2.js                       4.38 kB │ gzip:  1.38 kB
+node_modules/.nitro/vite/services/ssr/assets/billing-DZVjv-MB.js                       5.43 kB │ gzip:  1.70 kB
+node_modules/.nitro/vite/services/ssr/assets/packageGrid-wvuotJUU.js                   5.45 kB │ gzip:  1.76 kB
+node_modules/.nitro/vite/services/ssr/assets/keys.fn-aNV_Ffmh.js                       6.28 kB │ gzip:  2.02 kB
+node_modules/.nitro/vite/services/ssr/assets/auth.fn-DE0lQiPS.js                       6.41 kB │ gzip:  1.92 kB
+node_modules/.nitro/vite/services/ssr/assets/subscription.fn-Cbg4ta2Y.js               6.96 kB │ gzip:  2.32 kB
+node_modules/.nitro/vite/services/ssr/assets/_tanstack-start-manifest_v-B_obYkkD.js    7.31 kB │ gzip:  1.52 kB
+node_modules/.nitro/vite/services/ssr/assets/route-CIZShuMK.js                         8.18 kB │ gzip:  2.57 kB
+node_modules/.nitro/vite/services/ssr/assets/subscription.all-qVZKTA8Q.js             11.15 kB │ gzip:  2.85 kB
+node_modules/.nitro/vite/services/ssr/assets/route-CRPL74XX.js                        11.79 kB │ gzip:  3.37 kB
+node_modules/.nitro/vite/services/ssr/assets/dashboard.fn-CLXJhPDd.js                 12.19 kB │ gzip:  3.53 kB
+node_modules/.nitro/vite/services/ssr/assets/fraud-CbxtBN4f.js                        12.26 kB │ gzip:  4.36 kB
+node_modules/.nitro/vite/services/ssr/assets/subscription-CXv3RAm3.js                 13.18 kB │ gzip:  3.76 kB
+node_modules/.nitro/vite/services/ssr/assets/profile-O6_VJD-h.js                      14.00 kB │ gzip:  3.01 kB
+node_modules/.nitro/vite/services/ssr/assets/keys.errors-CJnLgXTG.js                  14.96 kB │ gzip:  3.48 kB
+node_modules/.nitro/vite/services/ssr/assets/panel-BRhPI0t7.js                        16.05 kB │ gzip:  3.77 kB
+node_modules/.nitro/vite/services/ssr/assets/route-C5HSSZio.js                        16.61 kB │ gzip:  4.37 kB
+node_modules/.nitro/vite/services/ssr/assets/package.all-DAhwY-gl.js                  17.43 kB │ gzip:  4.39 kB
+node_modules/.nitro/vite/services/ssr/assets/login-D98Q_p9D.js                        18.16 kB │ gzip:  3.12 kB
+node_modules/.nitro/vite/services/ssr/assets/fraud-checker-BVRXPfnf.js                18.17 kB │ gzip:  4.80 kB
+node_modules/.nitro/vite/services/ssr/assets/router-DRLFrYzm.js                       19.07 kB │ gzip:  4.74 kB
+node_modules/.nitro/vite/services/ssr/assets/admin.all-SrjyyAs2.js                    20.35 kB │ gzip:  5.14 kB
+node_modules/.nitro/vite/services/ssr/assets/keys.all-CjdPv8pK.js                     21.05 kB │ gzip:  5.21 kB
+node_modules/.nitro/vite/services/ssr/assets/user.all-5y41F5jL.js                     21.28 kB │ gzip:  5.06 kB
+node_modules/.nitro/vite/services/ssr/assets/developer-api-6vUVuh2T.js                22.81 kB │ gzip:  5.15 kB
+node_modules/.nitro/vite/services/ssr/assets/admin-COjhUkjG.js                        41.88 kB │ gzip:  7.71 kB
+node_modules/.nitro/vite/services/ssr/assets/_website-Bd9_BJgJ.js                     52.85 kB │ gzip: 10.26 kB
+node_modules/.nitro/vite/services/ssr/index.js                                        72.32 kB │ gzip: 19.06 kB
+
+✓ built in 1.03s
+[start] [nitro] Building [Nitro] (preset: `node-server`, compatibility: `2026-08-27`)
+[success] [nitro] Generated public .output/public
+vite v8.2.0 building nitro environment for production...
+[2Ktransforming...Killed

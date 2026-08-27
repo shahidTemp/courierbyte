@@ -24,6 +24,11 @@
   --color-primary: #f0f9ff;
   --color-secondary: #0f6b4d;
   --color-secondary-dark: #0b4032;
+  --color-night: #071723;
+  --color-night-soft: #0c2331;
+  --color-accent: #10b981;
+  --color-accent-strong: #34d399;
+  --color-gold: #f2b33d;
   --animate-marquee: marquee 32s linear infinite;
   --animate-blob: blob 9s ease-in-out infinite;
   --animate-fade-in-up: fade-in-up 0.7s ease-out both;

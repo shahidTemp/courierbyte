@@ -1,6 +1,6 @@
 // @ts-nocheck
 import { Link, useNavigate } from "@tanstack/react-router";
-import { LayoutDashboard, LogIn, Menu, X } from "lucide-react";
+import { LayoutDashboard, Menu, X } from "lucide-react";
 import { useEffect, useRef, useState } from "react";
 import { useAuth } from "@/context/userContext";
 
@@ -13,10 +13,13 @@ const NAV_ITEMS = [
 ];
 
 const linkClasses =
-	"text-sm font-medium text-secondary transition-colors hover:text-secondary/70";
+	"text-sm font-medium text-white/70 transition-colors hover:text-accent";
 
 const authBtnClasses =
-	"inline-flex items-center gap-2 rounded-full bg-gradient-to-r from-secondary to-secondary-dark px-5 py-2.5 text-sm font-bold text-white shadow-md shadow-secondary/25 transition-all duration-300 hover:-translate-y-0.5 hover:shadow-lg hover:shadow-secondary/35 hover:from-secondary/90 hover:to-secondary-dark/90";
+	"inline-flex items-center gap-2 rounded-full bg-accent px-5 py-2.5 text-sm font-bold text-white shadow-lg shadow-accent/25 transition-all duration-300 hover:-translate-y-0.5 hover:bg-accent-strong hover:shadow-accent/40";
+
+const loginLinkClasses =
+	"text-sm font-medium text-white/70 transition-colors hover:text-white";
 
 function NavItemLink({ item, onSectionClick }) {
 	return (
@@ -36,21 +39,28 @@ function NavItemLink({ item, onSectionClick }) {
 function AuthButton({ onClick }) {
 	const { isAuthenticated, user } = useAuth();
 	const panelPath =
-		user?.role === "admin" || user?.role === "super_admin" ? "/admin" : "/panel";
+		user?.role === "admin" || user?.role === "super_admin"
+			? "/admin"
+			: "/panel";
+
+	if (isAuthenticated) {
+		return (
+			<Link to={panelPath} onClick={onClick} className={authBtnClasses}>
+				<LayoutDashboard className="h-3.5 w-3.5" />
+				ড্যাশবোর্ড
+			</Link>
+		);
+	}
 
 	return (
-		<Link
-			to={isAuthenticated ? panelPath : "/login"}
-			onClick={onClick}
-			className={authBtnClasses}
-		>
-			{isAuthenticated ? (
-				<LayoutDashboard className="h-3.5 w-3.5" />
-			) : (
-				<LogIn className="h-3.5 w-3.5" />
-			)}
-			{isAuthenticated ? "ড্যাশবোর্ড" : "লগইন"}
-		</Link>
+		<div className="flex items-center gap-2 sm:gap-3">
+			<Link to="/login" onClick={onClick} className={loginLinkClasses}>
+				লগইন
+			</Link>
+			<Link to="/login" onClick={onClick} className={authBtnClasses}>
+				শুরু করুন
+			</Link>
+		</div>
 	);
 }
 
@@ -93,7 +103,7 @@ const Header = () => {
 	};
 
 	return (
-		<header className="text-secondary">
+		<header className="border-b border-white/5 bg-night text-white">
 			<div className="maxw px-4 sm:px-6 lg:px-8 py-4 flex items-center justify-between gap-4">
 				<Link to="/" className="flex shrink-0 items-center gap-2.5">
 					<img
@@ -101,8 +111,8 @@ const Header = () => {
 						alt="কুরিয়ারবাইট"
 						className="h-10 w-10 shrink-0 rounded-xl object-contain"
 					/>
-					<span className="text-xl font-extrabold tracking-tight">
-						কুরিয়ারবাইট
+					<span className="text-xl font-extrabold tracking-tight text-white">
+						কুরিয়ার<span className="text-accent">বাইট</span>
 					</span>
 				</Link>
 
@@ -121,7 +131,7 @@ const Header = () => {
 					type="button"
 					ref={triggerRef}
 					onClick={() => setOpen(true)}
-					className="md:hidden p-2 -mr-2 rounded-md text-secondary hover:bg-secondary/10 transition-colors"
+					className="md:hidden p-2 -mr-2 rounded-md text-white hover:bg-white/10 transition-colors"
 					aria-label="Open menu"
 					aria-expanded={open}
 					aria-controls="mobile-nav"
@@ -134,7 +144,7 @@ const Header = () => {
 			<div
 				onClick={close}
 				aria-hidden="true"
-				className={`fixed inset-0 z-40 bg-primary/50 transition-opacity duration-300 md:hidden ${
+				className={`fixed inset-0 z-40 bg-black/60 backdrop-blur-sm transition-opacity duration-300 md:hidden ${
 					open ? "opacity-100" : "opacity-0 pointer-events-none"
 				}`}
 			/>
@@ -146,7 +156,7 @@ const Header = () => {
 				tabIndex={-1}
 				inert={!open}
 				aria-hidden={!open}
-				className={`fixed inset-y-0 left-0 z-50 w-72 bg-white text-secondary shadow-2xl transition-transform duration-300 ease-in-out md:hidden ${
+				className={`fixed inset-y-0 left-0 z-50 w-72 bg-night-soft text-white shadow-2xl transition-transform duration-300 ease-in-out md:hidden ${
 					open ? "translate-x-0" : "-translate-x-full"
 				}`}
 			>
@@ -161,14 +171,14 @@ const Header = () => {
 							alt="কুরিয়ারবাইট"
 							className="h-9 w-9 shrink-0 rounded-lg object-contain"
 						/>
-						<span className="text-lg font-extrabold tracking-tight">
-							কুরিয়ারবাইট
+						<span className="text-lg font-extrabold tracking-tight text-white">
+							কুরিয়ার<span className="text-accent">বাইট</span>
 						</span>
 					</Link>
 					<button
 						type="button"
 						onClick={close}
-						className="p-2 rounded-md hover:bg-secondary/10 transition-colors"
+						className="p-2 rounded-md hover:bg-white/10 transition-colors"
 						aria-label="Close menu"
 					>
 						<X className="h-6 w-6" />
@@ -182,7 +192,7 @@ const Header = () => {
 							onSectionClick={scrollToSection}
 						/>
 					))}
-					<hr className="border-secondary/10" />
+					<hr className="border-white/10" />
 					<AuthButton onClick={close} />
 				</nav>
 			</aside>
