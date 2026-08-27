@@ -76,7 +76,17 @@ export default function Hero() {
 
 			<div className="maxw relative z-10 px-4 pb-16 pt-14 sm:px-6 md:pb-24 md:pt-20 lg:px-8">
 				<div className="grid items-center gap-14 lg:grid-cols-12 lg:gap-8">
-					{/* ---------- left: headline + CTAs ---------- */}
+					{/* ---------- left: seller dashboard mockup ---------- */}
+					<div className="mx-auto w-full max-w-md lg:col-span-5 lg:max-w-none">
+						<img
+							src="/images/dashboard1.png"
+							alt="কুরিয়ারবাইট সেলার ড্যাশবোর্ড প্রিভিউ"
+							className="w-full rounded-2xl shadow-[0_30px_80px_rgba(0,0,0,0.5)]"
+							loading="lazy"
+						/>
+					</div>
+
+					{/* ---------- right: headline + CTAs ---------- */}
 					<div className="lg:col-span-4">
 						<h1 className="text-4xl font-extrabold leading-[1.18] tracking-tight text-white sm:text-5xl lg:text-[2.75rem] xl:text-[3.4rem]">
 							রিটার্ন কমান,
@@ -103,16 +113,6 @@ export default function Hero() {
 								ফিচার দেখুন
 							</button>
 						</div>
-					</div>
-
-					{/* ---------- center: seller dashboard mockup ---------- */}
-					<div className="mx-auto w-full max-w-md lg:col-span-5 lg:max-w-none">
-						<img
-							src="/images/dashboard1.png"
-							alt="কুরিয়ারবাইট সেলার ড্যাশবোর্ড প্রিভিউ"
-							className="w-full rounded-2xl shadow-[0_30px_80px_rgba(0,0,0,0.5)]"
-							loading="lazy"
-						/>
 					</div>
 				</div>
 
