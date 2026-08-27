@@ -5,14 +5,14 @@ export default function FinalCta() {
 	return (
 		<section id="contact" className="pb-20 sm:pb-28">
 			<div className="maxw px-4 sm:px-6 lg:px-8">
-				<div className="relative overflow-hidden rounded-[2rem] border border-white/10 bg-gradient-to-br from-night-soft via-night to-black px-6 py-14 text-center shadow-2xl shadow-black/40 sm:px-12">
+				<div className="relative overflow-hidden rounded-[2rem] border border-white/10 bg-night px-6 py-14 text-center shadow-2xl shadow-black/40 sm:px-12">
 					<div
 						aria-hidden
-						className="absolute -left-20 -top-32 h-80 w-80 rounded-full bg-accent/10 blur-3xl"
+						className="absolute -left-20 -top-32 h-80 w-80 rounded-full bg-accent/[0.06] blur-3xl"
 					/>
 					<div
 						aria-hidden
-						className="absolute -bottom-40 -right-20 h-96 w-96 rounded-full bg-accent/5 blur-3xl"
+						className="absolute -bottom-40 -right-20 h-96 w-96 rounded-full bg-accent/[0.03] blur-3xl"
 					/>
 					<div className="relative">
 						<span className="inline-flex items-center gap-2 rounded-full border border-accent/30 bg-accent/10 px-3.5 py-2 text-xs font-bold text-accent">
@@ -36,7 +36,7 @@ export default function FinalCta() {
 							</a>
 							<a
 								href="#pricing"
-								className="inline-flex items-center gap-2 rounded-xl border border-white/25 px-7 py-3.5 text-sm font-bold text-white transition hover:bg-white/10"
+								className="inline-flex items-center gap-2 rounded-xl border border-white/20 bg-white/[0.02] px-7 py-3.5 text-sm font-bold text-white transition hover:bg-white/[0.06]"
 							>
 								প্যাকেজ দেখুন <ArrowRight className="h-4 w-4" />
 							</a>
