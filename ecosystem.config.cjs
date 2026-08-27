@@ -13,7 +13,7 @@ module.exports = {
 			// Nitro's Node production entrypoint, created by `npm run build`.
 			script: "./.output/server/index.mjs",
 			interpreter: "node",
-			node_args: "--env-file=.env",
+			node_args: "--env-file=.env --dns-result-order=ipv4first",
 
 			// Start with one process because the app currently uses in-memory caching.
 			instances: 1,
