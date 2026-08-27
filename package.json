@@ -13,7 +13,7 @@
     "format": "biome format",
     "lint": "biome lint",
     "check": "biome check",
-    "start": "node --env-file=.env --dns-result-order=ipv4first .output/server/index.mjs"
+    "start": "node --env-file=.env --no-network-family-autoselection .output/server/index.mjs"
   },
   "dependencies": {
     "@tailwindcss/vite": "^4.1.18",
