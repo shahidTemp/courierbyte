@@ -56,12 +56,12 @@ export default function SignIn({ onSignUp }) {
 		<section className="relative isolate flex min-h-[38rem] items-center justify-center overflow-hidden bg-night px-4 py-14 sm:px-6">
 			<div aria-hidden="true" className="pointer-events-none absolute -left-24 top-8 size-72 rounded-full bg-accent/10 blur-3xl" />
 			<div aria-hidden="true" className="pointer-events-none absolute -right-24 bottom-0 size-80 rounded-full bg-secondary/20 blur-3xl" />
-			<div className="relative w-full max-w-md rounded-3xl border border-emerald-200/70 bg-accent/10 backdrop-blur-sm p-6 shadow-2xl shadow-black/20 sm:p-9">
+			<div className="relative w-full max-w-md rounded-3xl border border-accent/25 bg-accent/10 backdrop-blur-sm p-6 shadow-2xl shadow-black/20 sm:p-9">
 				<div className="mb-8">
-					<h1 className="text-3xl font-extrabold tracking-tight text-secondary-dark">
+					<h1 className="text-3xl font-extrabold tracking-tight text-white/90">
 						লগইন করুন
 					</h1>
-					<p className="mt-2 text-sm text-slate-500">
+					<p className="mt-2 text-sm text-white/65">
 						আপনার মোবাইল নাম্বার ও পাসওয়ার্ড দিয়ে অ্যাকাউন্টে প্রবেশ করুন।
 					</p>
 				</div>
@@ -70,13 +70,13 @@ export default function SignIn({ onSignUp }) {
 					<div>
 						<label
 							htmlFor="phone"
-							className="mb-2 block text-sm font-bold text-secondary-dark"
+							className="mb-2 block text-sm font-bold text-white/90"
 						>
 							মোবাইল নাম্বার
 						</label>
 						<div className="relative">
 							<Phone
-								className="pointer-events-none absolute left-4 top-1/2 h-[18px] w-[18px] -translate-y-1/2 text-slate-400"
+								className="pointer-events-none absolute left-4 top-1/2 h-[18px] w-[18px] -translate-y-1/2 text-white/55"
 								aria-hidden="true"
 							/>
 							<input
@@ -91,7 +91,7 @@ export default function SignIn({ onSignUp }) {
 									setError("");
 								}}
 								placeholder="01XXXXXXXXX"
-								className="h-14 w-full rounded-2xl border border-emerald-100 bg-emerald-50/60 pl-12 pr-4 text-base font-semibold tracking-wide text-slate-900 outline-none transition focus:border-accent focus:bg-white focus:ring-4 focus:ring-accent/10"
+								className="h-14 w-full rounded-2xl border border-accent/20 bg-white/10 pl-12 pr-4 text-base font-semibold tracking-wide text-white outline-none transition focus:border-accent focus:bg-white/15 focus:ring-4 focus:ring-accent/10"
 							/>
 						</div>
 					</div>
@@ -99,13 +99,13 @@ export default function SignIn({ onSignUp }) {
 					<div>
 						<label
 							htmlFor="password"
-							className="mb-2 block text-sm font-bold text-secondary-dark"
+							className="mb-2 block text-sm font-bold text-white/90"
 						>
 							পাসওয়ার্ড
 						</label>
 						<div className="relative">
 							<LockKeyhole
-								className="pointer-events-none absolute left-4 top-1/2 h-[18px] w-[18px] -translate-y-1/2 text-slate-400"
+								className="pointer-events-none absolute left-4 top-1/2 h-[18px] w-[18px] -translate-y-1/2 text-white/55"
 								aria-hidden="true"
 							/>
 							<input
@@ -119,12 +119,12 @@ export default function SignIn({ onSignUp }) {
 									setError("");
 								}}
 								placeholder="পাসওয়ার্ড লিখুন"
-								className="h-14 w-full rounded-2xl border border-emerald-100 bg-emerald-50/60 pl-12 pr-12 text-base text-slate-900 outline-none transition focus:border-accent focus:bg-white focus:ring-4 focus:ring-accent/10"
+								className="h-14 w-full rounded-2xl border border-accent/20 bg-white/10 pl-12 pr-12 text-base text-white outline-none transition focus:border-accent focus:bg-white/15 focus:ring-4 focus:ring-accent/10"
 							/>
 							<button
 								type="button"
 								onClick={() => setShowPassword((visible) => !visible)}
-								className="absolute right-3 top-1/2 -translate-y-1/2 rounded-lg p-2 text-slate-400 transition hover:bg-secondary/10 hover:text-secondary focus:outline-none focus:ring-2 focus:ring-secondary/30"
+								className="absolute right-3 top-1/2 -translate-y-1/2 rounded-lg p-2 text-white/55 transition hover:bg-secondary/10 hover:text-secondary focus:outline-none focus:ring-2 focus:ring-secondary/30"
 								aria-label={showPassword ? "পাসওয়ার্ড লুকান" : "পাসওয়ার্ড দেখুন"}
 							>
 								{showPassword ? (
@@ -155,7 +155,7 @@ export default function SignIn({ onSignUp }) {
 				</form>
 
 				{onSignUp && (
-					<p className="mt-6 text-center text-sm text-slate-500">
+					<p className="mt-6 text-center text-sm text-white/65">
 						অ্যাকাউন্ট নেই?{" "}
 						<button
 							type="button"
